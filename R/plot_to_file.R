@@ -210,6 +210,42 @@ JPlotToEPS <- function(filename, plot,
   })
 }
 
+#' Plot to a file
+#'
+#' Writes the output of a plot to a file. The type of file is deduced from the
+#' extension of the file name. If you are using ggplot rather than base
+#' graphics, try either using \code{JPlotToFile(filename, print(<plotting
+#' code>))} or else \code{ggsave(...)}.
+#'
+#' @param filename The name of the file to create or overwrite.
+#' @param plot A function or expression which will produce the plot to be
+#'   written to the file.
+#' @param ... Any additional arguments are passed to the appropriate function.
+#'
+#' @seealso \code{\link{JPlotToPng}}, \code{\link{JPlotToTiff}},
+#'   \code{\link{JPlotToPDF}}, \code{\link{JPlotToEPS}}
+#'
+#' @export
+JPlotToFile <- function(filename, plot, ...) {
+  ext <- tolower(tools::file_ext(filename))
+
+  fns <- list(
+    eps =  JPlotToEPS,
+    ps =   JPlotToEPS,
+    pdf =  JPlotToPDF,
+    #svg =  ,
+    #emf =  ,
+    #wmf =  ,
+    png =  JPlotToPng,
+    #jpg =  JPlotToJpeg,
+    #jpeg = JPlotToJpeg,
+    #bmp =  JPlotToBMP,
+    tiff = JPlotToTiff
+  )
+
+  fns[[ext]](filename, plot, ...)
+}
+
 #' Send console (i.e. text) output to a file
 #'
 #' Sends the text output of an arbitrary R expression of function to a text file.
