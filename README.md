@@ -10,4 +10,6 @@ Some R utilities to simplify common operations.
     library("JUtils")
     
     JPlotToFile("test.eps", plot(1:10))
+    
+    JPlotToPng("test.png", plot(1:10 + rnorm(10), type = "o"), width = 180, units = "mm", res = 300)
 `
