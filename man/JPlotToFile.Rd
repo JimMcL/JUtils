@@ -16,9 +16,11 @@ written to the file.}
 }
 \description{
 Writes the output of a plot to a file. The type of file is deduced from the
-extension of the file name. If you are using ggplot, try either using
-\code{JPlotToFile(filename, print(<plotting code>))} or else \code{ggsave(...)}.
+extension of the file name. If you are using ggplot rather than base
+graphics, try either using \code{JPlotToFile(filename, print(<plotting
+code>))} or \code{ggsave()}.
 }
 \seealso{
-\code{\link{JPlotToPng}}, \code{\link{JPlotToTiff}}, \code{\link{JPlotToPDF}}, \code{\link{JPlotToEPS}}
+\code{\link{JPlotToPNG}}, \code{\link{JPlotToTIFF}},
+  \code{\link{JPlotToPDF}}, \code{\link{JPlotToEPS}}
 }

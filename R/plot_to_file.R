@@ -43,7 +43,7 @@
 #' Plot to a PNG file
 #'
 #' Writes the output of a plot to a PNG file. If you are using ggplot, try either
-#' using \code{JPlotToPng(filename, print(<plotting code>))} or else \code{ggsave()}.
+#' using \code{JPlotToPNG(filename, print(<plotting code>))} or else \code{ggsave()}.
 #'
 #' @param filename The name of the PNG to create or overwrite.
 #' @param plot A function or expression which will produce the plot to be
@@ -61,17 +61,17 @@
 #'   \code{\link[grDevices]{png}}. Increasing the resolution will increase the
 #'   size (in pixels) of the text and graph elements.
 #' @param onlyIfDoesntExist If TRUE and the output file already exists,
-#'   \code{JPlotToPng} will do nothing.
+#'   \code{JPlotToPNG} will do nothing.
 #' @param ... Any additional arguments are passed to
 #'   \code{\link[grDevices]{png}}.
 #'
 #' @seealso \code{\link[grDevices]{png}}
 #'
 #' @examples
-#' JPlotToPng("test.png", plot(rnorm(50), type = 'l', main = 'Wiggly line'))
+#' JPlotToPNG("test.png", plot(rnorm(50), type = 'l', main = 'Wiggly line'))
 #'
 #' @export
-JPlotToPng <- function(filename, plot,
+JPlotToPNG <- function(filename, plot,
                        width = 180, height = NA, aspectRatio = 3 / 2,
                        units = c("mm", "cm", "px", "in"),
                        type = ifelse(capabilities()["cairo"], 'cairo', NULL),
@@ -87,7 +87,7 @@ JPlotToPng <- function(filename, plot,
 #' Plot to a TIFF file
 #'
 #' Writes the output of a plot to a TIFF file. If you are using ggplot, try either
-#' using \code{JPlotToTiff(filename, print(<plotting code>))} or else \code{ggsave()}.
+#' using \code{JPlotToTIFF(filename, print(<plotting code>))} or else \code{ggsave()}.
 #'
 #' @param filename The name of the TIFF to create or overwrite.
 #' @param plot A function or expression which will produce the plot to be
@@ -112,7 +112,7 @@ JPlotToPng <- function(filename, plot,
 #' @seealso \code{\link[grDevices]{tiff}}
 #'
 #' @export
-JPlotToTiff <- function(filename, plot,
+JPlotToTIFF <- function(filename, plot,
                         width = 180, height = NA, aspectRatio = 3 / 2,
                         units = c("mm", "cm", "px", "in"),
                         type = ifelse(capabilities()["cairo"], 'cairo', NULL),
@@ -215,14 +215,14 @@ JPlotToEPS <- function(filename, plot,
 #' Writes the output of a plot to a file. The type of file is deduced from the
 #' extension of the file name. If you are using ggplot rather than base
 #' graphics, try either using \code{JPlotToFile(filename, print(<plotting
-#' code>))} or else \code{ggsave(...)}.
+#' code>))} or \code{ggsave()}.
 #'
 #' @param filename The name of the file to create or overwrite.
 #' @param plot A function or expression which will produce the plot to be
 #'   written to the file.
 #' @param ... Any additional arguments are passed to the appropriate function.
 #'
-#' @seealso \code{\link{JPlotToPng}}, \code{\link{JPlotToTiff}},
+#' @seealso \code{\link{JPlotToPNG}}, \code{\link{JPlotToTIFF}},
 #'   \code{\link{JPlotToPDF}}, \code{\link{JPlotToEPS}}
 #'
 #' @export
@@ -236,11 +236,11 @@ JPlotToFile <- function(filename, plot, ...) {
     #svg =  ,
     #emf =  ,
     #wmf =  ,
-    png =  JPlotToPng,
+    png =  JPlotToPNG,
     #jpg =  JPlotToJpeg,
     #jpeg = JPlotToJpeg,
     #bmp =  JPlotToBMP,
-    tiff = JPlotToTiff
+    tiff = JPlotToTIFF
   )
 
   fns[[ext]](filename, plot, ...)

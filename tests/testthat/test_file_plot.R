@@ -21,7 +21,7 @@ test_that("png plotting", {
 
   .mmToPixels <- function(x) floor(.mmToInches(x) * res)
 
-  JPlotToPng("test.png", plotWigglyLines(), width = width, height = height, res = res, units = units)
+  JPlotToPNG("test.png", plotWigglyLines(), width = width, height = height, res = res, units = units)
   expect_true(file.exists("test.png"))
   png <- readPNG("test.png", native = TRUE, info = TRUE)
   info <- attr(png, "info")
@@ -39,7 +39,7 @@ test_that("png plotting in pixels", {
 
   .mmToPixels <- function(x) floor(.mmToInches(x) * res)
 
-  JPlotToPng("test.png", plotWigglyLines(), width = width, height = height, res = res, units = units)
+  JPlotToPNG("test.png", plotWigglyLines(), width = width, height = height, res = res, units = units)
   expect_true(file.exists("test.png"))
   png <- readPNG("test.png", native = TRUE, info = TRUE)
   info <- attr(png, "info")
@@ -57,7 +57,7 @@ test_that("png plotting in cm", {
 
   .cmToPixels <- function(x) floor(.cmToInches(x) * res)
 
-  JPlotToPng("test.png", plotWigglyLines(), width = width, height = height, res = res, units = units)
+  JPlotToPNG("test.png", plotWigglyLines(), width = width, height = height, res = res, units = units)
   expect_true(file.exists("test.png"))
   png <- readPNG("test.png", native = TRUE, info = TRUE)
   info <- attr(png, "info")
@@ -75,7 +75,7 @@ test_that("png plotting in in", {
 
   .inToPixels <- function(x) floor(x * res)
 
-  JPlotToPng("test.png", plotWigglyLines(), width = width, height = height, res = res, units = units)
+  JPlotToPNG("test.png", plotWigglyLines(), width = width, height = height, res = res, units = units)
   expect_true(file.exists("test.png"))
   png <- readPNG("test.png", native = TRUE, info = TRUE)
   info <- attr(png, "info")
@@ -93,7 +93,7 @@ test_that("tiff plotting", {
 
   .mmToPixels <- function(x) floor(.mmToInches(x) * res)
 
-  JPlotToTiff("test.tif", plotWigglyLines(), width = width, height = height, res = res, units = units)
+  JPlotToTIFF("test.tif", plotWigglyLines(), width = width, height = height, res = res, units = units)
   expect_true(file.exists("test.tif"))
   tiff <- readTIFF("test.tif", native = TRUE, info = TRUE)
   expect_equal(attr(tiff, "dim")[2], .mmToPixels(width))

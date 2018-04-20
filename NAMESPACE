@@ -3,6 +3,6 @@
 export(JPlotToEPS)
 export(JPlotToFile)
 export(JPlotToPDF)
-export(JPlotToPng)
-export(JPlotToTiff)
+export(JPlotToPNG)
+export(JPlotToTIFF)
 export(JReportToFile)
