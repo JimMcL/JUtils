@@ -18,23 +18,32 @@
 }
 
 # Calculates and returns image geometry in inches
-.geometry <- function(width, height, aspectRatio, res, units, choices) {
+.geometry <- function(width, height, aspectRatio, res, inUnits, outUnits) {
   # Use either explicitly specified height, or calculate from width and aspect ratio
   height <- ifelse(is.na(height), width / aspectRatio, height)
 
   # Get list of choices for units from the default value of units in the calling function.
   # Must be a subset of c("in", "cm", "mm", "px")
   choices <- eval(formals(sys.function(sys.parent()))[["units"]])
-  units <- match.arg(units, choices)
+  inUnits <- match.arg(inUnits, choices)
   .toInches <- function(n) {
-    switch(units,
+    switch(inUnits,
            "in" = 1,
            "cm" = 1 / 2.54,
            "mm" = 1 / 25.4,
            "px" = 1 / res) * n
   }
 
-  list(width = .toInches(width), height = .toInches(height))
+  # Check that units are compatible and convert
+  if (inUnits %in% outUnits) {
+    # No conversion required
+    list(width = width, height = height, units = inUnits)
+  } else if ("in" %in% outUnits) {
+    # Convert to inches
+    list(width = .toInches(width), height = .toInches(height), units = "in")
+  } else {
+    stop(sprintf("Unable to handle image size in units '%s', require one of %s", inUnits, paste(outUnits, collapse = ", ")))
+  }
 }
 
 ########################################################################################
@@ -77,10 +86,10 @@ JPlotToPNG <- function(filename, plot,
                        type = ifelse(capabilities()["cairo"], 'cairo', NULL),
                        res = 72,
                        onlyIfDoesntExist = F, ...) {
-  g <- .geometry(width, height, aspectRatio, res, units)
+  g <- .geometry(width, height, aspectRatio, res, units, c("mm", "cm", "px", "in"))
 
   .JplotToDevice(filename, plot, onlyIfDoesntExist, function () {
-    grDevices::png(filename, width = g$width, height = g$height, type = type, res = res, units = "in", ...)
+    grDevices::png(filename, width = g$width, height = g$height, units = g$units, type = type, res = res, ...)
   })
 }
 
@@ -118,10 +127,10 @@ JPlotToTIFF <- function(filename, plot,
                         type = ifelse(capabilities()["cairo"], 'cairo', NULL),
                         res = 72,
                         onlyIfDoesntExist = F, ...) {
-  g <- .geometry(width, height, aspectRatio, res, units)
+  g <- .geometry(width, height, aspectRatio, res, units, c("mm", "cm", "px", "in"))
 
   .JplotToDevice(filename, plot, onlyIfDoesntExist, function () {
-    grDevices::tiff(filename, width = g$width, height = g$height, type = type, res = res, units = "in", ...)
+    grDevices::tiff(filename, width = g$width, height = g$height, units = g$units, type = type, res = res, ...)
   })
 }
 
@@ -160,7 +169,7 @@ JPlotToPDF <- function(filename, plot,
                        paper = "special",
                        family = "Helvetica",
                        onlyIfDoesntExist = F, ...) {
-  g <- .geometry(width, height, aspectRatio, 1, units)
+  g <- .geometry(width, height, aspectRatio, 1, units, "in")
 
   .JplotToDevice(filename, plot, onlyIfDoesntExist, function () {
     grDevices::pdf(filename, width = g$width, height = g$height, bg = bg, paper = paper, family = family, ...)
@@ -202,7 +211,7 @@ JPlotToEPS <- function(filename, plot,
                        paper = "special",
                        family = "Helvetica",
                        onlyIfDoesntExist = F, ...) {
-  g <- .geometry(width, height, aspectRatio, 1, units)
+  g <- .geometry(width, height, aspectRatio, 1, units, "in")
 
   .JplotToDevice(filename, plot, onlyIfDoesntExist, function () {
     grDevices::setEPS(family = family)
