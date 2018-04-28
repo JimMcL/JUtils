@@ -122,5 +122,22 @@ test_that("eps plotting", {
   lines <- readLines("test.eps", n=10)
 })
 
+test_that("General plotting", {
+  width <- 180
+  height <- 120
+  units <- "mm"
+
+  JPlotToFile("test2.eps", plotWigglyLines(), width = width, height = height, units = units)
+  expect_true(file.exists("test2.eps"))
+  lines <- readLines("test2.eps", n=10)
+})
+
+test_that("report to file", {
+  JReportToFile("test.txt", cat("Hello world!\n"))
+  expect_true(file.exists("test.txt"))
+  lines <- readLines("test.txt")
+  expect_equal(lines, "Hello world!")
+})
+
 #########################################################################
 
