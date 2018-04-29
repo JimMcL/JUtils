@@ -6,7 +6,7 @@
 R utilities to simplify some common operations.
 
 ## Installation
-JUtils is not available on CRAN, so it must be installed rfom Github.
+JUtils is not available on CRAN, so it must be installed from Github.
 
     $ install.packages("devtools")
     $ devtools::install_github("JimMcL/JUtils")
