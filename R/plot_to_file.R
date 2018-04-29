@@ -79,6 +79,11 @@
 #' @examples
 #' JPlotToPNG("test.png", plot(rnorm(50), type = 'l', main = 'Wiggly line'))
 #'
+#' # Plot to a PNG file with width 180 mm, height 120 mm
+#' # (i.e. height / aspectRatio which defaults to (3 / 2)), resolution 300 ppi.
+#' # This results in a PNG file with size 2125x1417 pixels
+#' JPlotToPNG("test.png", plot(1:10 + rnorm(10), type = "o"), width = 180, units = "mm", res = 300)
+#'
 #' @export
 JPlotToPNG <- function(filename, plot,
                        width = 180, height = NA, aspectRatio = 3 / 2,
@@ -151,7 +156,7 @@ JPlotToTIFF <- function(filename, plot,
 #' @param aspectRatio Aspect ratio (\code{width / height}) of the output PDF
 #'   file.
 #' @param bg Background colour - may be "transparent" for no background.
-#' @param paper Paper size, defaults to "special" which is required if
+#' @param paper Paper size, defaults to "special" which is the value it must have if
 #'   \code{width} and \code{height} are to be used.
 #' @param family The font family to be used.
 #' @param onlyIfDoesntExist If TRUE and the output file already exists,

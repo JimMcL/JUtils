@@ -27,7 +27,7 @@ file.}
 
 \item{bg}{Background colour - may be "transparent" for no background.}
 
-\item{paper}{Paper size, defaults to "special" which is required if
+\item{paper}{Paper size, defaults to "special" which is the value it must have if
 \code{width} and \code{height} are to be used.}
 
 \item{family}{The font family to be used.}

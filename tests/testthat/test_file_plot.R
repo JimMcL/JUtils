@@ -67,6 +67,24 @@ test_that("png plotting in cm", {
   expect_equal(info$dpi[2], res, tolerance = .1)
 })
 
+test_that("png plotting in mm", {
+  width <- 180
+  res <- 300 # in ppi
+  # Default height, aspect ratio and units
+  expectHeight <- 180 / (3 / 2)
+
+  .mmToPixels <- function(x) floor(.mmToInches(x) * res)
+
+  JPlotToPNG("test.png", plotWigglyLines(), width = width, res = res)
+  expect_true(file.exists("test.png"))
+  png <- readPNG("test.png", native = TRUE, info = TRUE)
+  info <- attr(png, "info")
+  expect_equal(info$dim[1], .mmToPixels(width))
+  expect_equal(info$dim[2], .mmToPixels(expectHeight))
+  expect_equal(info$dpi[1], res, tolerance = .1)
+  expect_equal(info$dpi[2], res, tolerance = .1)
+})
+
 test_that("png plotting in in", {
   width <- 7
   height <- 4.7

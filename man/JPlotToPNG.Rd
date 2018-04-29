@@ -45,6 +45,11 @@ using \code{JPlotToPNG(filename, print(<plotting code>))} or else \code{ggsave()
 \examples{
 JPlotToPNG("test.png", plot(rnorm(50), type = 'l', main = 'Wiggly line'))
 
+# Plot to a PNG file with width 180 mm, height 120 mm
+# (i.e. height / aspectRatio which defaults to (3 / 2)), resolution 300 ppi.
+# This results in a PNG file with size 2125x1417 pixels
+JPlotToPNG("test.png", plot(1:10 + rnorm(10), type = "o"), width = 180, units = "mm", res = 300)
+
 }
 \seealso{
 \code{\link[grDevices]{png}}
