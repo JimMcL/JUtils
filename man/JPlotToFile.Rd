@@ -2,14 +2,14 @@
 % Please edit documentation in R/plot_to_file.R
 \name{JPlotToFile}
 \alias{JPlotToFile}
-\title{Plot to a file}
+\title{Plot to files}
 \usage{
-JPlotToFile(filename, plot, ...)
+JPlotToFile(filenames, plotExpr, ...)
 }
 \arguments{
-\item{filename}{The name of the file to create or overwrite.}
+\item{filenames}{The names of one or more files to create or overwrite.}
 
-\item{plot}{A function or expression which will produce the plot to be
+\item{plotExpr}{A function or expression which will produce the plot to be
 written to the file.}
 
 \item{...}{Any additional arguments are passed to the appropriate function.}

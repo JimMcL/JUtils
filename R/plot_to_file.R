@@ -3,14 +3,13 @@
 # V1.0
 
 # "Private" function to run some code with output going somewhere special
-.JplotToDevice <- function(filename, plotFn, onlyIfDoesntExist, openDeviceFn, closeDevFn = grDevices::dev.off) {
+.JplotToDevice <- function(filename, plotExpr, onlyIfDoesntExist, openDeviceFn, closeDevFn = grDevices::dev.off) {
   if (!onlyIfDoesntExist || !file.exists(filename)) {
     openDeviceFn()
     tryCatch({
-      if (is.function(plotFn))
-        plotFn()
-      else
-        invisible(eval(plotFn))
+      if (is.function(plotExpr)) {
+        plotExpr()
+      }
     }, finally = {
       closeDevFn()
     })
@@ -51,11 +50,12 @@
 
 #' Plot to a PNG file
 #'
-#' Writes the output of a plot to a PNG file. If you are using ggplot, try either
-#' using \code{JPlotToPNG(filename, print(<plotting code>))} or else \code{ggsave()}.
+#' Writes the output of a plot to a PNG file. If you are using ggplot, try
+#' either using \code{JPlotToPNG(filename, print(<plotting code>))} or else
+#' \code{ggsave()}.
 #'
 #' @param filename The name of the PNG to create or overwrite.
-#' @param plot A function or expression which will produce the plot to be
+#' @param plotExpr A function or expression which will produce the plot to be
 #'   written to the file.
 #' @param width The width of the output PNG file in \code{units}.
 #' @param height The height of the output PNG file in \code{units}. Defaults to
@@ -85,7 +85,7 @@
 #' JPlotToPNG("test.png", plot(1:10 + rnorm(10), type = "o"), width = 180, units = "mm", res = 300)
 #'
 #' @export
-JPlotToPNG <- function(filename, plot,
+JPlotToPNG <- function(filename, plotExpr,
                        width = 180, height = NA, aspectRatio = 3 / 2,
                        units = c("mm", "cm", "px", "in"),
                        type = ifelse(capabilities()["cairo"], 'cairo', NULL),
@@ -93,7 +93,7 @@ JPlotToPNG <- function(filename, plot,
                        onlyIfDoesntExist = F, ...) {
   g <- .geometry(width, height, aspectRatio, res, units, c("mm", "cm", "px", "in"))
 
-  .JplotToDevice(filename, plot, onlyIfDoesntExist, function () {
+  .JplotToDevice(filename, plotExpr, onlyIfDoesntExist, function () {
     grDevices::png(filename, width = g$width, height = g$height, units = g$units, type = type, res = res, ...)
   })
 }
@@ -104,7 +104,7 @@ JPlotToPNG <- function(filename, plot,
 #' using \code{JPlotToTIFF(filename, print(<plotting code>))} or else \code{ggsave()}.
 #'
 #' @param filename The name of the TIFF to create or overwrite.
-#' @param plot A function or expression which will produce the plot to be
+#' @param plotExpr A function or expression which will produce the plot to be
 #'   written to the file.
 #' @param width The width of the output TIFF file in \code{units}.
 #' @param height The height of the output TIFF file in \code{units}. Defaults to
@@ -126,7 +126,7 @@ JPlotToPNG <- function(filename, plot,
 #' @seealso \code{\link[grDevices]{tiff}}
 #'
 #' @export
-JPlotToTIFF <- function(filename, plot,
+JPlotToTIFF <- function(filename, plotExpr,
                         width = 180, height = NA, aspectRatio = 3 / 2,
                         units = c("mm", "cm", "px", "in"),
                         type = ifelse(capabilities()["cairo"], 'cairo', NULL),
@@ -134,7 +134,7 @@ JPlotToTIFF <- function(filename, plot,
                         onlyIfDoesntExist = F, ...) {
   g <- .geometry(width, height, aspectRatio, res, units, c("mm", "cm", "px", "in"))
 
-  .JplotToDevice(filename, plot, onlyIfDoesntExist, function () {
+  .JplotToDevice(filename, plotExpr, onlyIfDoesntExist, function () {
     grDevices::tiff(filename, width = g$width, height = g$height, units = g$units, type = type, res = res, ...)
   })
 }
@@ -146,7 +146,7 @@ JPlotToTIFF <- function(filename, plot,
 #' \code{ggsave()}.
 #'
 #' @param filename The name of the PDF to create or overwrite.
-#' @param plot A function or expression which will produce the plot to be
+#' @param plotExpr A function or expression which will produce the plot to be
 #'   written to the file.
 #' @param width The width of the output PDF file in \code{units}.
 #' @param height The height of the output PDF file in \code{units}. Defaults to
@@ -167,7 +167,7 @@ JPlotToTIFF <- function(filename, plot,
 #' @seealso \code{\link[grDevices]{pdf}}
 #'
 #' @export
-JPlotToPDF <- function(filename, plot,
+JPlotToPDF <- function(filename, plotExpr,
                        width = 180, height = NA, aspectRatio = 3 / 2,
                        units =  c("mm", "cm", "in"),
                        bg = "white",
@@ -176,7 +176,7 @@ JPlotToPDF <- function(filename, plot,
                        onlyIfDoesntExist = F, ...) {
   g <- .geometry(width, height, aspectRatio, 1, units, "in")
 
-  .JplotToDevice(filename, plot, onlyIfDoesntExist, function () {
+  .JplotToDevice(filename, plotExpr, onlyIfDoesntExist, function () {
     grDevices::pdf(filename, width = g$width, height = g$height, bg = bg, paper = paper, family = family, ...)
   })
 }
@@ -188,7 +188,7 @@ JPlotToPDF <- function(filename, plot,
 #' \code{ggsave()}.
 #'
 #' @param filename The name of the EPS to create or overwrite.
-#' @param plot A function or expression which will produce the plot to be
+#' @param plotExpr A function or expression which will produce the plot to be
 #'   written to the file.
 #' @param width The width of the output EPS file in \code{units}.
 #' @param height The height of the output EPS file in \code{units}. Defaults to
@@ -209,7 +209,7 @@ JPlotToPDF <- function(filename, plot,
 #' @seealso \code{\link[grDevices]{setEPS}}, \code{\link[grDevices]{postscript}}
 #'
 #' @export
-JPlotToEPS <- function(filename, plot,
+JPlotToEPS <- function(filename, plotExpr,
                        width = 180, height = NA, aspectRatio = 3 / 2,
                        units =  c("mm", "cm", "in"),
                        bg = "white",
@@ -218,21 +218,21 @@ JPlotToEPS <- function(filename, plot,
                        onlyIfDoesntExist = F, ...) {
   g <- .geometry(width, height, aspectRatio, 1, units, "in")
 
-  .JplotToDevice(filename, plot, onlyIfDoesntExist, function () {
+  .JplotToDevice(filename, plotExpr, onlyIfDoesntExist, function () {
     grDevices::setEPS(family = family)
     grDevices::postscript(filename, width = g$width, height = g$height, bg = bg, paper = paper, family = family, ...)
   })
 }
 
-#' Plot to a file
+#' Plot to files
 #'
 #' Writes the output of a plot to a file. The type of file is deduced from the
 #' extension of the file name. If you are using ggplot rather than base
 #' graphics, try either using \code{JPlotToFile(filename, print(<plotting
 #' code>))} or \code{ggsave()}.
 #'
-#' @param filename The name of the file to create or overwrite.
-#' @param plot A function or expression which will produce the plot to be
+#' @param filenames The names of one or more files to create or overwrite.
+#' @param plotExpr A function or expression which will produce the plot to be
 #'   written to the file.
 #' @param ... Any additional arguments are passed to the appropriate function.
 #'
@@ -240,24 +240,40 @@ JPlotToEPS <- function(filename, plot,
 #'   \code{\link{JPlotToPDF}}, \code{\link{JPlotToEPS}}
 #'
 #' @export
-JPlotToFile <- function(filename, plot, ...) {
-  ext <- tolower(tools::file_ext(filename))
+JPlotToFile <- function(filenames, plotExpr, ...) {
 
-  fns <- list(
-    eps =  JPlotToEPS,
-    ps =   JPlotToEPS,
-    pdf =  JPlotToPDF,
-    #svg =  ,
-    #emf =  ,
-    #wmf =  ,
-    png =  JPlotToPNG,
-    #jpg =  JPlotToJpeg,
-    #jpeg = JPlotToJpeg,
-    #bmp =  JPlotToBMP,
-    tiff = JPlotToTIFF
-  )
+  .plotToFile <- function(filename, pe, ...) {
+    fns <- list(
+      eps =  JPlotToEPS,
+      ps =   JPlotToEPS,
+      pdf =  JPlotToPDF,
+      #svg =  ,
+      #emf =  ,
+      #wmf =  ,
+      png =  JPlotToPNG,
+      #jpg =  JPlotToJpeg,
+      #jpeg = JPlotToJpeg,
+      #bmp =  JPlotToBMP,
+      tif = JPlotToTIFF,
+      tiff = JPlotToTIFF
+    )
+    ext <- tolower(tools::file_ext(filename))
+    fns[[ext]](filename, pe, ...)
+  }
 
-  fns[[ext]](filename, plot, ...)
+  # Turn the expression into a complicated function using substitute and eval,
+  # otherwise weird shit happens the first time it is evaluated, i.e. it works
+  # the first time through the loop, but not for subsequent iterations
+  plotFn <- eval.parent(substitute(function(...) {
+    v <- plotExpr
+    if (is.function(v))
+      v()
+    }
+  ))
+
+  for (filename in filenames) {
+    .plotToFile(filename, plotFn, ...)
+  }
 }
 
 #' Send console (i.e. text) output to a file

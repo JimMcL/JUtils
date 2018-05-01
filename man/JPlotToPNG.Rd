@@ -4,14 +4,15 @@
 \alias{JPlotToPNG}
 \title{Plot to a PNG file}
 \usage{
-JPlotToPNG(filename, plot, width = 180, height = NA, aspectRatio = 3/2,
-  units = c("mm", "cm", "px", "in"), type = ifelse(capabilities()["cairo"],
-  "cairo", NULL), res = 72, onlyIfDoesntExist = F, ...)
+JPlotToPNG(filename, plotExpr, width = 180, height = NA,
+  aspectRatio = 3/2, units = c("mm", "cm", "px", "in"),
+  type = ifelse(capabilities()["cairo"], "cairo", NULL), res = 72,
+  onlyIfDoesntExist = F, ...)
 }
 \arguments{
 \item{filename}{The name of the PNG to create or overwrite.}
 
-\item{plot}{A function or expression which will produce the plot to be
+\item{plotExpr}{A function or expression which will produce the plot to be
 written to the file.}
 
 \item{width}{The width of the output PNG file in \code{units}.}
@@ -39,8 +40,9 @@ size (in pixels) of the text and graph elements.}
 \code{\link[grDevices]{png}}.}
 }
 \description{
-Writes the output of a plot to a PNG file. If you are using ggplot, try either
-using \code{JPlotToPNG(filename, print(<plotting code>))} or else \code{ggsave()}.
+Writes the output of a plot to a PNG file. If you are using ggplot, try
+either using \code{JPlotToPNG(filename, print(<plotting code>))} or else
+\code{ggsave()}.
 }
 \examples{
 JPlotToPNG("test.png", plot(rnorm(50), type = 'l', main = 'Wiggly line'))

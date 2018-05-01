@@ -4,14 +4,15 @@
 \alias{JPlotToTIFF}
 \title{Plot to a TIFF file}
 \usage{
-JPlotToTIFF(filename, plot, width = 180, height = NA, aspectRatio = 3/2,
-  units = c("mm", "cm", "px", "in"), type = ifelse(capabilities()["cairo"],
-  "cairo", NULL), res = 72, onlyIfDoesntExist = F, ...)
+JPlotToTIFF(filename, plotExpr, width = 180, height = NA,
+  aspectRatio = 3/2, units = c("mm", "cm", "px", "in"),
+  type = ifelse(capabilities()["cairo"], "cairo", NULL), res = 72,
+  onlyIfDoesntExist = F, ...)
 }
 \arguments{
 \item{filename}{The name of the TIFF to create or overwrite.}
 
-\item{plot}{A function or expression which will produce the plot to be
+\item{plotExpr}{A function or expression which will produce the plot to be
 written to the file.}
 
 \item{width}{The width of the output TIFF file in \code{units}.}

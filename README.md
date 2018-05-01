@@ -15,7 +15,7 @@ JUtils is not available on CRAN, so it must be installed from Github.
 
 ### Plotting to a file
 
-`JUtils` provides functions which wrap the standard R functions for plotting to files. `JUtils` functions provide more flexibility in specifying file sizes, and hide some of the more arcane aspects of the standard functions.
+`JUtils` provides functions which wrap the standard R functions for plotting to files. `JUtils` functions provide more flexibility in specifying file sizes, and hides some of the more arcane aspects of the standard functions. All functions accept any "real world" units (mm, cm & in). Raster functions (JPlotToPNG and JPlotToTIFF) also accept pixel ("px") units.
 
 
     library("JUtils")
@@ -29,6 +29,6 @@ JUtils is not available on CRAN, so it must be installed from Github.
     JPlotToPDF("test.pdf", plot(1:10 + rnorm(10), type = "o"), width = 18, units = "cm")
 
     # JPlotToFile selects the file type based on the file name, then passes all of its arguments 
-    # on to the appropriate JPlotTo* function
-    JPlotToFile("test.eps", plot(1:10))
+    # on to the appropriate JPlotTo* function. It can also plot to multiple files at once.
+    JPlotToFile(c("test.png", "test.eps"), plot(1:10))
 `

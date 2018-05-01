@@ -3,3 +3,4 @@
 .RData
 .Ruserdata
 presentation
+tests/testthat/files
