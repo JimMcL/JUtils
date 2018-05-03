@@ -15,7 +15,7 @@ JUtils is not available on CRAN, so it must be installed from Github.
 
 ### Plotting to a file
 
-`JUtils` provides functions which wrap the standard R functions for plotting to files. `JUtils` functions provide more flexibility in specifying file sizes, and hides some of the more arcane aspects of the standard functions. All functions accept any "real world" units (mm, cm & in). Raster functions (JPlotToPNG and JPlotToTIFF) also accept pixel ("px") units.
+`JUtils` provides functions which wrap the standard R functions (from the core `grDevices` package) for plotting to files. `JUtils` functions provide more flexibility in specifying file sizes, and hide some of the more arcane aspects of the standard functions, yet still provides access to all of the underlying functionality. All functions accept any "real world" units (mm, cm & in). Raster functions (JPlotToPNG and JPlotToTIFF) also accept pixel ("px") units.
 
 
     library("JUtils")
