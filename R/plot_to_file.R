@@ -19,7 +19,11 @@
 # Calculates and returns image geometry in inches
 .geometry <- function(width, height, aspectRatio, res, inUnits, outUnits) {
   # Use either explicitly specified height, or calculate from width and aspect ratio
-  height <- ifelse(is.na(height), width / aspectRatio, height)
+  if (is.na(height) && !is.na(width))
+    height <- width / aspectRatio
+  # Or calculate width from height
+  if (is.na(width) && !is.na(height))
+    width <- height * aspectRatio
 
   # Get list of choices for units from the default value of units in the calling function.
   # Must be a subset of c("in", "cm", "mm", "px")

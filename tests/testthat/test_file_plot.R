@@ -221,7 +221,6 @@ test_that("Multiple plots expr", {
     expect_true(file.exists(img), info = img)
   }
   lines <- readLines(imgs[1], n=10)
-
 })
 
 test_that("Multiple plots fn", {
@@ -236,7 +235,49 @@ test_that("Multiple plots fn", {
     expect_true(file.exists(img), info = img)
   }
   lines <- readLines(imgs[1], n=10)
+})
 
+test_that("Height from AR", {
+  .prepare()
+  width <- 900
+  height <- NA
+  aspectRatio = 3 / 2
+  units <- "px"
+
+  img <- tf("test.png")
+  JPlotToPNG(img, plotWigglyLines(), width = width, height = height, aspectRatio = aspectRatio, units = units)
+  expect_true(file.exists(img))
+  png <- readPNG(img, native = TRUE, info = TRUE)
+  info <- attr(png, "info")
+  expect_equal(info$dim[1], width)
+  expect_equal(info$dim[2], width / aspectRatio)
+})
+
+test_that("Width from AR", {
+  .prepare()
+  height <- 600
+  width <- NA
+  aspectRatio <- 3 / 2
+  units <- "px"
+
+  img <- tf("test.png")
+  JPlotToPNG(img, plotWigglyLines(), width = width, height = height, aspectRatio = aspectRatio, units = units)
+  expect_true(file.exists(img))
+  png <- readPNG(img, native = TRUE, info = TRUE)
+  info <- attr(png, "info")
+  expect_equal(info$dim[1], height * aspectRatio)
+  expect_equal(info$dim[2], height)
+})
+
+test_that("No Width or height fails", {
+  .prepare()
+  height <- NA
+  width <- NA
+  aspectRatio <- 3 / 2
+  units <- "px"
+
+  img <- tf("test.png")
+  expect_error(JPlotToPNG(img, plotWigglyLines(), width = width, height = height, aspectRatio = aspectRatio, units = units))
 })
 
 test_that("report to file", {
