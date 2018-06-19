@@ -4,12 +4,15 @@
 \alias{JReportToFile}
 \title{Send console (i.e. text) output to a file}
 \usage{
-JReportToFile(filename, expr)
+JReportToFile(filename, expr, createDirectory = TRUE)
 }
 \arguments{
 \item{filename}{Name of the file to write to.}
 
 \item{expr}{An expression which outputs the text to be written.}
+
+\item{createDirectory}{If TRUE and \code{filename} is located in a directory
+which doesn't exist, the directory will be created.}
 }
 \description{
 Sends the text output of an arbitrary R expression of function to a text file.

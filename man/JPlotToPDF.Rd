@@ -6,7 +6,8 @@
 \usage{
 JPlotToPDF(filename, plotExpr, width = 180, height = NA,
   aspectRatio = 3/2, units = c("mm", "cm", "in"), bg = "white",
-  paper = "special", family = "Helvetica", onlyIfDoesntExist = F, ...)
+  paper = "special", family = "Helvetica", onlyIfDoesntExist = FALSE,
+  createDirectory = TRUE, ...)
 }
 \arguments{
 \item{filename}{The name of the PDF to create or overwrite.}
@@ -34,6 +35,9 @@ file.}
 
 \item{onlyIfDoesntExist}{If TRUE and the output file already exists,
 \code{JPlotToPDF} will do nothing.}
+
+\item{createDirectory}{If TRUE and \code{filename} is located in a directory
+which doesn't exist, the directory will be created.}
 
 \item{...}{Any additional arguments are passed to
 \code{\link[grDevices]{pdf}}.}

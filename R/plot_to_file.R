@@ -3,8 +3,19 @@
 # V1.0
 
 # "Private" function to run some code with output going somewhere special
-.JplotToDevice <- function(filename, plotExpr, onlyIfDoesntExist, openDeviceFn, closeDevFn = grDevices::dev.off) {
+.JplotToDevice <- function(filename, plotExpr, onlyIfDoesntExist, openDeviceFn, closeDevFn = grDevices::dev.off, createDir = TRUE) {
   if (!onlyIfDoesntExist || !file.exists(filename)) {
+
+    # If directory doesn't exist, either create it or stop with an error
+    if (!dir.exists(dirname(filename))) {
+      if (createDir) {
+        cat(sprintf("\nAttempting to create '%s'\n", dirname(filename)))
+        dir.create(dirname(filename), recursive = TRUE)
+      } else {
+        stop(sprintf("Unable to write file '%s' as directory '%s' does not exist", filename, dirname(filename)))
+      }
+    }
+
     openDeviceFn()
     tryCatch({
       if (is.function(plotExpr)) {
@@ -75,6 +86,8 @@
 #'   size (in pixels) of the text and graph elements.
 #' @param onlyIfDoesntExist If TRUE and the output file already exists,
 #'   \code{JPlotToPNG} will do nothing.
+#' @param createDirectory If TRUE and \code{filename} is located in a directory
+#'   which doesn't exist, the directory will be created.
 #' @param ... Any additional arguments are passed to
 #'   \code{\link[grDevices]{png}}.
 #'
@@ -94,10 +107,12 @@ JPlotToPNG <- function(filename, plotExpr,
                        units = c("mm", "cm", "px", "in"),
                        type = ifelse(capabilities()["cairo"], 'cairo', NULL),
                        res = 72,
-                       onlyIfDoesntExist = F, ...) {
+                       onlyIfDoesntExist = FALSE,
+                       createDirectory = TRUE,
+                       ...) {
   g <- .geometry(width, height, aspectRatio, res, units, c("mm", "cm", "px", "in"))
 
-  .JplotToDevice(filename, plotExpr, onlyIfDoesntExist, function () {
+  .JplotToDevice(filename, plotExpr, onlyIfDoesntExist, createDir = createDirectory, function () {
     grDevices::png(filename, width = g$width, height = g$height, units = g$units, type = type, res = res, ...)
   })
 }
@@ -124,6 +139,8 @@ JPlotToPNG <- function(filename, plotExpr,
 #'   size (in pixels) of the text and graph elements.
 #' @param onlyIfDoesntExist If TRUE and the output file already exists,
 #'   \code{JPlotToTIFF} will do nothing.
+#' @param createDirectory If TRUE and \code{filename} is located in a directory
+#'   which doesn't exist, the directory will be created.
 #' @param ... Any additional arguments are passed to
 #'   \code{\link[grDevices]{tiff}}.
 #'
@@ -135,10 +152,12 @@ JPlotToTIFF <- function(filename, plotExpr,
                         units = c("mm", "cm", "px", "in"),
                         type = ifelse(capabilities()["cairo"], 'cairo', NULL),
                         res = 72,
-                        onlyIfDoesntExist = F, ...) {
+                        onlyIfDoesntExist = FALSE,
+                        createDirectory = TRUE,
+                        ...) {
   g <- .geometry(width, height, aspectRatio, res, units, c("mm", "cm", "px", "in"))
 
-  .JplotToDevice(filename, plotExpr, onlyIfDoesntExist, function () {
+  .JplotToDevice(filename, plotExpr, onlyIfDoesntExist, createDir = createDirectory, function () {
     grDevices::tiff(filename, width = g$width, height = g$height, units = g$units, type = type, res = res, ...)
   })
 }
@@ -165,6 +184,8 @@ JPlotToTIFF <- function(filename, plotExpr,
 #' @param family The font family to be used.
 #' @param onlyIfDoesntExist If TRUE and the output file already exists,
 #'   \code{JPlotToPDF} will do nothing.
+#' @param createDirectory If TRUE and \code{filename} is located in a directory
+#'   which doesn't exist, the directory will be created.
 #' @param ... Any additional arguments are passed to
 #'   \code{\link[grDevices]{pdf}}.
 #'
@@ -177,10 +198,12 @@ JPlotToPDF <- function(filename, plotExpr,
                        bg = "white",
                        paper = "special",
                        family = "Helvetica",
-                       onlyIfDoesntExist = F, ...) {
+                       onlyIfDoesntExist = FALSE,
+                       createDirectory = TRUE,
+                       ...) {
   g <- .geometry(width, height, aspectRatio, 1, units, "in")
 
-  .JplotToDevice(filename, plotExpr, onlyIfDoesntExist, function () {
+  .JplotToDevice(filename, plotExpr, onlyIfDoesntExist, createDir = createDirectory, function () {
     grDevices::pdf(filename, width = g$width, height = g$height, bg = bg, paper = paper, family = family, ...)
   })
 }
@@ -207,6 +230,8 @@ JPlotToPDF <- function(filename, plotExpr,
 #' @param family The font family to be used.
 #' @param onlyIfDoesntExist If TRUE and the output file already exists,
 #'   \code{JPlotToEPS} will do nothing.
+#' @param createDirectory If TRUE and \code{filename} is located in a directory
+#'   which doesn't exist, the directory will be created.
 #' @param ... Any additional arguments are passed to
 #'   \code{\link[grDevices]{pdf}}.
 #'
@@ -219,10 +244,12 @@ JPlotToEPS <- function(filename, plotExpr,
                        bg = "white",
                        paper = "special",
                        family = "Helvetica",
-                       onlyIfDoesntExist = F, ...) {
+                       onlyIfDoesntExist = FALSE,
+                       createDirectory = TRUE,
+                       ...) {
   g <- .geometry(width, height, aspectRatio, 1, units, "in")
 
-  .JplotToDevice(filename, plotExpr, onlyIfDoesntExist, function () {
+  .JplotToDevice(filename, plotExpr, onlyIfDoesntExist, createDir = createDirectory, function () {
     grDevices::setEPS(family = family)
     grDevices::postscript(filename, width = g$width, height = g$height, bg = bg, paper = paper, family = family, ...)
   })
@@ -286,19 +313,21 @@ JPlotToFile <- function(filenames, plotExpr, ...) {
 #'
 #' @param filename Name of the file to write to.
 #' @param expr An expression which outputs the text to be written.
+#' @param createDirectory If TRUE and \code{filename} is located in a directory
+#'   which doesn't exist, the directory will be created.
 #'
 #' @examples
 #' JReportToFile("test.txt", print("Hello world!"))
 #'
 #' @export
-JReportToFile <- function(filename, expr) {
+JReportToFile <- function(filename, expr, createDirectory = TRUE) {
   oldOptions <- options()
   on.exit(options(oldOptions))
   # Normally, text output is wrapped based on the console window size. This
   # doesn't make sense when writing to a file, so make the width very big
   options(width = 10000)
 
-  .JplotToDevice(filename, expr, onlyIfDoesntExist = FALSE,
+  .JplotToDevice(filename, expr, onlyIfDoesntExist = FALSE, createDir = createDirectory,
                  openDeviceFn = function () { sink(filename) },
                  closeDevFn = sink)
 }

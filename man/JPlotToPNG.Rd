@@ -7,7 +7,7 @@
 JPlotToPNG(filename, plotExpr, width = 180, height = NA,
   aspectRatio = 3/2, units = c("mm", "cm", "px", "in"),
   type = ifelse(capabilities()["cairo"], "cairo", NULL), res = 72,
-  onlyIfDoesntExist = F, ...)
+  onlyIfDoesntExist = FALSE, createDirectory = TRUE, ...)
 }
 \arguments{
 \item{filename}{The name of the PNG to create or overwrite.}
@@ -35,6 +35,9 @@ size (in pixels) of the text and graph elements.}
 
 \item{onlyIfDoesntExist}{If TRUE and the output file already exists,
 \code{JPlotToPNG} will do nothing.}
+
+\item{createDirectory}{If TRUE and \code{filename} is located in a directory
+which doesn't exist, the directory will be created.}
 
 \item{...}{Any additional arguments are passed to
 \code{\link[grDevices]{png}}.}

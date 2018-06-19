@@ -289,5 +289,22 @@ test_that("report to file", {
   expect_equal(lines, "Hello world!")
 })
 
+test_that("test directory creation", {
+  # Start with no output directory
+  unlink(TEST_DIR, recursive = TRUE)
+  f <- tf("test.txt")
+  content <- "Hello world!\n"
+  # Expect failure if not creating directory
+  expect_error(JReportToFile(f, cat(content), createDirectory = FALSE))
+  expect_false(file.exists(f))
+  # Expect success if  creating directory
+  expect_error(JReportToFile(f, cat(content), createDirectory = TRUE), NA)
+  expect_true(file.exists(f))
+  text <- readChar(f, 100)
+  # Hack to ignore line endings
+  text <- gsub("\r", "", text)
+  expect_equal(text, content)
+})
+
 #########################################################################
 
