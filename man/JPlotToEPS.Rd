@@ -31,7 +31,8 @@ file.}
 \item{paper}{Paper size, defaults to "special" which is required if
 \code{width} and \code{height} are to be used.}
 
-\item{family}{The font family to be used.}
+\item{family}{The font family to be used. Passed to
+\code{\link[grDevices]{setEPS}}.}
 
 \item{onlyIfDoesntExist}{If TRUE and the output file already exists,
 \code{JPlotToEPS} will do nothing.}

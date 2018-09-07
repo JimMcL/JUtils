@@ -227,7 +227,8 @@ JPlotToPDF <- function(filename, plotExpr,
 #' @param bg Background colour - may be "transparent" for no background.
 #' @param paper Paper size, defaults to "special" which is required if
 #'   \code{width} and \code{height} are to be used.
-#' @param family The font family to be used.
+#' @param family The font family to be used. Passed to
+#'   \code{\link[grDevices]{setEPS}}.
 #' @param onlyIfDoesntExist If TRUE and the output file already exists,
 #'   \code{JPlotToEPS} will do nothing.
 #' @param createDirectory If TRUE and \code{filename} is located in a directory
