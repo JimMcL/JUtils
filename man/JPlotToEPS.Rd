@@ -32,7 +32,7 @@ file.}
 \code{width} and \code{height} are to be used.}
 
 \item{family}{The font family to be used. Passed to
-\code{\link[grDevices]{setEPS}}.}
+\code{\link[grDevices]{postscript}}.}
 
 \item{onlyIfDoesntExist}{If TRUE and the output file already exists,
 \code{JPlotToEPS} will do nothing.}
@@ -49,5 +49,5 @@ either using \code{JPlotToEPS(filename, print(<plotting code>))} or else
 \code{ggsave()}.
 }
 \seealso{
-\code{\link[grDevices]{setEPS}}, \code{\link[grDevices]{postscript}}
+\code{\link[grDevices]{postscriptFonts}}, \code{\link[grDevices]{postscript}}
 }

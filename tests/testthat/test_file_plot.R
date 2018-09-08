@@ -191,10 +191,19 @@ test_that("eps plotting", {
   height <- 120
   units <- "mm"
 
-  img <- tf("test.eps")
+  # Note Photoshop CS2 doesn't seem to display fonts in EPS files properly
+
+  img <- tf("test1.eps")
   JPlotToEPS(img, plotWigglyLines(), width = width, height = height, units = units)
   expect_true(file.exists(img))
-  lines <- readLines(img, n=10)
+  lines1 <- readLines(img, n=10)
+
+  # Identical except for font
+  img <- tf("test2.eps")
+  JPlotToEPS(img, plotWigglyLines(), width = width, height = height, units = units, family = "mono")
+  expect_true(file.exists(img))
+  lines2 <- readLines(img, n=10)
+  expect_true(lines1[2] != lines2[2])
 })
 
 test_that("General plotting", {

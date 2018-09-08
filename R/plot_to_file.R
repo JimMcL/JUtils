@@ -9,7 +9,7 @@
     # If directory doesn't exist, either create it or stop with an error
     if (!dir.exists(dirname(filename))) {
       if (createDir) {
-        cat(sprintf("\nAttempting to create '%s'\n", dirname(filename)))
+        # cat(sprintf("\nAttempting to create '%s' (in %s)\n", dirname(filename), getwd()))
         dir.create(dirname(filename), recursive = TRUE)
       } else {
         stop(sprintf("Unable to write file '%s' as directory '%s' does not exist", filename, dirname(filename)))
@@ -228,7 +228,7 @@ JPlotToPDF <- function(filename, plotExpr,
 #' @param paper Paper size, defaults to "special" which is required if
 #'   \code{width} and \code{height} are to be used.
 #' @param family The font family to be used. Passed to
-#'   \code{\link[grDevices]{setEPS}}.
+#'   \code{\link[grDevices]{postscript}}.
 #' @param onlyIfDoesntExist If TRUE and the output file already exists,
 #'   \code{JPlotToEPS} will do nothing.
 #' @param createDirectory If TRUE and \code{filename} is located in a directory
@@ -236,7 +236,7 @@ JPlotToPDF <- function(filename, plotExpr,
 #' @param ... Any additional arguments are passed to
 #'   \code{\link[grDevices]{pdf}}.
 #'
-#' @seealso \code{\link[grDevices]{setEPS}}, \code{\link[grDevices]{postscript}}
+#' @seealso \code{\link[grDevices]{postscriptFonts}}, \code{\link[grDevices]{postscript}}
 #'
 #' @export
 JPlotToEPS <- function(filename, plotExpr,
@@ -251,7 +251,6 @@ JPlotToEPS <- function(filename, plotExpr,
   g <- .geometry(width, height, aspectRatio, 1, units, "in")
 
   .JplotToDevice(filename, plotExpr, onlyIfDoesntExist, createDir = createDirectory, function () {
-    grDevices::setEPS(family = family)
     grDevices::postscript(filename, width = g$width, height = g$height, bg = bg, paper = paper, family = family, ...)
   })
 }
