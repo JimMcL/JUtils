@@ -40,11 +40,11 @@ file.}
 \item{createDirectory}{If TRUE and \code{filename} is located in a directory
 which doesn't exist, the directory will be created.}
 
-\item{cairo}{If TRUE, the \code{\link[grDevices]{cairo_ps}} device is used,
+\item{cairo}{If TRUE, the \code{\link[grDevices]{cairo}} device is used,
 otherwise the \code{\link[grDevices]{postscript}} device is used.}
 
 \item{...}{Any additional arguments are passed to
-\code{\link[grDevices]{postscript}} or \code{\link[grDevices]{cairo_ps}}.}
+\code{\link[grDevices]{postscript}} or \code{\link[grDevices]{cairo}}.}
 }
 \description{
 Writes the output of a plot to a EPS file. If you are using ggplot, try
@@ -54,13 +54,27 @@ either using \code{JPlotToEPS(filename, print(<plotting code>))} or else
 \details{
 R provides two mechanisms (or 'graphics devices') for writing postscript: the
 standard device (\code{\link[grDevices]{postscript}}) and the Cairo device
-(\code{\link[grDevices]{cairo_ps}}). The \code{cairo_ps} device is an
+(\code{\link[grDevices]{cairo}}). The \code{cairo} device is an
 alternative implementation for writing postscript which handles transparency,
 although it may output a raster bitmap rather than vector data to do so.
 Specify a value for the argument \code{fallback_resolution} to define the
-resolution of the bitmap. See \code{\link[grDevices]{cairo_ps}} for details.
+resolution of the bitmap. See \code{\link[grDevices]{cairo}} for details.
+}
+\examples{
+\dontrun{
+plotWithAlpha <- function() {
+    plot(1:3, type = 'l', lwd = 20, col = "#ffcc8888")
+    lines(3:1, lwd = 20, col = "#88ccff88")
+}
+
+# This will generate a warning and an empty plot due to transparency
+JPlotToEPS(filename, plotWithAlpha)
+# This will work (more or less) as expected
+JPlotToEPS(filename, plotWithAlpha, cairo = TRUE, fallback_resolution = 600)
+}
+
 }
 \seealso{
 \code{\link[grDevices]{postscriptFonts}},
-  \code{\link[grDevices]{postscript}}, \code{\link[grDevices]{cairo_ps}}
+  \code{\link[grDevices]{postscript}}, \code{\link[grDevices]{cairo}}
 }

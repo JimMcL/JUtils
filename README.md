@@ -15,7 +15,7 @@ JUtils is not available on CRAN, so it must be installed from Github.
 
 ### Plotting to a file
 
-`JUtils` provides functions which wrap the standard R functions (from the core `grDevices` package) for plotting to files. `JUtils`  provides more flexibility in specifying file sizes, and hides some of the more arcane aspects of the standard functions, yet still provides access to all of the underlying functionality. All functions accept any "real world" units (mm, cm & in). Raster functions (`JPlotToPNG` and `JPlotToTIFF`) also accept pixel ("px") units.
+`JUtils` provides functions which wrap the standard R functions (from the core `grDevices` package) for plotting to files using base graphics. `JUtils`  provides more flexibility in specifying file sizes, and hides some of the more arcane aspects of the standard functions, yet still provides access to all of the underlying functionality. All functions accept any "real world" units (mm, cm & in). Raster functions (`JPlotToPNG` and `JPlotToTIFF`) also accept pixel ("px") units.
 
 
     library("JUtils")
@@ -27,6 +27,9 @@ JUtils is not available on CRAN, so it must be installed from Github.
 
     # Plot to a PDF file, with graphics region 18 cm x 12 cm
     JPlotToPDF("test.pdf", plot(1:10 + rnorm(10), type = "o"), width = 18, units = "cm")
+    
+    # Generate encapsulated postscript using the Cairo graphics device
+    JPlotToPDF("test.eps", plot(1:10 + rnorm(10), type = "o"), cairo = TRUE, width = 18, units = "cm")
 
     # JPlotToFile selects the file type based on the file name, then passes all of its arguments 
     # on to the appropriate JPlotTo* function. It can also plot to multiple files at once.

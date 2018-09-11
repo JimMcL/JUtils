@@ -30,8 +30,8 @@ file.}
 device since it produces nicer looking graphics.}
 
 \item{res}{The nominal resolution in ppi. The value is passed in to
-\code{\link[grDevices]{tiff}}. Increasing the resolution will increase the
-size (in pixels) of the text and graph elements.}
+\code{\link[grDevices:png]{grDevices::tiff()}}. Increasing the resolution
+will increase the size (in pixels) of the text and graph elements.}
 
 \item{onlyIfDoesntExist}{If TRUE and the output file already exists,
 \code{JPlotToTIFF} will do nothing.}
@@ -40,12 +40,13 @@ size (in pixels) of the text and graph elements.}
 which doesn't exist, the directory will be created.}
 
 \item{...}{Any additional arguments are passed to
-\code{\link[grDevices]{tiff}}.}
+\code{\link[grDevices:png]{grDevices::tiff()}}.}
 }
 \description{
-Writes the output of a plot to a TIFF file. If you are using ggplot, try either
-using \code{JPlotToTIFF(filename, print(<plotting code>))} or else \code{ggsave()}.
+Writes the output of a plot to a TIFF file. If you are using ggplot, try
+either using \code{JPlotToTIFF(filename, print(<plotting code>))} or else
+\code{ggsave()}.
 }
 \seealso{
-\code{\link[grDevices]{tiff}}
+\code{\link[grDevices]{png}}
 }

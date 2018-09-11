@@ -119,8 +119,9 @@ JPlotToPNG <- function(filename, plotExpr,
 
 #' Plot to a TIFF file
 #'
-#' Writes the output of a plot to a TIFF file. If you are using ggplot, try either
-#' using \code{JPlotToTIFF(filename, print(<plotting code>))} or else \code{ggsave()}.
+#' Writes the output of a plot to a TIFF file. If you are using ggplot, try
+#' either using \code{JPlotToTIFF(filename, print(<plotting code>))} or else
+#' \code{ggsave()}.
 #'
 #' @param filename The name of the TIFF to create or overwrite.
 #' @param plotExpr A function or expression which will produce the plot to be
@@ -135,16 +136,16 @@ JPlotToPNG <- function(filename, plotExpr,
 #' @param type Plotting device - defaults to "cairo" if that is an available
 #'   device since it produces nicer looking graphics.
 #' @param res The nominal resolution in ppi. The value is passed in to
-#'   \code{\link[grDevices]{tiff}}. Increasing the resolution will increase the
-#'   size (in pixels) of the text and graph elements.
+#'   \code{\link[grDevices:png]{grDevices::tiff()}}. Increasing the resolution
+#'   will increase the size (in pixels) of the text and graph elements.
 #' @param onlyIfDoesntExist If TRUE and the output file already exists,
 #'   \code{JPlotToTIFF} will do nothing.
 #' @param createDirectory If TRUE and \code{filename} is located in a directory
 #'   which doesn't exist, the directory will be created.
 #' @param ... Any additional arguments are passed to
-#'   \code{\link[grDevices]{tiff}}.
+#'   \code{\link[grDevices:png]{grDevices::tiff()}}.
 #'
-#' @seealso \code{\link[grDevices]{tiff}}
+#' @seealso \code{\link[grDevices]{png}}
 #'
 #' @export
 JPlotToTIFF <- function(filename, plotExpr,
@@ -216,11 +217,11 @@ JPlotToPDF <- function(filename, plotExpr,
 #'
 #' R provides two mechanisms (or 'graphics devices') for writing postscript: the
 #' standard device (\code{\link[grDevices]{postscript}}) and the Cairo device
-#' (\code{\link[grDevices]{cairo_ps}}). The \code{cairo_ps} device is an
+#' (\code{\link[grDevices]{cairo}}). The \code{cairo} device is an
 #' alternative implementation for writing postscript which handles transparency,
 #' although it may output a raster bitmap rather than vector data to do so.
 #' Specify a value for the argument \code{fallback_resolution} to define the
-#' resolution of the bitmap. See \code{\link[grDevices]{cairo_ps}} for details.
+#' resolution of the bitmap. See \code{\link[grDevices]{cairo}} for details.
 #'
 #' @param filename The name of the EPS to create or overwrite.
 #' @param plotExpr A function or expression which will produce the plot to be
@@ -241,13 +242,26 @@ JPlotToPDF <- function(filename, plotExpr,
 #'   \code{JPlotToEPS} will do nothing.
 #' @param createDirectory If TRUE and \code{filename} is located in a directory
 #'   which doesn't exist, the directory will be created.
-#' @param cairo If TRUE, the \code{\link[grDevices]{cairo_ps}} device is used,
+#' @param cairo If TRUE, the \code{\link[grDevices]{cairo}} device is used,
 #'   otherwise the \code{\link[grDevices]{postscript}} device is used.
 #' @param ... Any additional arguments are passed to
-#'   \code{\link[grDevices]{postscript}} or \code{\link[grDevices]{cairo_ps}}.
+#'   \code{\link[grDevices]{postscript}} or \code{\link[grDevices]{cairo}}.
 #'
 #' @seealso \code{\link[grDevices]{postscriptFonts}},
-#'   \code{\link[grDevices]{postscript}}, \code{\link[grDevices]{cairo_ps}}
+#'   \code{\link[grDevices]{postscript}}, \code{\link[grDevices]{cairo}}
+#'
+#' @examples
+#'\dontrun{
+#' plotWithAlpha <- function() {
+#'     plot(1:3, type = 'l', lwd = 20, col = "#ffcc8888")
+#'     lines(3:1, lwd = 20, col = "#88ccff88")
+#' }
+#'
+#' # This will generate a warning and an empty plot due to transparency
+#' JPlotToEPS(filename, plotWithAlpha)
+#' # This will work (more or less) as expected
+#' JPlotToEPS(filename, plotWithAlpha, cairo = TRUE, fallback_resolution = 600)
+#'}
 #'
 #' @export
 JPlotToEPS <- function(filename, plotExpr,
