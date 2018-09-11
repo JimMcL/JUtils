@@ -315,5 +315,19 @@ test_that("test directory creation", {
   expect_equal(text, content)
 })
 
+test_that("test postscript transparency", {
+  .prepare()
+
+  plotAlpha <- function() {
+    plot(1:3, type = 'l', lwd = 20, col = "#ffcc8888")
+    lines(3:1, lwd = 20, col = "#88ccff88")
+  }
+  # Expect normal postscript to produce a warning
+  f <- tf("test1.eps")
+  expect_warning(JPlotToEPS(f, plotAlpha))
+  # Cairo postscript handles transparency by converting to raster
+  f <- tf("test2.eps")
+  expect_silent(JPlotToEPS(f, plotAlpha, cairo = TRUE, fallback_resolution = 400))
+})
 #########################################################################
 

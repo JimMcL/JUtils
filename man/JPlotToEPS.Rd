@@ -7,7 +7,7 @@
 JPlotToEPS(filename, plotExpr, width = 180, height = NA,
   aspectRatio = 3/2, units = c("mm", "cm", "in"), bg = "white",
   paper = "special", family = "Helvetica", onlyIfDoesntExist = FALSE,
-  createDirectory = TRUE, ...)
+  createDirectory = TRUE, cairo = FALSE, ...)
 }
 \arguments{
 \item{filename}{The name of the EPS to create or overwrite.}
@@ -40,14 +40,27 @@ file.}
 \item{createDirectory}{If TRUE and \code{filename} is located in a directory
 which doesn't exist, the directory will be created.}
 
+\item{cairo}{If TRUE, the \code{\link[grDevices]{cairo_ps}} device is used,
+otherwise the \code{\link[grDevices]{postscript}} device is used.}
+
 \item{...}{Any additional arguments are passed to
-\code{\link[grDevices]{pdf}}.}
+\code{\link[grDevices]{postscript}} or \code{\link[grDevices]{cairo_ps}}.}
 }
 \description{
 Writes the output of a plot to a EPS file. If you are using ggplot, try
 either using \code{JPlotToEPS(filename, print(<plotting code>))} or else
 \code{ggsave()}.
 }
+\details{
+R provides two mechanisms (or 'graphics devices') for writing postscript: the
+standard device (\code{\link[grDevices]{postscript}}) and the Cairo device
+(\code{\link[grDevices]{cairo_ps}}). The \code{cairo_ps} device is an
+alternative implementation for writing postscript which handles transparency,
+although it may output a raster bitmap rather than vector data to do so.
+Specify a value for the argument \code{fallback_resolution} to define the
+resolution of the bitmap. See \code{\link[grDevices]{cairo_ps}} for details.
+}
 \seealso{
-\code{\link[grDevices]{postscriptFonts}}, \code{\link[grDevices]{postscript}}
+\code{\link[grDevices]{postscriptFonts}},
+  \code{\link[grDevices]{postscript}}, \code{\link[grDevices]{cairo_ps}}
 }

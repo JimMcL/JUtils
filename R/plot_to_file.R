@@ -214,6 +214,14 @@ JPlotToPDF <- function(filename, plotExpr,
 #' either using \code{JPlotToEPS(filename, print(<plotting code>))} or else
 #' \code{ggsave()}.
 #'
+#' R provides two mechanisms (or 'graphics devices') for writing postscript: the
+#' standard device (\code{\link[grDevices]{postscript}}) and the Cairo device
+#' (\code{\link[grDevices]{cairo_ps}}). The \code{cairo_ps} device is an
+#' alternative implementation for writing postscript which handles transparency,
+#' although it may output a raster bitmap rather than vector data to do so.
+#' Specify a value for the argument \code{fallback_resolution} to define the
+#' resolution of the bitmap. See \code{\link[grDevices]{cairo_ps}} for details.
+#'
 #' @param filename The name of the EPS to create or overwrite.
 #' @param plotExpr A function or expression which will produce the plot to be
 #'   written to the file.
@@ -233,10 +241,13 @@ JPlotToPDF <- function(filename, plotExpr,
 #'   \code{JPlotToEPS} will do nothing.
 #' @param createDirectory If TRUE and \code{filename} is located in a directory
 #'   which doesn't exist, the directory will be created.
+#' @param cairo If TRUE, the \code{\link[grDevices]{cairo_ps}} device is used,
+#'   otherwise the \code{\link[grDevices]{postscript}} device is used.
 #' @param ... Any additional arguments are passed to
-#'   \code{\link[grDevices]{pdf}}.
+#'   \code{\link[grDevices]{postscript}} or \code{\link[grDevices]{cairo_ps}}.
 #'
-#' @seealso \code{\link[grDevices]{postscriptFonts}}, \code{\link[grDevices]{postscript}}
+#' @seealso \code{\link[grDevices]{postscriptFonts}},
+#'   \code{\link[grDevices]{postscript}}, \code{\link[grDevices]{cairo_ps}}
 #'
 #' @export
 JPlotToEPS <- function(filename, plotExpr,
@@ -247,11 +258,15 @@ JPlotToEPS <- function(filename, plotExpr,
                        family = "Helvetica",
                        onlyIfDoesntExist = FALSE,
                        createDirectory = TRUE,
+                       cairo = FALSE,
                        ...) {
   g <- .geometry(width, height, aspectRatio, 1, units, "in")
 
   .JplotToDevice(filename, plotExpr, onlyIfDoesntExist, createDir = createDirectory, function () {
-    grDevices::postscript(filename, width = g$width, height = g$height, bg = bg, paper = paper, family = family, ...)
+    if (cairo)
+      grDevices::cairo_ps(filename, width = g$width, height = g$height, bg = bg, family = family, ...)
+    else
+      grDevices::postscript(filename, width = g$width, height = g$height, bg = bg, paper = paper, family = family, ...)
   })
 }
 
