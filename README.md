@@ -24,7 +24,10 @@ JUtils is not available on CRAN, so it must be installed from Github.
     # (i.e. height / aspectRatio which defaults to (3 / 2)), resolution 300 ppi.
     # This results in a PNG file with size 2125x1417 pixels
     JPlotToPNG("test.png", plot(1:10 + rnorm(10), type = "o"), width = 180, units = "mm", res = 300)
-
+    
+    # Plot to TIFF, with image dimensions specified in pixels
+    JPlotToTIFF("test.tiff", plot(1:10 + rnorm(10), type = "o"), width = 1800, height = 1200, units = "px") 
+    
     # Plot to a PDF file, with graphics region 18 cm x 12 cm
     JPlotToPDF("test.pdf", plot(1:10 + rnorm(10), type = "o"), width = 18, units = "cm")
     
@@ -34,4 +37,12 @@ JUtils is not available on CRAN, so it must be installed from Github.
     # JPlotToFile selects the file type based on the file name, then passes all of its arguments 
     # on to the appropriate JPlotTo* function. It can also plot to multiple files at once.
     JPlotToFile(c("test.png", "test.eps"), plot(1:10))
-`
+
+### Printing to a file
+
+The function `JReportToFile` runs a function or an expression, and redirects all output to a file.
+
+    library("JUtils")
+
+    # Write "Hello world!" to the file called test.txt
+    JReportToFile("test.txt", print("Hello world!"))

@@ -338,7 +338,7 @@ JPlotToFile <- function(filenames, plotExpr, ...) {
 
 #' Send console (i.e. text) output to a file
 #'
-#' Sends the text output of an arbitrary R expression of function to a text file.
+#' Sends the text output of an arbitrary R expression or function to a text file.
 #'
 #' @param filename Name of the file to write to.
 #' @param expr An expression which outputs the text to be written.
