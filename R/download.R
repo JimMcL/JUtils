@@ -51,7 +51,7 @@ JDownload <- function(url, tempfileFn = NULL, cacheDir = tempdir(), verbose = FA
     # Get index entry
     entry <- index[u,]
     if (debug)
-      cat(sprintf("%d: %s\n", i, u))
+      cat(sprintf("%d: %s: %s\n", i, u, entry$modified))
     resp <- httr::GET(u, httr::add_headers('If-Modified-Since' = entry$modified))
     if (resp$status_code == 304) {
       # Use cached file
