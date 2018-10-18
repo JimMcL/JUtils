@@ -5,7 +5,7 @@ TEST_DIR <- "files"
 tf <- function(name) file.path(TEST_DIR, name)
 
 cleanupTestFiles <- function() {
-  # do.call(file.remove, list(list.files(TEST_DIR, full.names = TRUE)))
+  do.call(file.remove, list(list.files(TEST_DIR, full.names = TRUE)))
 }
 
 
