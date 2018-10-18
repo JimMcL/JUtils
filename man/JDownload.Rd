@@ -10,11 +10,12 @@ JDownload(url, tempfileFn = NULL, cacheDir = tempdir(), verbose = FALSE,
 \arguments{
 \item{url}{Character vector specifying the URLs to be downloaded.}
 
-\item{tempfileFn}{Function to create names of downloaded files.
-(defaults to tempfile). Must accept the same arguments as the base R
-function `tempfile`.}
+\item{tempfileFn}{Function to create names of downloaded files. (defaults to
+tempfile). Must accept the same arguments as the base R function
+`tempfile`.}
 
-\item{cacheDir}{Passed to `tempFileFn` as the parameter `tmpdir`. By default, files will be created in this directory.}
+\item{cacheDir}{Passed to `tempFileFn` as the parameter `tmpdir`. By default,
+files will be created in this directory.}
 
 \item{verbose}{If TRUE, prints status messages.}
 
@@ -24,9 +25,16 @@ function `tempfile`.}
 Array of names of the downloaded files.
 }
 \description{
-The intent of this function is to save time downloading files by
-only downloading them if they haven't previously been downloaded.
-The URLs will not be downloaded again if they have not been modified
-since the last time they were downloaded to the specified directory
-(as determined by HTTP If-Modified-Since header).
+The intent of this function is to save time downloading files by only
+downloading them if they haven't previously been downloaded. Files will be
+downloaded if they have been modified since the previous download (as
+determined by HTTP If-Modified-Since header).
+}
+\details{
+A file is created within `cacheDir` which contains the URL, file name and
+modification date of each downloaded file in the directory. It is used to
+determine whether a URL needs to be downloaded again. The file is in R
+serialised object format (`readRDS`, `saveRDS`).  The URL is always fetched
+(using `httr::GET`), however the http header `If-Modified-Since` is specified
+so that it will not be downloaded again if it is unmodified.
 }

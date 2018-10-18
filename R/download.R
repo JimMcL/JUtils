@@ -8,6 +8,13 @@ library(tools)
 #' downloaded if they have been modified since the previous download (as
 #' determined by HTTP If-Modified-Since header).
 #'
+#' A file is created within `cacheDir` which contains the URL, file name and
+#' modification date of each downloaded file in the directory. It is used to
+#' determine whether a URL needs to be downloaded again. The file is in R
+#' serialised object format (`readRDS`, `saveRDS`).  The URL is always fetched
+#' (using `httr::GET`), however the http header `If-Modified-Since` is specified
+#' so that it will not be downloaded again if it is unmodified.
+#'
 #' @param url Character vector specifying the URLs to be downloaded.
 #' @param tempfileFn Function to create names of downloaded files. (defaults to
 #'   tempfile). Must accept the same arguments as the base R function
@@ -25,7 +32,7 @@ JDownload <- function(url, tempfileFn = NULL, cacheDir = tempdir(), verbose = FA
     dir.create(cacheDir, recursive = TRUE)
 
   # Prepare index. Index is a list of (url,modified,file)
-  indexPath <- file.path(cacheDir, ".index.rds")
+  indexPath <- file.path(cacheDir, ".JDindex.rds")
   if (file.exists(indexPath)) {
     index <- readRDS(indexPath)
   } else {
@@ -35,7 +42,7 @@ JDownload <- function(url, tempfileFn = NULL, cacheDir = tempdir(), verbose = FA
   # Construct file names
   if (is.null(tempfileFn))
     tempfileFn <- tempfile
-  f = tempfileFn(pattern = 'cache', tmpdir = cacheDir, fileext = paste0('.', file_ext(url)))
+  f = tempfileFn(pattern = 'jdcache', tmpdir = cacheDir, fileext = paste0('.', tools::file_ext(url)))
 
   # For each file
   for (i in 1:length(url)) {
@@ -45,22 +52,22 @@ JDownload <- function(url, tempfileFn = NULL, cacheDir = tempdir(), verbose = FA
     entry <- index[u,]
     if (debug)
       cat(sprintf("%d: %s\n", i, u))
-    resp <- GET(u, add_headers('If-Modified-Since' = entry$modified))
+    resp <- httr::GET(u, httr::add_headers('If-Modified-Since' = entry$modified))
     if (resp$status_code == 304) {
       # Use cached file
       f[i] <- entry[,"file"]
       if (verbose)
         cat(sprintf("Using cached %s\n", u))
     } else {
-      stop_for_status(resp, paste("download", u))         # Ugly
+      httr::stop_for_status(resp, paste("download", u))         # Ugly
       if (verbose)
         cat(sprintf("Downloading %s\n", u))
       if (resp$status_code == 200) {
         # Save content to the file
-        bin <- content(resp, "raw")
+        bin <- httr::content(resp, "raw")
         writeBin(bin, f[i])
         # Update the index
-        index[u,"modified"] <- headers(resp)$`Last-Modified`
+        index[u,"modified"] <- httr::headers(resp)$`Last-Modified`
         index[u,"file"] <- f[i]
       }
     }
