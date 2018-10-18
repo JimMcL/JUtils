@@ -49,7 +49,7 @@ The function `JReportToFile` runs a function or an expression, and redirects all
 
 ### Downloading files
 
-The function `JDownload` is used to download a URL to a local file. The local file is tracked so that a second call to `JDownload` with the same URL will not download it again, but simply return the name of the previously downloaded file.
+The function `JDownload` is used to download a URL to a local file. The local file is tracked so that a second call to `JDownload` with the same URL will not download it again, but simply return the name of the previously downloaded file. However, it will be downloaded again if it has changed since the last download.
 
     library("JUtils")
 
