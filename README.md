@@ -38,7 +38,7 @@ JUtils is not available on CRAN, so it must be installed from Github.
     # on to the appropriate JPlotTo* function. It can also plot to multiple files at once.
     JPlotToFile(c("test.png", "test.eps"), plot(1:10))
 
-### Printing to a file
+### Printing text to a file
 
 The function `JReportToFile` runs a function or an expression, and redirects all output to a file.
 
@@ -46,3 +46,15 @@ The function `JReportToFile` runs a function or an expression, and redirects all
 
     # Write "Hello world!" to the file called test.txt
     JReportToFile("test.txt", print("Hello world!"))
+
+### Downloading files
+
+The function `JDownload` is used to download a URL to a local file. The local file is tracked so that a second call to `JDownload` with the same URL will not download it again, but simply return the name of the previously downloaded file.
+
+    library("JUtils")
+
+    # Fairly slow the first time
+    jpgFile <- JDownload("https://farm5.staticflickr.com/4507/37847388931_959d812490_o_d.jpg")
+
+    # Quick the second time
+    jpgFile <- JDownload("https://farm5.staticflickr.com/4507/37847388931_959d812490_o_d.jpg")

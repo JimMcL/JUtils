@@ -15,7 +15,7 @@ JReportToFile(filename, expr, createDirectory = TRUE)
 which doesn't exist, the directory will be created.}
 }
 \description{
-Sends the text output of an arbitrary R expression of function to a text file.
+Sends the text output of an arbitrary R expression or function to a text file.
 }
 \examples{
 JReportToFile("test.txt", print("Hello world!"))
