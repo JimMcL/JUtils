@@ -8,18 +8,18 @@ library(tools)
 #' downloaded if they have been modified since the previous download (as
 #' determined by HTTP If-Modified-Since header).
 #'
-#' A file is created within `cacheDir` which contains the URL, file name and
+#' A file is created within \code{cacheDir} which contains the URL, file name and
 #' modification date of each downloaded file in the directory. It is used to
 #' determine whether a URL needs to be downloaded again. The file is in R
-#' serialised object format (`readRDS`, `saveRDS`).  The URL is always fetched
-#' (using `httr::GET`), however the http header `If-Modified-Since` is specified
+#' serialised object format (\code{readRDS}, \code{saveRDS}).  The URL is always fetched
+#' (using \code{httr::GET}), however the http header \code{If-Modified-Since} is specified
 #' so that it will not be downloaded again if it is unmodified.
 #'
 #' @param url Character vector specifying the URLs to be downloaded.
 #' @param tempfileFn Function to create names of downloaded files. (defaults to
 #'   tempfile). Must accept the same arguments as the base R function
-#'   `tempfile`.
-#' @param cacheDir Passed to `tempFileFn` as the parameter `tmpdir`. By default,
+#'   \code{tempfile}.
+#' @param cacheDir Passed to \code{tempFileFn} as the parameter \code{tmpdir}. By default,
 #'   files will be created in this directory.
 #' @param verbose If TRUE, prints status messages.
 #' @param debug If TRUE, prints debugging messages.
