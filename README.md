@@ -10,6 +10,19 @@ JUtils is not available on CRAN, so it must be installed from Github.
 
     $ install.packages("devtools")
     $ devtools::install_github("JimMcL/JUtils")
+
+### Installation failures
+
+If you are installing on MacOS, and installation fails with messages like
+    
+    Setting LC_CTYPE failed, using "C"
+    
+Open a terminal window, enter
+
+    `defaults write org.R-project.R force.LANG en_US.UTF-8` 
+    
+then restart R, as described [here](http://cran.r-project.org/bin/macosx/RMacOSX-FAQ.html#Internationalization-of-the-R_002eapp).
+
     
 ## Examples
 

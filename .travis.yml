@@ -7,7 +7,7 @@ r_packages:
   - covr
 
 after_failure:
-  "cat /home/travis/build/JimMcL/JUtils/JUtils.Rcheck/00check.log"
+  - cat /home/travis/build/JimMcL/JUtils/JUtils.Rcheck/00check.log
 
 after_success:
   - Rscript -e 'library(covr); codecov()'
