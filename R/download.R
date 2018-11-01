@@ -6,21 +6,23 @@ library(tools)
 #' The intent of this function is to save time downloading files by only
 #' downloading them if they haven't previously been downloaded. Files will be
 #' downloaded if they have been modified since the previous download (as
-#' determined by HTTP If-Modified-Since header).
+#' determined by HTTP If-Modified-Since header). Caching does not seem to work
+#' correctly on some platforms, instead, the file is always downloaded.
 #'
-#' A file is created within \code{cacheDir} which contains the URL, file name and
-#' modification date of each downloaded file in the directory. It is used to
+#' A file is created within \code{cacheDir} which contains the URL, file name
+#' and modification date of each downloaded file in the directory. It is used to
 #' determine whether a URL needs to be downloaded again. The file is in R
-#' serialised object format (\code{readRDS}, \code{saveRDS}).  The URL is always fetched
-#' (using \code{httr::GET}), however the http header \code{If-Modified-Since} is specified
-#' so that it will not be downloaded again if it is unmodified.
+#' serialised object format (\code{readRDS}, \code{saveRDS}).  The URL is always
+#' fetched (using \code{httr::GET}), however the http header
+#' \code{If-Modified-Since} is specified so that it will not be downloaded again
+#' if it is unmodified.
 #'
 #' @param url Character vector specifying the URLs to be downloaded.
 #' @param tempfileFn Function to create names of downloaded files. (defaults to
 #'   tempfile). Must accept the same arguments as the base R function
 #'   \code{tempfile}.
-#' @param cacheDir Passed to \code{tempFileFn} as the parameter \code{tmpdir}. By default,
-#'   files will be created in this directory.
+#' @param cacheDir Passed to \code{tempFileFn} as the parameter \code{tmpdir}.
+#'   By default, files will be created in this directory.
 #' @param verbose If TRUE, prints status messages.
 #' @param debug If TRUE, prints debugging messages.
 #'
