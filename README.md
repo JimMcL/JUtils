@@ -71,3 +71,13 @@ The function `JDownload` is used to download a URL to a local file. The local fi
 
     # Quick the second time
     jpgFile <- JDownload("https://farm5.staticflickr.com/4507/37847388931_959d812490_o_d.jpg")
+
+
+### String functions
+
+Ever wanted to convert a vector of values to a human-readable list? Try JToSentence!
+
+    library("JUtils")
+
+    print(JToSentence(c("apple", "banana", "mandarin", "mango")))
+    # => [1] "apple, banana, mandarin and mango"
