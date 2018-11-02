@@ -5,7 +5,8 @@
 #' and " by default) is used as the final separator.
 #'
 #' @param v Vector of values.
-#' @param conjuction Value to use before the last element in the list.
+#' @param sep Separator to use between the first elements of the list.
+#' @param conjunction Value to use before the last element in the list.
 #'
 #' @examples
 #' print(JToSentence(c("apple", "banana", "mandarin", "mango")))
