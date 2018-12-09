@@ -42,6 +42,10 @@ which doesn't exist, the directory will be created.}
 \item{...}{Any additional arguments are passed to
 \code{\link[grDevices]{png}}.}
 }
+\value{
+The result of evaluating \code{plotExpr} is returned invisibly (which
+  means it is not automatically printed).
+}
 \description{
 Writes the output of a plot to a PNG file. If you are using ggplot, try
 either using \code{JPlotToPNG(filename, print(<plotting code>))} or else

@@ -46,6 +46,10 @@ otherwise the \code{\link[grDevices]{postscript}} device is used.}
 \item{...}{Any additional arguments are passed to
 \code{\link[grDevices]{postscript}} or \code{\link[grDevices]{cairo}}.}
 }
+\value{
+The result of evaluating \code{plotExpr} is returned invisibly (which
+  means it is not automatically printed).
+}
 \description{
 Writes the output of a plot to a EPS file. If you are using ggplot, try
 either using \code{JPlotToEPS(filename, print(<plotting code>))} or else

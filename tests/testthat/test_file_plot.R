@@ -313,5 +313,32 @@ test_that("test postscript transparency", {
   f <- tf("test2.eps")
   expect_silent(JPlotToEPS(f, plotAlpha, cairo = TRUE, fallback_resolution = 400))
 })
+
+test_that("Incorrect plot return value", {
+  .prepare()
+  f <- tf("test.png")
+  val <- JReportToFile(f, { cat("Hello world!\n"); 123 })
+  expect_true(file.exists(f))
+  lines <- readLines(f)
+  expect_equal(lines, "Hello world!")
+  expect_equal(val, 123, info = "JReportToFile with expression returned an incorrect value")
+  val <- JReportToFile(f, function () { cat("Hello world!\n"); 123 })
+  expect_equal(val, 123, info = "JReportToFile with function returned an incorrect value")
+
+  img <- tf("test.png")
+  val <- JPlotToPNG(img, { plotWigglyLines(); 123 })
+  expect_true(file.exists(img))
+  expect_equal(val, 123, info = "JPlotToPNG with expression returned an incorrect value")
+  val <- JPlotToPNG(img, function () { plotWigglyLines(); 123 })
+  expect_true(file.exists(img))
+  expect_equal(val, 123, info = "JPlotToPNG with function returned an incorrect value")
+
+  val <- JPlotToFile(img, { plotWigglyLines(); 123 })
+  expect_equal(val, 123, info = "JPlotToFile with expression returned an incorrect value")
+  val <- JPlotToFile(img, function () { plotWigglyLines(); 123 })
+  expect_equal(val, 123, info = "JPlotToFile with function returned an incorrect value")
+})
+
+
 #########################################################################
 

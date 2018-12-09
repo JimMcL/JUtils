@@ -2,7 +2,8 @@
 #
 # V1.0
 
-# "Private" function to run some code with output going somewhere special
+# "Private" function to run some code with output going somewhere special.
+# The result of evaulating the code is returned invisibly.
 .JplotToDevice <- function(filename, plotExpr, onlyIfDoesntExist, openDeviceFn, closeDevFn = grDevices::dev.off, createDir = TRUE) {
   if (!onlyIfDoesntExist || !file.exists(filename)) {
 
@@ -17,13 +18,16 @@
     }
 
     openDeviceFn()
-    tryCatch({
-      if (is.function(plotExpr)) {
+    result <- tryCatch({
+      if (is.function(result <- plotExpr)) {
         plotExpr()
+      } else {
+        result
       }
     }, finally = {
       closeDevFn()
     })
+    invisible(result)
   }
 }
 
@@ -91,6 +95,9 @@
 #' @param ... Any additional arguments are passed to
 #'   \code{\link[grDevices]{png}}.
 #'
+#' @return The result of evaluating \code{plotExpr} is returned invisibly (which
+#'   means it is not automatically printed).
+#'
 #' @seealso \code{\link[grDevices]{png}}
 #'
 #' @examples
@@ -145,6 +152,9 @@ JPlotToPNG <- function(filename, plotExpr,
 #' @param ... Any additional arguments are passed to
 #'   \code{\link[grDevices:png]{grDevices::tiff()}}.
 #'
+#' @return The result of evaluating \code{plotExpr} is returned invisibly (which
+#'   means it is not automatically printed).
+#'
 #' @seealso \code{\link[grDevices]{png}}
 #'
 #' @export
@@ -189,6 +199,9 @@ JPlotToTIFF <- function(filename, plotExpr,
 #'   which doesn't exist, the directory will be created.
 #' @param ... Any additional arguments are passed to
 #'   \code{\link[grDevices]{pdf}}.
+#'
+#' @return The result of evaluating \code{plotExpr} is returned invisibly (which
+#'   means it is not automatically printed).
 #'
 #' @seealso \code{\link[grDevices]{pdf}}
 #'
@@ -247,6 +260,9 @@ JPlotToPDF <- function(filename, plotExpr,
 #' @param ... Any additional arguments are passed to
 #'   \code{\link[grDevices]{postscript}} or \code{\link[grDevices]{cairo}}.
 #'
+#' @return The result of evaluating \code{plotExpr} is returned invisibly (which
+#'   means it is not automatically printed).
+#'
 #' @seealso \code{\link[grDevices]{postscriptFonts}},
 #'   \code{\link[grDevices]{postscript}}, \code{\link[grDevices]{cairo}}
 #'
@@ -296,6 +312,10 @@ JPlotToEPS <- function(filename, plotExpr,
 #'   written to the file.
 #' @param ... Any additional arguments are passed to the appropriate function.
 #'
+#' @return The result of evaluating \code{plotExpr} when plotting to the last
+#'   file in the \code{filenames} vector is returned invisibly (which means it
+#'   is not automatically printed).
+#'
 #' @seealso \code{\link{JPlotToPNG}}, \code{\link{JPlotToTIFF}},
 #'   \code{\link{JPlotToPDF}}, \code{\link{JPlotToEPS}}
 #'
@@ -326,14 +346,15 @@ JPlotToFile <- function(filenames, plotExpr, ...) {
   # the first time through the loop, but not for subsequent iterations
   plotFn <- eval.parent(substitute(function(...) {
     v <- plotExpr
-    if (is.function(v))
-      v()
-    }
-  ))
+    if (is.function(result <- v))
+      result <- v()
+    result
+  }))
 
   for (filename in filenames) {
-    .plotToFile(filename, plotFn, ...)
+    result <- .plotToFile(filename, plotFn, ...)
   }
+  result
 }
 
 #' Send console (i.e. text) output to a file
@@ -344,6 +365,9 @@ JPlotToFile <- function(filenames, plotExpr, ...) {
 #' @param expr An expression which outputs the text to be written.
 #' @param createDirectory If TRUE and \code{filename} is located in a directory
 #'   which doesn't exist, the directory will be created.
+#'
+#' @return The result of evaluating \code{plotExpr} is returned invisibly (which
+#'   means it is not automatically printed).
 #'
 #' @examples
 #' JReportToFile("test.txt", print("Hello world!"))

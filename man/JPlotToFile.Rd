@@ -14,6 +14,10 @@ written to the file.}
 
 \item{...}{Any additional arguments are passed to the appropriate function.}
 }
+\value{
+The result of evaluating \code{plotExpr} is returned invisibly (which
+  means it is not automatically printed).
+}
 \description{
 Writes the output of a plot to a file. The type of file is deduced from the
 extension of the file name. If you are using ggplot rather than base

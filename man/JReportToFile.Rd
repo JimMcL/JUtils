@@ -14,6 +14,10 @@ JReportToFile(filename, expr, createDirectory = TRUE)
 \item{createDirectory}{If TRUE and \code{filename} is located in a directory
 which doesn't exist, the directory will be created.}
 }
+\value{
+The result of evaluating \code{plotExpr} is returned invisibly (which
+  means it is not automatically printed).
+}
 \description{
 Sends the text output of an arbitrary R expression or function to a text file.
 }

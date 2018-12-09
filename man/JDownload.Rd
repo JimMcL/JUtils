@@ -4,8 +4,8 @@
 \alias{JDownload}
 \title{Downloads one or more URLs and saves them to local files.}
 \usage{
-JDownload(url, tempfileFn = NULL, cacheDir = tempdir(), verbose = FALSE,
-  debug = FALSE)
+JDownload(url, tempfileFn = NULL, cacheDir = tempdir(),
+  verbose = FALSE, debug = FALSE)
 }
 \arguments{
 \item{url}{Character vector specifying the URLs to be downloaded.}
@@ -28,8 +28,8 @@ Array of names of the downloaded files.
 The intent of this function is to save time downloading files by only
 downloading them if they haven't previously been downloaded. Files will be
 downloaded if they have been modified since the previous download (as
-determined by HTTP If-Modified-Since header). Caching does not seem to work
-correctly on some platforms, instead, the file is always downloaded.
+determined by HTTP If-Modified-Since header). On some platforms, caching does
+not seem to work correctly. On those platforms, the files are always downloaded.
 }
 \details{
 A file is created within \code{cacheDir} which contains the URL, file name
