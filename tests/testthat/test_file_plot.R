@@ -337,6 +337,11 @@ test_that("Incorrect plot return value", {
   expect_equal(val, 123, info = "JPlotToFile with expression returned an incorrect value")
   val <- JPlotToFile(img, function () { plotWigglyLines(); 123 })
   expect_equal(val, 123, info = "JPlotToFile with function returned an incorrect value")
+
+  val <- JPlotToFile(img, { plotWigglyLines(); NULL })
+  expect_true(is.null(val), info = "JPlotToFile with expression returned an incorrect value")
+  val <- JPlotToFile(img, function () { plotWigglyLines(); NULL })
+  expect_true(is.null(val), info = "JPlotToFile with function returned an incorrect value")
 })
 
 
