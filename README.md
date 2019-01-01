@@ -57,7 +57,7 @@ The "standard" method to create an animation in R is to generate a set of images
 ImageMagick utility to combine them into an animated GIF file. `JAnimateGIF` provides a simple and 
 robust way to do this.
 
-    .plotFrame <- function(frame) plot(x = c(sin(frame), 0), y = c(0, cos(frame)), 
+    .plotFrame <- function(angle) plot(x = c(sin(angle), 0), y = c(0, cos(angle)), 
                                        type = 'l', lwd = 4, 
                                        xlim = c(-1, 1), ylim = c(-1, 1), 
                                        axes = FALSE, xlab = "", ylab = "")
