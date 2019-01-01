@@ -28,6 +28,8 @@ library(tools)
 #'
 #' @return Array of names of the downloaded files.
 #'
+#' @seealso \code{\link[utils]{download.file}}
+#'
 #' @export
 JDownload <- function(url, tempfileFn = NULL, cacheDir = tempdir(), verbose = FALSE, debug = FALSE) {
   if (!dir.exists(cacheDir))

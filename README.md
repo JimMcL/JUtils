@@ -51,6 +51,19 @@ then restart R, as described [here](http://cran.r-project.org/bin/macosx/RMacOSX
     # on to the appropriate JPlotTo* function. It can also plot to multiple files at once.
     JPlotToFile(c("test.png", "test.eps"), plot(1:10))
 
+### Creating an animation
+
+The "standard" method to create an animation in R is to generate a set of images and then use the 
+ImageMagick utility to combine them into an animated GIF file. `JAnimateGIF` provides a simple and 
+robust way to do this.
+
+    .plotFrame <- function(frame) plot(x = c(sin(frame), 0), y = c(0, cos(frame)), 
+                                       type = 'l', lwd = 4, 
+                                       xlim = c(-1, 1), ylim = c(-1, 1), 
+                                       axes = FALSE, xlab = "", ylab = "")
+    JAnimateGIF(frameKeys = seq(0, pi * 2, .1), gifFileName = "test.gif", plotFn = .plotFrame)
+
+
 ### Printing text to a file
 
 The function `JReportToFile` runs a function or an expression, and redirects all output to a file.

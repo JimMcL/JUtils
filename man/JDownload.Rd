@@ -40,3 +40,6 @@ fetched (using \code{httr::GET}), however the http header
 \code{If-Modified-Since} is specified so that it will not be downloaded again
 if it is unmodified.
 }
+\seealso{
+\code{\link[utils]{download.file}}
+}
