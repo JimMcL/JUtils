@@ -57,6 +57,7 @@ frames, so start with a small number of frames to ensure everything works as
 expected.
 }
 \examples{
+\dontrun{
 # Number of frames in the animation
 nFrames <- 50
 
@@ -75,5 +76,6 @@ nFrames <- 50
 }
 
 JAnimateGIF(nFrames, gifFileName = "poly.gif", plotFn = .plotPoly, frameRate = 10)
+}
 
 }
