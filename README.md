@@ -23,8 +23,13 @@ Open a terminal window, enter
     
 then restart R, as described [here](https://cran.r-project.org/bin/macosx/RMacOSX-FAQ.html#Internationalization-of-the-R_002eapp).
 
-    
-## Examples
+## Getting started
+
+[Plotting to a file](#plotting-to-a-file)
+[Creating an animation](#creating-an-animation)
+[Printing text to a file](#printing-text-to-a-file)
+[Downloading files](#downlading-files)
+[String functions](#string-functions)
 
 ### Plotting to a file
 
@@ -54,7 +59,7 @@ then restart R, as described [here](https://cran.r-project.org/bin/macosx/RMacOS
 ### Creating an animation
 
 The "standard" method to create an animation in R is to generate a set of images and then use the 
-ImageMagick utility to combine them into an animated GIF file. `JAnimateGIF` provides a simple and 
+ImageMagick utility to combine them into an animated GIF file. `JAnimateGIF` provides a relatively simple and 
 robust way to do this.
 
     .plotFrame <- function(angle) plot(x = c(sin(angle), 0), y = c(0, cos(angle)), 
