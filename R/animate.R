@@ -43,7 +43,7 @@
 #'   command, or \code{character(0)} on success.
 #'
 #' @examples
-#' #'\dontrun{
+#'\dontrun{
 #' # Number of frames in the animation
 #' nFrames <- 50
 #'

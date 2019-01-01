@@ -1,10 +1,10 @@
 Package: JUtils
 Type: Package
-Title: Some Simple R Utilies
+Title: Some Simple R Utilities
 Version: 0.1.0
 Author: Jim McLean
 Maintainer: Jim McLean <jim_mclean@optusnet.com.au>
-Description: Provides functions to simplifying plotting (using base graphics) to a file.
+Description: Functions to simplifying plotting (using base graphics) to a file, generating animated GIFs and some string operations.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true

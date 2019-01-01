@@ -21,7 +21,7 @@ Open a terminal window, enter
 
     `defaults write org.R-project.R force.LANG en_US.UTF-8` 
     
-then restart R, as described [here](http://cran.r-project.org/bin/macosx/RMacOSX-FAQ.html#Internationalization-of-the-R_002eapp).
+then restart R, as described [here](https://cran.r-project.org/bin/macosx/RMacOSX-FAQ.html#Internationalization-of-the-R_002eapp).
 
     
 ## Examples
