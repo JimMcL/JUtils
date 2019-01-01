@@ -43,6 +43,7 @@
 #'   command, or \code{character(0)} on success.
 #'
 #' @examples
+#' #'\dontrun{
 #' # Number of frames in the animation
 #' nFrames <- 50
 #'
@@ -61,6 +62,7 @@
 #' }
 #'
 #' JAnimateGIF(nFrames, gifFileName = "poly.gif", plotFn = .plotPoly, frameRate = 10)
+#'}
 #'
 #' @export
 JAnimateGIF <- function(nFrames = NULL, frameKeys = 1:nFrames, gifFileName, plotFn, frameRate = 30, tmpDir = tempdir(TRUE), ...) {
