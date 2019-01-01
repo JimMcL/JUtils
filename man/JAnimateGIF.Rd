@@ -25,10 +25,10 @@ will be silently skipped.}
 \item{frameRate}{Play back frame rate - used to set the frame delay in the
 GIF file.}
 
+\item{tmpDir}{Name of a directory to be used to create temporary files in.}
+
 \item{...}{Any additional arguments are passed to the \code{JPlotToPNG}
 function.}
-
-\item{tmpdir}{Name of a directory to be used to create temporary files in.}
 }
 \value{
 The error message (as a character vector) from the ImageMack convert
@@ -46,7 +46,7 @@ environment variable. If ImageMagick is not installed, or is not in your
 PATH, \code{JAnimateGIF} will fail with an exception such as:
 
 \preformatted{Error in system2("magick", c("convert", "jp*.png", "-delay",
-100/frameRate, : '"xmagick"' not found}.
+100/frameRate, : '"magick"' not found}.
 
 For a general discussion about creating an animation in R, see
 \url{https://stackoverflow.com/questions/1298100/creating-a-movie-from-a-series-of-plots-in-r},
@@ -57,17 +57,23 @@ frames, so start with a small number of frames to ensure everything works as
 expected.
 }
 \examples{
+# Number of frames in the animation
 nFrames <- 50
+
+# A function to plot a coloured polygon
 .plotPoly <- function(frame) {
+  # Created an empty plot
   plot(NULL, xlim = c(-1, 1), ylim = c(-1, 1), asp = 1, xlab = "", ylab = "", axes = FALSE)
   # Frame starts from 1, but a 1 cornered polygon is not very visually interesting
   nCorners <- frame + 1
   angles <- 2 * pi * (1:nCorners) / nCorners
   f <- frame / nFrames
+  # Pick a colour based on the frame number
   col <- rgb(sin(pi / 2 * f), cos(pi / 2 * f), sin(pi / 2 * (f + .5)))
+  # Draw a polygon
   polygon(cos(angles), sin(angles), col = col, border = "black", lwd = 4)
 }
 
-JAnimateGIF(nFrames, gifFileName = "../poly.gif", plotFn = .plotPoly, frameRate = 10)
+JAnimateGIF(nFrames, gifFileName = "poly.gif", plotFn = .plotPoly, frameRate = 10)
 
 }

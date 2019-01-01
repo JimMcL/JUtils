@@ -35,7 +35,7 @@
 #'   will be silently skipped.
 #' @param frameRate Play back frame rate - used to set the frame delay in the
 #'   GIF file.
-#' @param tmpdir Name of a directory to be used to create temporary files in.
+#' @param tmpDir Name of a directory to be used to create temporary files in.
 #' @param ... Any additional arguments are passed to the \code{JPlotToPNG}
 #'   function.
 #'
@@ -43,8 +43,7 @@
 #'   command, or \code{character(0)} on success.
 #'
 #' @examples
-#' \dontrun{
-#' # NUmber of frames in the animation
+#' # Number of frames in the animation
 #' nFrames <- 50
 #'
 #' # A function to plot a coloured polygon
@@ -62,7 +61,6 @@
 #' }
 #'
 #' JAnimateGIF(nFrames, gifFileName = "poly.gif", plotFn = .plotPoly, frameRate = 10)
-#'}
 #'
 #' @export
 JAnimateGIF <- function(nFrames = NULL, frameKeys = 1:nFrames, gifFileName, plotFn, frameRate = 30, tmpDir = tempdir(TRUE), ...) {
