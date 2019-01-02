@@ -24,5 +24,5 @@ test_that("JAnimateGIF works", {
     #   if (!grepl("magick.*not found", cond[[1]]))
     #     stop(cond)
     # }
-  )
+  # )
 })
