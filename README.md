@@ -5,6 +5,16 @@
 
 R utilities to simplify some common operations.
 
+## Getting started
+
+* [Installation](#installation)
+* [Functionality](#functionality)
+  * [Plotting to a file](#plotting-to-a-file)
+  * [Creating an animation](#creating-an-animation)
+  * [Printing text to a file](#printing-text-to-a-file)
+  * [Downloading files](#downloading-files)
+  * [String functions](#string-functions)
+
 ## Installation
 JUtils is not available on CRAN, so it must be installed from Github.
 
@@ -23,13 +33,7 @@ Open a terminal window, enter
     
 then restart R, as described [here](https://cran.r-project.org/bin/macosx/RMacOSX-FAQ.html#Internationalization-of-the-R_002eapp).
 
-## Getting started
-
-[Plotting to a file](#plotting-to-a-file)
-[Creating an animation](#creating-an-animation)
-[Printing text to a file](#printing-text-to-a-file)
-[Downloading files](#downlading-files)
-[String functions](#string-functions)
+## Functionality
 
 ### Plotting to a file
 
