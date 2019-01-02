@@ -101,7 +101,15 @@ JAnimateGIF <- function(nFrames = NULL, frameKeys = 1:nFrames, gifFileName, plot
   )
 
   # Move the GIF file
-  file.rename(file.path(tmpDir, "3d.gif"), gifFileName)
+  if (identical(result, character(0))) {
+    if (!dir.exists(dirname(gifFileName))) {
+      dir.create(dirname(gifFileName), recursive = TRUE)
+    }
+    if (!file.rename(file.path(tmpDir, "3d.gif"), gifFileName)) {
+      print("Rename failed")
+      stop(sprintf("Unable to create animated PNG %s", gifFileName))
+    }
+  }
 
   # Delete temporary pngs
   file.remove(pngs)
