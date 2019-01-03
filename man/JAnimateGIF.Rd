@@ -32,7 +32,7 @@ function.}
 }
 \value{
 The error message (as a character vector) from the ImageMack convert
-  command, or \code{character(0)} on success.
+  command, or \code{character(0)} (returned invisibly) on success.
 }
 \description{
 Works by writing each plot to a PNG file, then combining them into a GIF file

@@ -40,7 +40,7 @@
 #'   function.
 #'
 #' @return The error message (as a character vector) from the ImageMack convert
-#'   command, or \code{character(0)} on success.
+#'   command, or \code{character(0)} (returned invisibly) on success.
 #'
 #' @examples
 #'\dontrun{
@@ -114,7 +114,10 @@ JAnimateGIF <- function(nFrames = NULL, frameKeys = 1:nFrames, gifFileName, plot
   # Delete temporary pngs
   file.remove(pngs)
 
-  result
+  if (identical(result, character(0)))
+    invisible(result)
+  else
+    result
 }
 
 
