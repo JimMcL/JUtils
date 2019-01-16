@@ -13,6 +13,7 @@ test_that("JAnimateGIF works", {
   gif <- tf("test.gif")
   tryCatch(
   {
+    options(warn = 2)
       JAnimateGIF(frameKeys = seq(0, pi * 2, .1), gifFileName = gif, plotFn = .plotFrame)
       expect_true(file.exists(gif))
       info <- file.info(gif)
@@ -21,6 +22,8 @@ test_that("JAnimateGIF works", {
   error = function(cond) {
     # Dangerous, but silently ignore errors so that tests
     # run on systems without ImageMagick
+    cat("Ignoring JAnimateGIF error:\n")
+    print(cond)
   }
   )
 })

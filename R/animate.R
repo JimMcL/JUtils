@@ -67,8 +67,24 @@
 #' @export
 JAnimateGIF <- function(nFrames = NULL, frameKeys = 1:nFrames, gifFileName, plotFn, frameRate = 30, tmpDir = tempdir(TRUE), ...) {
 
+  # Create a new temporary directory to store all the frames.
+  # This way, if an animation is interrupted (leaving behind frame files),
+  # then another is run, the old frames won't get used in the new animation
+  .createSubDir <- function() {
+    for (i in 1:100) {
+      td <- sprintf("jt%d", i)
+      ftd <- file.path(tmpDir, td)
+      if (!dir.exists(ftd)) {
+        dir.create(ftd)
+        return(td)
+      }
+    }
+    stop(sprintf("Unable to create a new temporary directory under %s", tmpDir))
+  }
+  subDir <- .createSubDir()
+
   ndigits <- ceiling(log10(length(frameKeys)))
-  .tmpFileName <- function(i) sprintf("jp%0*d.png", ndigits, i)
+  .tmpFileName <- function(i) sprintf("%s/jp%0*d.png", subDir, ndigits, i)
 
   # Allow for plot commands which don't actually produce a file
   pngs <- character()
@@ -78,7 +94,6 @@ JAnimateGIF <- function(nFrames = NULL, frameKeys = 1:nFrames, gifFileName, plot
     key <- frameKeys[i]
     fname <- .tmpFileName(i)
     fname <- file.path(tmpDir, fname)
-    # cat(sprintf("Plotting to %s...\n", fname))
     JPlotToPNG(fname, plotFn(key), ...)
     # Check if the file was created
     if (file.exists(fname))
@@ -92,7 +107,7 @@ JAnimateGIF <- function(nFrames = NULL, frameKeys = 1:nFrames, gifFileName, plot
 
   oldDir <- getwd()
   result <- tryCatch({
-    setwd(tmpDir)
+    setwd(file.path(tmpDir, subDir))
     # Need to specify files with a wildcard rather than explicitly listing them
     # all because with many frames, the command line becomes too long
     system2("magick", c("convert", "jp*.png", "-delay", 100 / frameRate, "3d.gif"), invisible = F, stderr = TRUE)
@@ -105,14 +120,14 @@ JAnimateGIF <- function(nFrames = NULL, frameKeys = 1:nFrames, gifFileName, plot
     if (!dir.exists(dirname(gifFileName))) {
       dir.create(dirname(gifFileName), recursive = TRUE)
     }
-    if (!file.rename(file.path(tmpDir, "3d.gif"), gifFileName)) {
-      print("Rename failed")
+    if (!file.rename(file.path(tmpDir, subDir, "3d.gif"), gifFileName)) {
       stop(sprintf("Unable to create animated PNG %s", gifFileName))
     }
   }
 
   # Delete temporary pngs
   file.remove(pngs)
+  unlink(subDir)
 
   if (identical(result, character(0)))
     invisible(result)
