@@ -92,6 +92,9 @@ DrawVarLine <- function(x, y, widths, col = "black", add = FALSE, xlim, ylim, fa
   dSegments <- c(segments, segments[length(segments)])
   prevAngle <- Arg(segments[1])
 
+  ROTATE_LEFT <- pi / 2
+  ROTATE_RIGHT <- 3 * pi / 2
+
   # For each point...
   for(i in seq_along(pts)) {
 
@@ -104,16 +107,16 @@ DrawVarLine <- function(x, y, widths, col = "black", add = FALSE, xlim, ylim, fa
     meanAngle <- .meanAngles(c(thisAngle, prevAngle))
 
     # Calculate points on mean cross-piece
-    leftMCP <- pts[i] + complex(modulus = widths[i] / 2, argument = meanAngle + pi / 2)
-    rightMCP <- pts[i] + complex(modulus = widths[i] / 2, argument = meanAngle + 3 * pi / 2)
+    leftMCP <- pts[i] + complex(modulus = widths[i] / 2, argument = meanAngle + ROTATE_LEFT)
+    rightMCP <- pts[i] + complex(modulus = widths[i] / 2, argument = meanAngle + ROTATE_RIGHT)
 
     if (fastJoins) {
       leftPts[leftIdx] <- leftMCP
       rightPts[rightIdx] <- rightMCP
     } else {
       # Calculate perpendicular cross-piece
-      leftPerpOffset <- complex(modulus = widths[i] / 2, argument = thisAngle + pi / 2)
-      rightPerpOffset <- complex(modulus = widths[i] / 2, argument = thisAngle + 3 * pi / 2)
+      leftPerpOffset <- complex(modulus = widths[i] / 2, argument = thisAngle + ROTATE_LEFT)
+      rightPerpOffset <- complex(modulus = widths[i] / 2, argument = thisAngle + ROTATE_RIGHT)
 
       if (i == 1) {
         # First start segment is simple perpendicular cross piece
@@ -136,8 +139,8 @@ DrawVarLine <- function(x, y, widths, col = "black", add = FALSE, xlim, ylim, fa
           roundLeft <- diff > pi || (diff < 0 && diff > -pi)
           # Calculate start and end angles for curve
           if (roundLeft) {
-            startAngle <- prevAngle + pi / 2
-            endAngle <- thisAngle - 3 * pi / 2
+            startAngle <- prevAngle + ROTATE_LEFT
+            endAngle <- thisAngle - ROTATE_RIGHT
             cp <- .pointsOnCurve(startAngle, endAngle)
             ncp <- length(cp) - 1
             if (ncp > 0) {
@@ -145,8 +148,8 @@ DrawVarLine <- function(x, y, widths, col = "black", add = FALSE, xlim, ylim, fa
               leftIdx <- leftIdx + ncp
             }
           } else {
-            startAngle <- prevAngle + 3 * pi / 2
-            endAngle <- thisAngle + 3 * pi / 2
+            startAngle <- prevAngle + ROTATE_RIGHT
+            endAngle <- thisAngle + ROTATE_RIGHT
             cp <- .pointsOnCurve(startAngle, endAngle)
             ncp <- length(cp) - 1
             if (ncp > 0) {
@@ -163,12 +166,12 @@ DrawVarLine <- function(x, y, widths, col = "black", add = FALSE, xlim, ylim, fa
             if (roundLeft) {
               dist <- Mod(pts[i] - rightPts[rightIdx])
               if (dist > maxAllowable) {
-                rightPts[rightIdx] <- pts[i] + complex(modulus = maxAllowable, argument = meanAngle + 3 * pi / 2)
+                rightPts[rightIdx] <- pts[i] + complex(modulus = maxAllowable, argument = meanAngle + ROTATE_RIGHT)
               }
             } else {
               dist <- Mod(pts[i] - leftPts[leftIdx])
               if (dist > maxAllowable) {
-                leftPts[leftIdx] <- pts[i] + complex(modulus = maxAllowable, argument = meanAngle + pi / 2)
+                leftPts[leftIdx] <- pts[i] + complex(modulus = maxAllowable, argument = meanAngle + ROTATE_LEFT)
               }
             }
           }
@@ -228,7 +231,7 @@ LinesIntersection <- function(p1, p2, p3, p4) {
 ###############################################################################
 
 r2d <- function(r) 360 * r / (2 *pi)
-arr <- function(p1, p2, add = TRUE, ...) { if (!add) plot(NULL, xlim = c(-1, 1), ylim = c(-1, 1), asp = 1); arrows(Re(p1), Im(p1), Re(p2), Im(p2), ...) }
+arr <- function(p1, p2, add = TRUE, ...) { if (!add) plot(NULL, xlim = c(-1, 1), ylim = c(-1, 1), asp = 1); graphics::arrows(Re(p1), Im(p1), Re(p2), Im(p2), ...) }
 arrAng <- function(rad, len = 1, ...) arr(complex(1), complex(modulus = len, argument = rad), ...)
 
 .plotPoly <- function(x, y, fastJoins, roundCorners, add = FALSE, xlim, ylim) {
@@ -278,7 +281,7 @@ AltVarLines <- function(x, y, widths, col, ...) {
   n <- length(x)
   if (length(widths) == 1)
     widths <- rep(widths, n)
-  segments(x[1:(n-1)], y[1:(n-1)], x[2:n], y[2:n], lwd = widths, col = col)
+  graphics::segments(x[1:(n-1)], y[1:(n-1)], x[2:n], y[2:n], lwd = widths, col = col)
 }
 
 tests <- function() {
