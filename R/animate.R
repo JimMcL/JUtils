@@ -9,8 +9,8 @@
 #'
 #' You must have \href{https://imagemagick.org/script/download.php}{ImageMagick}
 #' installed, and the ImageMagick bin subdirectory must be in your PATH
-#' environment variable. If ImageMagick is not installed, or is not in your
-#' PATH, \code{JAnimateGIF} will fail with an exception such as:
+#' environment variable. If ImageMagick is not installed, or is not in your PATH,
+#' \code{JAnimateGIF} will fail with an exception such as:
 #'
 #' \preformatted{Error in system2("magick", c("convert", "jp*.png", "-delay",
 #' 100/frameRate, : '"magick"' not found}.
@@ -24,23 +24,24 @@
 #' expected.
 #'
 #' @param nFrames Number of frames to be generated. You must specify one of
-#'   \code{nFrames} or \code{frameKeys}.
-#' @param frameKeys Vector of keys to be passed to `plotFn` to identify the
-#'   frame to be plotted. If not specified, `frameKeys` will be set to the
-#'   sequence `1:nFrames`.
+#'  \code{nFrames} or \code{frameKeys}.
+#' @param frameKeys Vector of keys to be passed to `plotFn` to identify the frame
+#'  to be plotted. If not specified, `frameKeys` will be set to the sequence
+#'  `1:nFrames`.
 #' @param gifFileName Name of the GIF file to be created.
 #' @param plotFn Function which is called once for each frame. It is called once
-#'   for each frame to be generated, with a single argument which is one of the
-#'   values from \code{frameKeys}. If it does not generate a plot, the frame
-#'   will be silently skipped.
-#' @param frameRate Play back frame rate - used to set the frame delay in the
-#'   GIF file.
+#'  for each frame to be generated, with a single argument which is one of the
+#'  values from \code{frameKeys}. If it does not generate a plot, the frame will
+#'  be silently skipped. If no frames are created for the entire animation, an
+#'  error is generated.
+#' @param frameRate Play back frame rate - used to set the frame delay in the GIF
+#'  file.
 #' @param tmpDir Name of a directory to be used to create temporary files in.
 #' @param ... Any additional arguments are passed to the \code{JPlotToPNG}
-#'   function.
+#'  function.
 #'
 #' @return The error message (as a character vector) from the ImageMack convert
-#'   command, or \code{character(0)} (returned invisibly) on success.
+#'  command, or \code{character(0)} (returned invisibly) on success.
 #'
 #' @examples
 #'\dontrun{
@@ -98,6 +99,9 @@ JAnimateGIF <- function(nFrames = NULL, frameKeys = 1:nFrames, gifFileName, plot
     # Check if the file was created
     if (file.exists(fname))
       pngs <- c(pngs, fname)
+  }
+  if (length(pngs) == 0) {
+    stop("No frames were plotted")
   }
 
   # ImageMagick command to convert multiple pngs to animated gif.
