@@ -103,3 +103,10 @@ Ever wanted to convert a vector of values to a human-readable list? Try JToSente
 
     print(JToSentence(c("apple", "banana", "mandarin", "mango")))
     # => [1] "apple, banana, mandarin and mango"
+    
+Capitalise a string or set of words.
+
+    print(JCapitalise("the quick brown fox"))
+    # => [1] "The quick brown fox"
+    print(JCapWords("the quick brown fox"))
+    # => [1] "The Quick Brown Fox"

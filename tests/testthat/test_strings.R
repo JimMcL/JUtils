@@ -12,14 +12,14 @@ test_that("to sentence", {
 })
 
 test_that("Capitalisation", {
-  expect_equal(JCapSentence(NULL), character(0))
-  expect_equal(JCapSentence("the quick brown fox"), "The quick brown fox")
-  expect_equal(JCapSentence("The quick brown fox"), "The quick brown fox")
-  expect_equal(JCapSentence("The Quick Brown Fox"), "The Quick Brown Fox")
-  expect_equal(JCapSentence("THE QUICK BROWN FOX"), "THE QUICK BROWN FOX")
-  expect_equal(JCapSentence("The Quick Brown Fox", strict = TRUE), "The quick brown fox")
-  expect_equal(JCapSentence("THE QUICK BROWN FOX", strict = TRUE), "The quick brown fox")
-  expect_equal(JCapSentence(c("the quick brown fox", "jumped over")), c("The quick brown fox", "Jumped over"))
+  expect_equal(JCapitalise(NULL), character(0))
+  expect_equal(JCapitalise("the quick brown fox"), "The quick brown fox")
+  expect_equal(JCapitalise("The quick brown fox"), "The quick brown fox")
+  expect_equal(JCapitalise("The Quick Brown Fox"), "The Quick Brown Fox")
+  expect_equal(JCapitalise("THE QUICK BROWN FOX"), "THE QUICK BROWN FOX")
+  expect_equal(JCapitalise("The Quick Brown Fox", strict = TRUE), "The quick brown fox")
+  expect_equal(JCapitalise("THE QUICK BROWN FOX", strict = TRUE), "The quick brown fox")
+  expect_equal(JCapitalise(c("the quick brown fox", "jumped over")), c("The quick brown fox", "Jumped over"))
 
   expect_equal(JCapWords("the quick brown fox"), "The Quick Brown Fox")
   expect_equal(JCapWords("THE quick brown fox"), "THE Quick Brown Fox")

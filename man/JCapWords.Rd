@@ -13,7 +13,7 @@ JCapWords(s, split = " ", sep = " ", ...)
 
 \item{sep}{String used to paste words back together.}
 
-\item{...}{Additional arguments passed to \code{\link{JCapSentence}}}
+\item{...}{Additional arguments passed to \code{\link{JCapitalise}}}
 }
 \description{
 Capitalises the first letter in each word in a string.

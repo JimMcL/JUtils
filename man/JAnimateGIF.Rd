@@ -11,19 +11,20 @@ JAnimateGIF(nFrames = NULL, frameKeys = 1:nFrames, gifFileName, plotFn,
 \item{nFrames}{Number of frames to be generated. You must specify one of
 \code{nFrames} or \code{frameKeys}.}
 
-\item{frameKeys}{Vector of keys to be passed to `plotFn` to identify the
-frame to be plotted. If not specified, `frameKeys` will be set to the
-sequence `1:nFrames`.}
+\item{frameKeys}{Vector of keys to be passed to `plotFn` to identify the frame
+to be plotted. If not specified, `frameKeys` will be set to the sequence
+`1:nFrames`.}
 
 \item{gifFileName}{Name of the GIF file to be created.}
 
 \item{plotFn}{Function which is called once for each frame. It is called once
 for each frame to be generated, with a single argument which is one of the
-values from \code{frameKeys}. If it does not generate a plot, the frame
-will be silently skipped.}
+values from \code{frameKeys}. If it does not generate a plot, the frame will
+be silently skipped. If no frames are created for the entire animation, an
+error is generated.}
 
-\item{frameRate}{Play back frame rate - used to set the frame delay in the
-GIF file.}
+\item{frameRate}{Play back frame rate - used to set the frame delay in the GIF
+file.}
 
 \item{tmpDir}{Name of a directory to be used to create temporary files in.}
 
@@ -32,7 +33,7 @@ function.}
 }
 \value{
 The error message (as a character vector) from the ImageMack convert
-  command, or \code{character(0)} (returned invisibly) on success.
+ command, or \code{character(0)} (returned invisibly) on success.
 }
 \description{
 Works by writing each plot to a PNG file, then combining them into a GIF file
@@ -42,8 +43,8 @@ function.
 \details{
 You must have \href{https://imagemagick.org/script/download.php}{ImageMagick}
 installed, and the ImageMagick bin subdirectory must be in your PATH
-environment variable. If ImageMagick is not installed, or is not in your
-PATH, \code{JAnimateGIF} will fail with an exception such as:
+environment variable. If ImageMagick is not installed, or is not in your PATH,
+\code{JAnimateGIF} will fail with an exception such as:
 
 \preformatted{Error in system2("magick", c("convert", "jp*.png", "-delay",
 100/frameRate, : '"magick"' not found}.

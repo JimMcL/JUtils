@@ -33,11 +33,11 @@ JToSentence <- function(v, sep = ", ", conjunction = " and ") {
 #' @param collapse String used to collapse multiple character strings.
 #'
 #' @examples
-#' print(JCapSentence("the quick brown fox"))
+#' print(JCapitalise("the quick brown fox"))
 #' # => [1] "The quick brown fox"
 #'
 #' @export
-JCapSentence <- function(s, strict = FALSE, collapse = NULL) {
+JCapitalise <- function(s, strict = FALSE, collapse = NULL) {
   s <- as.character(s)
   paste(toupper(substring(s, 1, 1)),
         {s <- substring(s, 2); if(strict) tolower(s) else s},
@@ -49,7 +49,7 @@ JCapSentence <- function(s, strict = FALSE, collapse = NULL) {
 #' @param s Character vector to be capitalised.
 #' @param split Regular expression used to split words to be capitalised.
 #' @param sep String used to paste words back together.
-#' @param ... Additional arguments passed to \code{\link{JCapSentence}}
+#' @param ... Additional arguments passed to \code{\link{JCapitalise}}
 #'
 #' @examples
 #' print(JCapWords("the quick brown fox"))
@@ -58,6 +58,6 @@ JCapSentence <- function(s, strict = FALSE, collapse = NULL) {
 #' @export
 JCapWords <- function(s, split = " ", sep = " ", ...) {
   s <- as.character(s)
-  sapply(strsplit(s, split = split), JCapSentence, collapse = sep, ...)
+  sapply(strsplit(s, split = split), JCapitalise, collapse = sep, ...)
 }
 
