@@ -5,7 +5,7 @@
 \title{Combine multiple plots into an animated GIF file.}
 \usage{
 JAnimateGIF(nFrames = NULL, frameKeys = 1:nFrames, gifFileName, plotFn,
-  frameRate = 30, tmpDir = tempdir(TRUE), ...)
+  frameRate = 30, loop = 0, tmpDir = tempdir(TRUE), ...)
 }
 \arguments{
 \item{nFrames}{Number of frames to be generated. You must specify one of
@@ -25,6 +25,8 @@ error is generated.}
 
 \item{frameRate}{Play back frame rate - used to set the frame delay in the GIF
 file.}
+
+\item{loop}{Number of times animation should be played. 0 means loop infinitely.}
 
 \item{tmpDir}{Name of a directory to be used to create temporary files in.}
 

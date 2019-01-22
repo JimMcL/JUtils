@@ -36,6 +36,7 @@
 #'  error is generated.
 #' @param frameRate Play back frame rate - used to set the frame delay in the GIF
 #'  file.
+#' @param loop Number of times animation should be played. 0 means loop infinitely.
 #' @param tmpDir Name of a directory to be used to create temporary files in.
 #' @param ... Any additional arguments are passed to the \code{JPlotToPNG}
 #'  function.
@@ -66,7 +67,7 @@
 #'}
 #'
 #' @export
-JAnimateGIF <- function(nFrames = NULL, frameKeys = 1:nFrames, gifFileName, plotFn, frameRate = 30, tmpDir = tempdir(TRUE), ...) {
+JAnimateGIF <- function(nFrames = NULL, frameKeys = 1:nFrames, gifFileName, plotFn, frameRate = 30, loop = 0, tmpDir = tempdir(TRUE), ...) {
 
   # Create a new temporary directory to store all the frames.
   # This way, if an animation is interrupted (leaving behind frame files),
@@ -114,7 +115,7 @@ JAnimateGIF <- function(nFrames = NULL, frameKeys = 1:nFrames, gifFileName, plot
     setwd(file.path(tmpDir, subDir))
     # Need to specify files with a wildcard rather than explicitly listing them
     # all because with many frames, the command line becomes too long
-    system2("magick", c("convert", "jp*.png", "-delay", 100 / frameRate, "3d.gif"), invisible = F, stderr = TRUE)
+    system2("magick", c("convert", "-loop", loop, "-delay", 100 / frameRate, "jp*.png", "3d.gif"), invisible = F, stderr = TRUE)
   },
   finally = setwd(oldDir)
   )
