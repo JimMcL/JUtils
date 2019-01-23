@@ -85,7 +85,7 @@ JAnimateGIF <- function(nFrames = NULL, frameKeys = 1:nFrames, gifFileName, plot
   }
   subDir <- .createSubDir()
 
-  ndigits <- ceiling(log10(length(frameKeys)))
+  ndigits <- ceiling(log10(length(frameKeys) + 1))
   .tmpFileName <- function(i) sprintf("%s/jp%0*d.png", subDir, ndigits, i)
 
   # Allow for plot commands which don't actually produce a file
