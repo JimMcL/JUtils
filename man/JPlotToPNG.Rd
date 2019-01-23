@@ -5,7 +5,7 @@
 \title{Plot to a PNG file}
 \usage{
 JPlotToPNG(filename, plotExpr, width = 180, height = NA,
-  aspectRatio = 3/2, units = c("px", "mm", "cm", "in"),
+  aspectRatio = 3/2, units = c("mm", "cm", "px", "in"),
   type = ifelse(capabilities()["cairo"], "cairo", NULL), res = 72,
   onlyIfDoesntExist = FALSE, createDirectory = TRUE, ...)
 }
@@ -24,7 +24,7 @@ written to the file.}
 \item{aspectRatio}{Aspect ratio (\code{width / height}) of the output PNG
 file.}
 
-\item{units}{Units of \code{width} and \code{height}. Default is pixels (\code{px}).}
+\item{units}{Units of \code{width} and \code{height}.}
 
 \item{type}{Plotting device - defaults to "cairo" if that is an available
 device since it produces nicer looking graphics.}
