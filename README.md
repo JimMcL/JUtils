@@ -11,6 +11,7 @@ R utilities to simplify some common operations.
 * [Functionality](#functionality)
   * [Plotting to a file](#plotting-to-a-file)
   * [Creating an animation](#creating-an-animation)
+  * [Adding a raster image to a plot](#adding-a-raster-image-to-a-plot)
   * [Printing text to a file](#printing-text-to-a-file)
   * [Downloading files](#downloading-files)
   * [String functions](#string-functions)
@@ -37,7 +38,7 @@ then restart R, as described [here](https://cran.r-project.org/bin/macosx/RMacOS
 
 ### Plotting to a file
 
-`JUtils` provides functions which wrap the standard R functions (from the core `grDevices` package) for plotting to files using base graphics. `JUtils`  provides more flexibility in specifying file sizes, and hides some of the more arcane aspects of the standard functions, yet still provides access to all of the underlying functionality. All functions accept any "real world" units (mm, cm & in). Raster functions (`JPlotToPNG` and `JPlotToTIFF`) also accept pixel ("px") units.
+`JUtils` provides functions which wrap the standard R functions (from the core `grDevices` package) for plotting to files using base graphics. `JUtils`  provides more flexibility in specifying file sizes, and hides some of the more arcane aspects of the standard functions, yet still provides access to all of the underlying functionality. All functions accept any "real world" units (mm, cm & in). Raster functions (`JPlotToPNG` and `JPlotToTIFF`) also accept pixel ("px") units. For a nice discussion about printing issues in R, see (https://blog.revolutionanalytics.com/2009/01/10-tips-for-making-your-r-graphics-look-their-best.html).
 
 
     library("JUtils")
@@ -66,12 +67,28 @@ The "standard" method to create an animation in R is to generate a set of images
 ImageMagick utility to combine them into an animated GIF file. `JAnimateGIF` provides a relatively simple and 
 robust way to do this.
 
+    library("JUtils")
+
     .plotFrame <- function(angle) plot(x = c(sin(angle), 0), y = c(0, cos(angle)), 
                                        type = 'l', lwd = 4, 
                                        xlim = c(-1, 1), ylim = c(-1, 1), 
                                        axes = FALSE, xlab = "", ylab = "")
     JAnimateGIF(frameKeys = seq(0, pi * 2, .1), gifFileName = "test.gif", plotFn = .plotFrame)
 
+
+### Adding a raster image to a plot
+
+A raster image (i.e. a GIF of JPEG file) can be drawn to a plot using `graphics::rasterImage`. However, if you want to draw it with the correct aspect ratio, calculating the required position is not straightforward. `JPlotRaster` is a wrapper around `rasterImage` which calculates the correct position of the image, then draws it, based on a point and the desired width of the plotted image. The point defaults to the position of the centre of the image, but can alternatively be a corner or point on the middle of an edge.
+
+    library(jpeg)
+    library("JUtils")
+    
+    plot(...)
+    img <- readJPEG("myjpeg.jpg", native = TRUE)
+    # Draw image centred on (0, 0)
+    JPlotRaster(img, x = 0, y = 0, width = 2)
+    # Draw image with top-left corner at (2, 1)
+    JPlotRaster(img, x = 2, y = 1, width = 2, position = "topleft")
 
 ### Printing text to a file
 

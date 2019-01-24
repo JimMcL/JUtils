@@ -344,6 +344,19 @@ test_that("Incorrect plot return value", {
   expect_true(is.null(val), info = "JPlotToFile with function returned an incorrect value")
 })
 
+test_that("raster drawing", {
+  .prepare()
+
+  img <- tf("test.png")
+  JPlotToPNG(img, {
+    plotWigglyLines()
+    JPlotRaster(jpeg::readJPEG("test-img.jpg", native = TRUE), 10, 0, 3, "bottomright")
+    JPlotRaster(jpeg::readJPEG("test-img.jpg", native = TRUE), 10, 0, 3, "topleft")
+    JPlotRaster(png::readPNG("test-img.png", native = TRUE), 10, 0, 3, "topright")
+    JPlotRaster(png::readPNG("test-img.png", native = TRUE), 10, 0, 3, "bottomleft")
+  })
+  expect_true(file.exists(img))
+})
 
 #########################################################################
 
