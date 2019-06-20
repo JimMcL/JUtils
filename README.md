@@ -67,7 +67,7 @@ By default, partial transparency cannot be used in postscript or PDF files. The 
 
 #### Plotting on macOS
 
-On macOS (and perhaps other Unix-like systems), the Cairo library might not be installed by default, so attempts to plot to TIFF or PNG files will fail with an error message. Solutions are to not use Cairo (e.g. in `JPlotToTIFF` or `JPlotToPNG`, specify the argument `type = "Xlib"` or `type = "quartz"`), or else install XQuartz (or Xlib).
+On macOS (and perhaps other Unix-like systems), the Cairo library might not be installed by default, so attempts to plot to TIFF or PNG files will fail with an error message. Solutions are to not use Cairo (e.g. in `JPlotToTIFF` or `JPlotToPNG`, specify the argument `type = "Xlib"` or `type = "quartz"`), or else install XQuartz (or Xlib). See [https://www.xquartz.org/](https://www.xquartz.org/).
 
 ### Creating an animation
 
