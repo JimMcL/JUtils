@@ -213,7 +213,7 @@ test_that("Multiple plots expr", {
   for (img in imgs) {
     expect_true(file.exists(img), info = img)
   }
-  lines <- readLines(imgs[1], n=10)
+  lines <- readLines(imgs[1], n=10, warn = FALSE)
 })
 
 test_that("Multiple plots fn", {
@@ -227,7 +227,7 @@ test_that("Multiple plots fn", {
   for (img in imgs) {
     expect_true(file.exists(img), info = img)
   }
-  lines <- readLines(imgs[1], n=10)
+  lines <- readLines(imgs[1], n=10, warn = FALSE)
 })
 
 test_that("Height from AR", {
