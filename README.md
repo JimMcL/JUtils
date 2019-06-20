@@ -55,11 +55,19 @@ then restart R, as described [here](https://cran.r-project.org/bin/macosx/RMacOS
     JPlotToPDF("test.pdf", plot(1:10 + rnorm(10), type = "o"), width = 18, units = "cm")
     
     # Generate encapsulated postscript using the Cairo graphics device
-    JPlotToPDF("test.eps", plot(1:10 + rnorm(10), type = "o"), cairo = TRUE, width = 18, units = "cm")
+    JPlotToEPS("test.eps", plot(1:10 + rnorm(10), type = "o"), cairo = TRUE, width = 18, units = "cm")
 
     # JPlotToFile selects the file type based on the file name, then passes all of its arguments 
     # on to the appropriate JPlotTo* function. It can also plot to multiple files at once.
     JPlotToFile(c("test.png", "test.eps"), plot(1:10))
+
+#### Transparency and Postscript
+
+By default, partial transparency cannot be used in postscript or PDF files. The compromise solution is to specify the arguments `cairo = TRUE, fallback_resolution = 600` to `JPlotToPDF` or `JPlotToEPS`. Use a fallback resolution that is appropriate for your needs. This is a compromise because a raster image is written to the file, so it is no longer infinitely scaleable. See the help for `JPlotToPDF` or `JPlotToEPS` for more information.
+
+#### Plotting on macOS
+
+On macOS (and perhaps other Unix-like systems), the Cairo library might not be installed by default, so attempts to plot to TIFF or PNG files will fail with an error message. Solutions are to not use Cairo (e.g. in `JPlotToTIFF` or `JPlotToPNG`, specify the argument `type = "Xlib"` or `type = "quartz"`), or else install XQuartz (or Xlib).
 
 ### Creating an animation
 
