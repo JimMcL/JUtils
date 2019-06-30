@@ -15,7 +15,7 @@ DrawVarLine <- function(x, y, widths, col = "black", add = FALSE, xlim, ylim, fa
       xlim <- range(Re(allPts))
     if (missing(ylim))
       ylim <- range(Im(allPts))
-    plot(NULL, xlim = xlim, ylim = ylim, ...)
+    graphics::plot(NULL, xlim = xlim, ylim = ylim, ...)
   }
 
   # The points travel up the left hand side and back down the right hand side
@@ -25,7 +25,7 @@ DrawVarLine <- function(x, y, widths, col = "black", add = FALSE, xlim, ylim, fa
   # points(rightPts, col = "blue", pch = 16)
   for (i in 1:(length(x)-1)) {
     # THIS IS NOW WRONG
-    polygon(c(leftPts[i:(i + 1)], rightPts[(i + 1):i]), col = col[i], border = NA)
+    graphics::polygon(c(leftPts[i:(i + 1)], rightPts[(i + 1):i]), col = col[i], border = NA)
   }
 }
 
@@ -269,7 +269,7 @@ Doco <- function() {
   x2 <- c(0.2, 1.5, 0.2)
   y2 <- c(1.3, 1.6, 1.9)
 
-  par(mfrow = c(1, 2))
+  graphics::par(mfrow = c(1, 2))
   .plotPoly(x1, y1, TRUE, FALSE)
   .plotPoly(x2, y2, TRUE, FALSE, add = TRUE)
 

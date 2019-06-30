@@ -30,9 +30,9 @@ JPlotRaster <- function(img, x, y, width = NA, height = NA,
     stop("Exactly 1 of width and height must be specified")
 
   # Plot size in user coordinates (x1, x2, y1, y2)
-  usr <- par("usr")
+  usr <- graphics::par("usr")
   # Plot size in inches
-  pin <- par("pin")
+  pin <- graphics::par("pin")
 
   xScale <- (usr[2] - usr[1]) / pin[1]
   yScale <- (usr[4] - usr[3]) / pin[2]
@@ -46,11 +46,9 @@ JPlotRaster <- function(img, x, y, width = NA, height = NA,
     # Now adjust for different axis scales
     height <- usrHeight / xScale * yScale
   } else {
-    #
+    # Same as above but calculate width instead of height
     usrWidth <- height * rasterAR
-    # Now adjust for different axis scales
     width <- usrWidth / yScale * xScale
-
   }
 
   # Adjust centre for position

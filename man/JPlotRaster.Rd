@@ -4,9 +4,9 @@
 \alias{JPlotRaster}
 \title{Adds a raster image to a plot, preserving the image's aspect ratio.}
 \usage{
-JPlotRaster(img, x, y, width, position = c("centre", "center",
-  "bottomright", "bottom", "bottomleft", "left", "topleft", "top",
-  "topright", "right"), ...)
+JPlotRaster(img, x, y, width = NA, height = NA,
+  position = c("centre", "center", "bottomright", "bottom", "bottomleft",
+  "left", "topleft", "top", "topright", "right"), ...)
 }
 \arguments{
 \item{img}{Raster image, possibly created by calling
@@ -18,6 +18,10 @@ JPlotRaster(img, x, y, width, position = c("centre", "center",
 calculated from the aspect ratio of the image and the respective scales of
 the x- and y-axes.}
 
+\item{height}{Height of the image in user coordinates. The width will be
+calculated from the aspect ratio of the image and the respective scales of
+the x- and y-axes.}
+
 \item{position}{Specifies the location of \code{x, y} on the image. E.g. if
 \code{"centre"}, the image will be centred on \code{x, y}. if
 \code{"topleft"}, the top left-hand corner of the image will be located at
@@ -26,5 +30,5 @@ the x- and y-axes.}
 \item{...}{Additional arguments are passed on to \code{\link[graphics]{rasterImage}}.}
 }
 \description{
-Adds a raster image to a plot, preserving the image's aspect ratio.
+Exactly one of \code{width} and \code{height} must be specified.
 }

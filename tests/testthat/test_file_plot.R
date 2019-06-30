@@ -347,13 +347,21 @@ test_that("Incorrect plot return value", {
 test_that("raster drawing", {
   .prepare()
 
+  egJpeg <- jpeg::readJPEG("test-img.jpg", native = TRUE)
+  egPng <- png::readPNG("test-img.png", native = TRUE)
+
+  # Too many args
+  expect_error(JPlotRaster(egJpeg, 10, 0, 3, 3, position = "bottomright"), ".*width.*height")
+  # Not enough args
+  expect_error(JPlotRaster(egJpeg, 10, 0, position = "bottomright"), ".*width.*height")
+
   img <- tf("test.png")
   JPlotToPNG(img, {
     plotWigglyLines()
-    JPlotRaster(jpeg::readJPEG("test-img.jpg", native = TRUE), 10, 0, 3, "bottomright")
-    JPlotRaster(jpeg::readJPEG("test-img.jpg", native = TRUE), 10, 0, 3, "topleft")
-    JPlotRaster(png::readPNG("test-img.png", native = TRUE), 10, 0, 3, "topright")
-    JPlotRaster(png::readPNG("test-img.png", native = TRUE), 10, 0, 3, "bottomleft")
+    JPlotRaster(egJpeg, 10, 0, 3, position = "bottomright")
+    JPlotRaster(egJpeg, 10, 0, height = 2, position = "topleft")
+    JPlotRaster(egPng, 10, 0, 3, position = "topright")
+    JPlotRaster(egPng, 10, 0, height = 2, position = "bottomleft")
   })
   expect_true(file.exists(img))
 })
