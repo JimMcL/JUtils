@@ -231,7 +231,7 @@ LinesIntersection <- function(p1, p2, p3, p4) {
 ###############################################################################
 
 r2d <- function(r) 360 * r / (2 *pi)
-arr <- function(p1, p2, add = TRUE, ...) { if (!add) plot(NULL, xlim = c(-1, 1), ylim = c(-1, 1), asp = 1); graphics::arrows(Re(p1), Im(p1), Re(p2), Im(p2), ...) }
+arr <- function(p1, p2, add = TRUE, ...) { if (!add) graphics::plot(NULL, xlim = c(-1, 1), ylim = c(-1, 1), asp = 1); graphics::arrows(Re(p1), Im(p1), Re(p2), Im(p2), ...) }
 arrAng <- function(rad, len = 1, ...) arr(complex(1), complex(modulus = len, argument = rad), ...)
 
 .plotPoly <- function(x, y, fastJoins, roundCorners, add = FALSE, xlim, ylim) {
@@ -243,22 +243,22 @@ arrAng <- function(rad, len = 1, ...) arr(complex(1), complex(modulus = len, arg
       xlim <- range(Re(allPts))
     if (missing(ylim))
       ylim <- range(Im(allPts))
-    plot(NULL, xlim = xlim, ylim = ylim, asp = 1)
+    graphics::plot(NULL, xlim = xlim, ylim = ylim, asp = 1)
   }
-  points(pts$left, pch = 16, col = "red")
-  points(pts$right, pch = 16, col = "blue")
-  polygon(allPts, col = "#ff000030", border = NA)
-  lines(pts$left, col = "red")
-  lines(pts$right, col = "blue")
-  points(x, y, pch = 16, col = "green")
-  lines(x, y, col = "#00ff00")
+  graphics::points(pts$left, pch = 16, col = "red")
+  graphics::points(pts$right, pch = 16, col = "blue")
+  graphics::polygon(allPts, col = "#ff000030", border = NA)
+  graphics::lines(pts$left, col = "red")
+  graphics::lines(pts$right, col = "blue")
+  graphics::points(x, y, pch = 16, col = "green")
+  graphics::lines(x, y, col = "#00ff00")
   if (!roundCorners)
-    segments(Re(pts$left), Im(pts$left), Re(pts$right), Im(pts$right))
+    graphics::segments(Re(pts$left), Im(pts$left), Re(pts$right), Im(pts$right))
 
   p <- complex(real = x, imaginary = y)
   a1 <- Arg(p[2] - p[1])
   a2 <- Arg(p[3] - p[2])
-  text(x[2] + .1, y[2] - .1, round(r2d(a2 - a1)), pos = 4, cex = 2)
+  graphics::text(x[2] + .1, y[2] - .1, round(r2d(a2 - a1)), pos = 4, cex = 2)
 }
 
 Doco <- function() {

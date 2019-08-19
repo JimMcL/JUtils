@@ -8,8 +8,8 @@ library(tiff)
 
 plotWigglyLines <- function(cex = 1, lwd = 2, ...) {
   set.seed(1)
-  plot(rnorm(20), type = "l", main = "Wiggly Lines", ylim = c(-2.2, 3), lwd = lwd, cex = cex, cex.main = cex, ...)
-  lines(rnorm(20), col = "red", lty = 2, lwd = lwd, ...)
+  graphics::plot(rnorm(20), type = "l", main = "Wiggly Lines", ylim = c(-2.2, 3), lwd = lwd, cex = cex, cex.main = cex, ...)
+  graphics::lines(rnorm(20), col = "red", lty = 2, lwd = lwd, ...)
   legend("topright", legend = c("A black line", "A dashed red line"), lty = c(1, 2), col = c("black", "red"), lwd = lwd, ...)
 }
 
@@ -303,8 +303,8 @@ test_that("test postscript transparency", {
   .prepare()
 
   plotAlpha <- function() {
-    plot(1:3, type = 'l', lwd = 20, col = "#ffcc8888")
-    lines(3:1, lwd = 20, col = "#88ccff88")
+    graphics::plot(1:3, type = 'l', lwd = 20, col = "#ffcc8888")
+    graphics::lines(3:1, lwd = 20, col = "#88ccff88")
   }
   # Expect normal postscript to produce a warning
   f <- tf("test1.eps")

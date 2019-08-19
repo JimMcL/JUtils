@@ -23,7 +23,7 @@ library(tools)
 #'   \code{tempfile}.
 #' @param cacheDir Passed to \code{tempFileFn} as the parameter \code{tmpdir}.
 #'   By default, files will be created in this directory.
-#' @param filePattern  Passed to \code{tempFileFn} as the parameter \code{pattern}.
+#' @param filePattern Passed to \code{tempFileFn} as the parameter \code{pattern}.
 #'   By default, this is used as the initial part of the file name.
 #' @param verbose If TRUE, prints status messages.
 #' @param debug If TRUE, prints debugging messages.

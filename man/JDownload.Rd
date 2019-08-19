@@ -5,7 +5,7 @@
 \title{Downloads one or more URLs and saves them to local files.}
 \usage{
 JDownload(url, tempfileFn = NULL, cacheDir = tempdir(),
-  verbose = FALSE, debug = FALSE)
+  filePattern = "jdcache", verbose = FALSE, debug = FALSE)
 }
 \arguments{
 \item{url}{Character vector specifying the URLs to be downloaded.}
@@ -16,6 +16,9 @@ tempfile). Must accept the same arguments as the base R function
 
 \item{cacheDir}{Passed to \code{tempFileFn} as the parameter \code{tmpdir}.
 By default, files will be created in this directory.}
+
+\item{filePattern}{Passed to \code{tempFileFn} as the parameter \code{pattern}.
+By default, this is used as the initial part of the file name.}
 
 \item{verbose}{If TRUE, prints status messages.}
 
