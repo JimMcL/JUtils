@@ -23,6 +23,8 @@ library(tools)
 #'   \code{tempfile}.
 #' @param cacheDir Passed to \code{tempFileFn} as the parameter \code{tmpdir}.
 #'   By default, files will be created in this directory.
+#' @param filePattern  Passed to \code{tempFileFn} as the parameter \code{pattern}.
+#'   By default, this is used as the initial part of the file name.
 #' @param verbose If TRUE, prints status messages.
 #' @param debug If TRUE, prints debugging messages.
 #'
@@ -31,7 +33,7 @@ library(tools)
 #' @seealso \code{\link[utils]{download.file}}
 #'
 #' @export
-JDownload <- function(url, tempfileFn = NULL, cacheDir = tempdir(), verbose = FALSE, debug = FALSE) {
+JDownload <- function(url, tempfileFn = NULL, cacheDir = tempdir(), filePattern = "jdcache", verbose = FALSE, debug = FALSE) {
   if (!dir.exists(cacheDir))
     dir.create(cacheDir, recursive = TRUE)
 
@@ -46,7 +48,7 @@ JDownload <- function(url, tempfileFn = NULL, cacheDir = tempdir(), verbose = FA
   # Construct file names
   if (is.null(tempfileFn))
     tempfileFn <- tempfile
-  f = tempfileFn(pattern = 'jdcache', tmpdir = cacheDir, fileext = paste0('.', tools::file_ext(url)))
+  f = tempfileFn(pattern = filePattern, tmpdir = cacheDir, fileext = paste0('.', tools::file_ext(url)))
 
   # For each file
   for (i in 1:length(url)) {
