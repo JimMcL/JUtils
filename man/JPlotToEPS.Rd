@@ -41,7 +41,7 @@ file.}
 which doesn't exist, the directory will be created.}
 
 \item{cairo}{If TRUE, the \code{\link[grDevices]{cairo}} device is used,
-otherwise the \code{\link[grDevices]{postscript}} device is used.}
+otherwise the \code{\link[grDevices]{postscript}} device is used (see Details).}
 
 \item{...}{Any additional arguments are passed to
 \code{\link[grDevices]{postscript}} or \code{\link[grDevices]{cairo}}.}

@@ -256,7 +256,7 @@ JPlotToPDF <- function(filename, plotExpr,
 #' @param createDirectory If TRUE and \code{filename} is located in a directory
 #'   which doesn't exist, the directory will be created.
 #' @param cairo If TRUE, the \code{\link[grDevices]{cairo}} device is used,
-#'   otherwise the \code{\link[grDevices]{postscript}} device is used.
+#'   otherwise the \code{\link[grDevices]{postscript}} device is used (see Details).
 #' @param ... Any additional arguments are passed to
 #'   \code{\link[grDevices]{postscript}} or \code{\link[grDevices]{cairo}}.
 #'
