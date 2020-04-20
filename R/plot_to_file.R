@@ -231,7 +231,7 @@ JPlotToPDF <- function(filename, plotExpr,
 #' R provides two mechanisms (or 'graphics devices') for writing postscript: the
 #' standard device (\code{\link[grDevices]{postscript}}) and the Cairo device
 #' (\code{\link[grDevices]{cairo}}). The \code{cairo} device is an
-#' alternative implementation for writing postscript which handles transparency,
+#' alternative implementation for writing postscript that handles transparency,
 #' although it may output a raster bitmap rather than vector data to do so.
 #' Specify a value for the argument \code{fallback_resolution} to define the
 #' resolution of the bitmap. See \code{\link[grDevices]{cairo}} for details.
@@ -300,6 +300,63 @@ JPlotToEPS <- function(filename, plotExpr,
   })
 }
 
+#' Plot to an SVG file
+#'
+#' Writes the output of a plot to a SVG file. If you are using ggplot, try
+#' either using \code{JPlotToSVG(filename, print(<plotting code>))} or else
+#' \code{ggsave()}.
+#'
+#' @param filename The name of the SVG file to create or overwrite.
+#' @param plotExpr A function or expression which will produce the plot to be
+#'   written to the file.
+#' @param width The width of the output SVG file in \code{units}.
+#' @param height The height of the output SVG file in \code{units}. Defaults to
+#'   \code{width / aspectRatio}. If \code{height} is specified,
+#'   \code{aspectRatio} will be ignored.
+#' @param units Units of \code{width} and \code{height}.
+#' @param aspectRatio Aspect ratio (\code{width / height}) of the output EPS
+#'   file.
+#' @param bg Background colour - may be "transparent" for no background.
+#' @param family The font family to be used. Passed to
+#'   \code{\link[grDevices]{svg}}.
+#' @param onlyIfDoesntExist If TRUE and the output file already exists,
+#'   \code{JPlotToEPS} will do nothing.
+#' @param createDirectory If TRUE and \code{filename} is located in a directory
+#'   which doesn't exist, the directory will be created.
+#' @param ... Any additional arguments are passed to
+#'   \code{\link[grDevices]{svg}}.
+#'
+#' @return The result of evaluating \code{plotExpr} is returned invisibly (which
+#'   means it is not automatically printed).
+#'
+#' @seealso \code{\link[grDevices]{cairo}}
+#'
+#' @examples
+#'\dontrun{
+#' plotWithAlpha <- function() {
+#'     plot(1:3, type = 'l', lwd = 20, col = "#ffcc8888")
+#'     lines(3:1, lwd = 20, col = "#88ccff88")
+#' }
+#'
+#' JPlotToSVG(filename, plotWithAlpha)
+#'}
+#'
+#' @export
+JPlotToSVG <- function(filename, plotExpr,
+                       width = 180, height = NA, aspectRatio = 3 / 2,
+                       units =  c("mm", "cm", "in"),
+                       bg = "white",
+                       family = "Helvetica",
+                       onlyIfDoesntExist = FALSE,
+                       createDirectory = TRUE,
+                       ...) {
+  g <- .geometry(width, height, aspectRatio, 1, units, "in")
+
+  .JplotToDevice(filename, plotExpr, onlyIfDoesntExist, createDir = createDirectory, function () {
+      grDevices::svg(filename, width = g$width, height = g$height, bg = bg, family = family, ...)
+  })
+}
+
 #' Plot to files
 #'
 #' Writes the output of a plot to a file. The type of file is deduced from the
@@ -317,7 +374,7 @@ JPlotToEPS <- function(filename, plotExpr,
 #'   is not automatically printed).
 #'
 #' @seealso \code{\link{JPlotToPNG}}, \code{\link{JPlotToTIFF}},
-#'   \code{\link{JPlotToPDF}}, \code{\link{JPlotToEPS}}
+#'   \code{\link{JPlotToPDF}}, \code{\link{JPlotToEPS}}, \code{\link{JPlotToSVG}}
 #'
 #' @export
 JPlotToFile <- function(filenames, plotExpr, ...) {
@@ -327,7 +384,7 @@ JPlotToFile <- function(filenames, plotExpr, ...) {
       eps =  JPlotToEPS,
       ps =   JPlotToEPS,
       pdf =  JPlotToPDF,
-      #svg =  ,
+      svg =  JPlotToSVG,
       #emf =  ,
       #wmf =  ,
       png =  JPlotToPNG,

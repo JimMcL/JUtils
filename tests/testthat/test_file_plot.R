@@ -169,6 +169,18 @@ test_that("pdf plotting", {
   lines <- readLines(img, n=10)
 })
 
+test_that("svg plotting", {
+  .prepare()
+  width <- 180
+  height <- 120
+  units <- "mm"
+
+  img <- tf("test.svg")
+  JPlotToSVG(img, plotWigglyLines(), width = width, height = height, units = units)
+  expect_true(file.exists(img))
+  lines <- readLines(img, n=10)
+})
+
 test_that("eps plotting", {
   .prepare()
   width <- 180

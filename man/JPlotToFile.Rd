@@ -27,5 +27,5 @@ code>))} or \code{ggsave()}.
 }
 \seealso{
 \code{\link{JPlotToPNG}}, \code{\link{JPlotToTIFF}},
-  \code{\link{JPlotToPDF}}, \code{\link{JPlotToEPS}}
+  \code{\link{JPlotToPDF}}, \code{\link{JPlotToEPS}}, \code{\link{JPlotToSVG}}
 }

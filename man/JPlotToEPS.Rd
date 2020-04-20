@@ -59,7 +59,7 @@ either using \code{JPlotToEPS(filename, print(<plotting code>))} or else
 R provides two mechanisms (or 'graphics devices') for writing postscript: the
 standard device (\code{\link[grDevices]{postscript}}) and the Cairo device
 (\code{\link[grDevices]{cairo}}). The \code{cairo} device is an
-alternative implementation for writing postscript which handles transparency,
+alternative implementation for writing postscript that handles transparency,
 although it may output a raster bitmap rather than vector data to do so.
 Specify a value for the argument \code{fallback_resolution} to define the
 resolution of the bitmap. See \code{\link[grDevices]{cairo}} for details.
