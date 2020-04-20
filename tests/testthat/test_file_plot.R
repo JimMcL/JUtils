@@ -181,6 +181,17 @@ test_that("svg plotting", {
   lines <- readLines(img, n=10)
 })
 
+test_that("svg transparency", {
+  .prepare()
+
+  plotAlpha <- function() {
+    graphics::plot(1:3, type = 'l', lwd = 20, col = "#ffcc8888")
+    graphics::lines(3:1, lwd = 20, col = "#88ccff88")
+  }
+  f <- tf("test2.svg")
+  expect_silent(JPlotToSVG(f, plotAlpha))
+})
+
 test_that("eps plotting", {
   .prepare()
   width <- 180

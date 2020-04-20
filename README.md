@@ -57,6 +57,9 @@ then restart R, as described [here](https://cran.r-project.org/bin/macosx/RMacOS
     # Generate encapsulated postscript using the Cairo graphics device
     JPlotToEPS("test.eps", plot(1:10 + rnorm(10), type = "o"), cairo = TRUE, width = 18, units = "cm")
 
+    # Plot to a SVG file with width 180 mm, height 120 mm 
+    JPlotToSVG("test.svg", plot(1:10 + rnorm(10), type = "o"), width = 180, units = "mm")
+
     # JPlotToFile selects the file type based on the file name, then passes all of its arguments 
     # on to the appropriate JPlotTo* function. It can also plot to multiple files at once.
     JPlotToFile(c("test.png", "test.eps"), plot(1:10))
