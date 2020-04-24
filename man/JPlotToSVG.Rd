@@ -38,15 +38,16 @@ file.}
 which doesn't exist, the directory will be created.}
 
 \item{...}{Any additional arguments are passed to
-\code{\link[grDevices]{svg}}.}
+\code{\link[grDevices]{svg}}. These may be used to control text size
+(\code{pointsize}), font family (\code{family}) and so on.}
 }
 \value{
 The result of evaluating \code{plotExpr} is returned invisibly (which
-  means it is not automatically printed).
+ means it is not automatically printed).
 }
 \description{
-Writes the output of a plot to a SVG file. If you are using ggplot, try
-either using \code{JPlotToSVG(filename, print(<plotting code>))} or else
+Writes the output of a plot to a SVG file. If you are using ggplot, try either
+using \code{JPlotToSVG(filename, print(<plotting code>))} or else
 \code{ggsave()}.
 }
 \examples{

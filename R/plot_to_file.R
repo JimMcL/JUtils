@@ -302,32 +302,33 @@ JPlotToEPS <- function(filename, plotExpr,
 
 #' Plot to an SVG file
 #'
-#' Writes the output of a plot to a SVG file. If you are using ggplot, try
-#' either using \code{JPlotToSVG(filename, print(<plotting code>))} or else
+#' Writes the output of a plot to a SVG file. If you are using ggplot, try either
+#' using \code{JPlotToSVG(filename, print(<plotting code>))} or else
 #' \code{ggsave()}.
 #'
 #' @param filename The name of the SVG file to create or overwrite.
 #' @param plotExpr A function or expression which will produce the plot to be
-#'   written to the file.
+#'  written to the file.
 #' @param width The width of the output SVG file in \code{units}.
 #' @param height The height of the output SVG file in \code{units}. Defaults to
-#'   \code{width / aspectRatio}. If \code{height} is specified,
-#'   \code{aspectRatio} will be ignored.
+#'  \code{width / aspectRatio}. If \code{height} is specified,
+#'  \code{aspectRatio} will be ignored.
 #' @param units Units of \code{width} and \code{height}.
 #' @param aspectRatio Aspect ratio (\code{width / height}) of the output EPS
-#'   file.
+#'  file.
 #' @param bg Background colour - may be "transparent" for no background.
 #' @param family The font family to be used. Passed to
-#'   \code{\link[grDevices]{svg}}.
+#'  \code{\link[grDevices]{svg}}.
 #' @param onlyIfDoesntExist If TRUE and the output file already exists,
-#'   \code{JPlotToEPS} will do nothing.
+#'  \code{JPlotToEPS} will do nothing.
 #' @param createDirectory If TRUE and \code{filename} is located in a directory
-#'   which doesn't exist, the directory will be created.
+#'  which doesn't exist, the directory will be created.
 #' @param ... Any additional arguments are passed to
-#'   \code{\link[grDevices]{svg}}.
+#'  \code{\link[grDevices]{svg}}. These may be used to control text size
+#'  (\code{pointsize}), font family (\code{family}) and so on.
 #'
 #' @return The result of evaluating \code{plotExpr} is returned invisibly (which
-#'   means it is not automatically printed).
+#'  means it is not automatically printed).
 #'
 #' @seealso \code{\link[grDevices]{cairo}}
 #'
