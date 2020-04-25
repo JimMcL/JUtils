@@ -100,6 +100,21 @@ A raster image (i.e. a GIF of JPEG file) can be drawn to a plot using `graphics:
     JPlotRaster(img, x = 0, y = 0, width = 2)
     # Draw image with top-left corner at (2, 1)
     JPlotRaster(img, x = 2, y = 1, width = 2, position = "topleft")
+    
+### Plotting a list of probability densities
+
+Combines line plots of multiple densities into a single plot. This is an operation I perform fairly frequently, so this is here to simplify my life.
+
+    library("JUtils")
+    
+    # Get a list of densities from somewhere
+    data <- list(
+       normal = rnorm(100),
+       uniform = runif(50),
+       exponential = rexp(200))
+    densities <- lapply(data, density)
+    # Plot them all on a single plot
+    JPlotDensities(densities)
 
 ### Printing text to a file
 
