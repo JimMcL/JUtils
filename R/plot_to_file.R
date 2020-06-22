@@ -198,7 +198,8 @@ JPlotToTIFF <- function(filename, plotExpr,
 #' @param createDirectory If TRUE and \code{filename} is located in a directory
 #'   which doesn't exist, the directory will be created.
 #' @param ... Any additional arguments are passed to
-#'   \code{\link[grDevices]{pdf}}.
+#'   \code{\link[grDevices]{pdf}}, for example, text and font control parameters 
+#'   such as \code{pointsize} and \code{family}.
 #'
 #' @return The result of evaluating \code{plotExpr} is returned invisibly (which
 #'   means it is not automatically printed).
