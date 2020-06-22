@@ -1,23 +1,32 @@
 
-#' Plots a list of densities as optionally filled lines using base graphics
+#' Plot a list of densities
 #'
-#' Attempts to provide sensible defaults while allowing maximum flexibility.
+#' Plots a list of densities (as created by \code{\link[stats]{density}}).
+#' Plotting is performed using base graphics. Each density is drawn as a line,
+#' and optionally filled. Fill colours may be easily made transparent by
+#' specifying a value for \code{fillAlpha}. Attempts to provide sensible
+#' defaults while allowing maximum flexibility.
 #'
 #' @param densities List of densities to be plotted
 #' @param lineColours Vector of colours used to draw the lines. Defaults to the
-#'   rainbow palette.
-#' @param fillColours Vector of colours to fill the densitiy polygons. If not
+#'   rainbow palette (\code{\link[grDevices]{rainbow}}).
+#' @param fillColours Vector of colours to fill the density polygons. If not
 #'   specified or NULL, the polygons are not filled.
 #' @param fillAlpha If not NA (the default), should be an alpha value between 0
 #'   and 1. The alpha of the fill colours are multiplied by this value.
 #' @param lty Line style used to draw the lines.
 #' @param lwd Line width used to draw the lines.
-#' @param xlim Defines the graphical extents of the x-axis. Defaults to include all the density lines.
-#' @param ylim Defines the graphical extents of the y-axis. Defaults to include all the density lines.
-#' @param add If TRUE, the densities are added to an existing plot, otherwse a new plot is created.
+#' @param xlim Defines the graphical extents of the x-axis. Defaults to include
+#'   all the density lines.
+#' @param ylim Defines the graphical extents of the y-axis. Defaults to include
+#'   all the density lines.
+#' @param add If TRUE, the densities are added to an existing plot, otherwse a
+#'   new plot is created.
+#' @param ylab Y label, passed to \code{\link[graphics]{plot}}.
 #' @param ... Additional parameters are passed to \code{\link[graphics]{plot}}.
 #'
-#' @seealso \code{\link[stats]{density}}, \code{\link[RColorBrewer]{brewer.pal}}
+#' @seealso \code{\link[stats]{density}}, \code{\link[grDevices]{rainbow}},
+#'   \code{\link[RColorBrewer]{brewer.pal}}
 #'
 #' @examples
 #' data <- list(
@@ -28,7 +37,7 @@
 #' JPlotDensities(densities)
 #'
 #' @export
-JPlotDensities <- function(densities, lineColours = NULL, fillColours = NULL, fillAlpha = NA, lty = 1, lwd = 2, xlim = NULL, ylim = NULL, add = FALSE, ...) {
+JPlotDensities <- function(densities, lineColours = NULL, fillColours = NULL, fillAlpha = NA, lty = 1, lwd = 2, xlim = NULL, ylim = NULL, ylab = "Density", add = FALSE, ...) {
 
   .applyAlpha <- function(colour, alpha) {
     c <- grDevices::col2rgb(colour, alpha = TRUE) / 255
@@ -52,7 +61,7 @@ JPlotDensities <- function(densities, lineColours = NULL, fillColours = NULL, fi
       xlim <- range(lapply(densities, function(d) d$x), na.rm = TRUE)
     if (is.null(ylim))
       ylim <- range(lapply(densities, function(d) d$y), na.rm = TRUE)
-    graphics::plot(NULL, xlim = xlim, ylim = ylim, ...)
+    graphics::plot(NULL, xlim = xlim, ylim = ylim, ylab = ylab, ...)
   }
 
   # Optionally fill shapes first

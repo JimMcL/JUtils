@@ -2,19 +2,19 @@
 % Please edit documentation in R/plot_densities.R
 \name{JPlotDensities}
 \alias{JPlotDensities}
-\title{Plots a list of densities as optionally filled lines using base graphics}
+\title{Plot a list of densities}
 \usage{
 JPlotDensities(densities, lineColours = NULL, fillColours = NULL,
   fillAlpha = NA, lty = 1, lwd = 2, xlim = NULL, ylim = NULL,
-  add = FALSE, ...)
+  ylab = "Density", add = FALSE, ...)
 }
 \arguments{
 \item{densities}{List of densities to be plotted}
 
 \item{lineColours}{Vector of colours used to draw the lines. Defaults to the
-rainbow palette.}
+rainbow palette (\code{\link[grDevices]{rainbow}}).}
 
-\item{fillColours}{Vector of colours to fill the densitiy polygons. If not
+\item{fillColours}{Vector of colours to fill the density polygons. If not
 specified or NULL, the polygons are not filled.}
 
 \item{fillAlpha}{If not NA (the default), should be an alpha value between 0
@@ -24,16 +24,25 @@ and 1. The alpha of the fill colours are multiplied by this value.}
 
 \item{lwd}{Line width used to draw the lines.}
 
-\item{xlim}{Defines the graphical extents of the x-axis. Defaults to include all the density lines.}
+\item{xlim}{Defines the graphical extents of the x-axis. Defaults to include
+all the density lines.}
 
-\item{ylim}{Defines the graphical extents of the y-axis. Defaults to include all the density lines.}
+\item{ylim}{Defines the graphical extents of the y-axis. Defaults to include
+all the density lines.}
 
-\item{add}{If TRUE, the densities are added to an existing plot, otherwse a new plot is created.}
+\item{ylab}{Y label, passed to \code{\link[graphics]{plot}}.}
+
+\item{add}{If TRUE, the densities are added to an existing plot, otherwse a
+new plot is created.}
 
 \item{...}{Additional parameters are passed to \code{\link[graphics]{plot}}.}
 }
 \description{
-Attempts to provide sensible defaults while allowing maximum flexibility.
+Plots a list of densities (as created by \code{\link[stats]{density}}).
+Plotting is performed using base graphics. Each density is drawn as a line,
+and optionally filled. Fill colours may be easily made transparent by
+specifying a value for \code{fillAlpha}. Attempts to provide sensible
+defaults while allowing maximum flexibility.
 }
 \examples{
 data <- list(
@@ -45,5 +54,6 @@ JPlotDensities(densities)
 
 }
 \seealso{
-\code{\link[stats]{density}}, \code{\link[RColorBrewer]{brewer.pal}}
+\code{\link[stats]{density}}, \code{\link[grDevices]{rainbow}},
+  \code{\link[RColorBrewer]{brewer.pal}}
 }
