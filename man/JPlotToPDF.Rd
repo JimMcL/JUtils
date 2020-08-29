@@ -4,10 +4,20 @@
 \alias{JPlotToPDF}
 \title{Plot to a PDF file}
 \usage{
-JPlotToPDF(filename, plotExpr, width = 180, height = NA,
-  aspectRatio = 3/2, units = c("mm", "cm", "in"), bg = "white",
-  paper = "special", family = "Helvetica", onlyIfDoesntExist = FALSE,
-  createDirectory = TRUE, ...)
+JPlotToPDF(
+  filename,
+  plotExpr,
+  width = 180,
+  height = NA,
+  aspectRatio = 3/2,
+  units = c("mm", "cm", "in"),
+  bg = "white",
+  paper = "special",
+  family = "Helvetica",
+  onlyIfDoesntExist = FALSE,
+  createDirectory = TRUE,
+  ...
+)
 }
 \arguments{
 \item{filename}{The name of the PDF to create or overwrite.}
@@ -40,7 +50,8 @@ file.}
 which doesn't exist, the directory will be created.}
 
 \item{...}{Any additional arguments are passed to
-\code{\link[grDevices]{pdf}}.}
+\code{\link[grDevices]{pdf}}, for example, text and font control parameters 
+such as \code{pointsize} and \code{family}.}
 }
 \value{
 The result of evaluating \code{plotExpr} is returned invisibly (which

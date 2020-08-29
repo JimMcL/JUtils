@@ -4,9 +4,16 @@
 \alias{JPlotRaster}
 \title{Adds a raster image to a plot, preserving the image's aspect ratio.}
 \usage{
-JPlotRaster(img, x, y, width = NA, height = NA,
-  position = c("centre", "center", "bottomright", "bottom", "bottomleft",
-  "left", "topleft", "top", "topright", "right"), ...)
+JPlotRaster(
+  img,
+  x,
+  y,
+  width = NA,
+  height = NA,
+  position = c("centre", "center", "bottomright", "bottom", "bottomleft", "left",
+    "topleft", "top", "topright", "right"),
+  ...
+)
 }
 \arguments{
 \item{img}{Raster image, possibly created by calling

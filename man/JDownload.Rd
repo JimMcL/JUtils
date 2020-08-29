@@ -4,8 +4,14 @@
 \alias{JDownload}
 \title{Downloads one or more URLs and saves them to local files.}
 \usage{
-JDownload(url, tempfileFn = NULL, cacheDir = tempdir(),
-  filePattern = "jdcache", verbose = FALSE, debug = FALSE)
+JDownload(
+  url,
+  tempfileFn = NULL,
+  cacheDir = tempdir(),
+  filePattern = "jdcache",
+  verbose = FALSE,
+  debug = FALSE
+)
 }
 \arguments{
 \item{url}{Character vector specifying the URLs to be downloaded.}

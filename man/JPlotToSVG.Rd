@@ -4,10 +4,19 @@
 \alias{JPlotToSVG}
 \title{Plot to an SVG file}
 \usage{
-JPlotToSVG(filename, plotExpr, width = 180, height = NA,
-  aspectRatio = 3/2, units = c("mm", "cm", "in"), bg = "white",
-  family = "Helvetica", onlyIfDoesntExist = FALSE,
-  createDirectory = TRUE, ...)
+JPlotToSVG(
+  filename,
+  plotExpr,
+  width = 180,
+  height = NA,
+  aspectRatio = 3/2,
+  units = c("mm", "cm", "in"),
+  bg = "white",
+  family = "Helvetica",
+  onlyIfDoesntExist = FALSE,
+  createDirectory = TRUE,
+  ...
+)
 }
 \arguments{
 \item{filename}{The name of the SVG file to create or overwrite.}

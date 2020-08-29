@@ -4,8 +4,16 @@
 \alias{JAnimateGIF}
 \title{Combine multiple plots into an animated GIF file.}
 \usage{
-JAnimateGIF(nFrames = NULL, frameKeys = 1:nFrames, gifFileName, plotFn,
-  frameRate = 30, loop = 0, tmpDir = tempdir(TRUE), ...)
+JAnimateGIF(
+  nFrames = NULL,
+  frameKeys = 1:nFrames,
+  gifFileName,
+  plotFn,
+  frameRate = 30,
+  loop = 0,
+  tmpDir = tempdir(TRUE),
+  ...
+)
 }
 \arguments{
 \item{nFrames}{Number of frames to be generated. You must specify one of

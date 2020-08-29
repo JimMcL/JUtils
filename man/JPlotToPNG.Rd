@@ -4,10 +4,19 @@
 \alias{JPlotToPNG}
 \title{Plot to a PNG file}
 \usage{
-JPlotToPNG(filename, plotExpr, width = 180, height = NA,
-  aspectRatio = 3/2, units = c("mm", "cm", "px", "in"),
-  type = ifelse(capabilities()["cairo"], "cairo", NULL), res = 72,
-  onlyIfDoesntExist = FALSE, createDirectory = TRUE, ...)
+JPlotToPNG(
+  filename,
+  plotExpr,
+  width = 180,
+  height = NA,
+  aspectRatio = 3/2,
+  units = c("mm", "cm", "px", "in"),
+  type = ifelse(capabilities()["cairo"], "cairo", NULL),
+  res = 72,
+  onlyIfDoesntExist = FALSE,
+  createDirectory = TRUE,
+  ...
+)
 }
 \arguments{
 \item{filename}{The name of the PNG to create or overwrite.}

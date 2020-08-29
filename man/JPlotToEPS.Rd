@@ -4,10 +4,21 @@
 \alias{JPlotToEPS}
 \title{Plot to an EPS (encapsulated postscript) file}
 \usage{
-JPlotToEPS(filename, plotExpr, width = 180, height = NA,
-  aspectRatio = 3/2, units = c("mm", "cm", "in"), bg = "white",
-  paper = "special", family = "Helvetica", onlyIfDoesntExist = FALSE,
-  createDirectory = TRUE, cairo = FALSE, ...)
+JPlotToEPS(
+  filename,
+  plotExpr,
+  width = 180,
+  height = NA,
+  aspectRatio = 3/2,
+  units = c("mm", "cm", "in"),
+  bg = "white",
+  paper = "special",
+  family = "Helvetica",
+  onlyIfDoesntExist = FALSE,
+  createDirectory = TRUE,
+  cairo = FALSE,
+  ...
+)
 }
 \arguments{
 \item{filename}{The name of the EPS to create or overwrite.}
