@@ -4,9 +4,21 @@
 \alias{JPlotDensities}
 \title{Plot a list of densities}
 \usage{
-JPlotDensities(densities, lineColours = NULL, fillColours = NULL,
-  fillAlpha = NA, lty = 1, lwd = 2, xlim = NULL, ylim = NULL,
-  ylab = "Density", add = FALSE, ...)
+JPlotDensities(
+  densities,
+  lineColours = NULL,
+  fillColours = NULL,
+  fillAlpha = NA,
+  fillDensities = NA,
+  fillAngles = NA,
+  lty = 1,
+  lwd = 2,
+  xlim = NULL,
+  ylim = NULL,
+  ylab = "Density",
+  add = FALSE,
+  ...
+)
 }
 \arguments{
 \item{densities}{List of densities to be plotted}
@@ -19,6 +31,14 @@ specified or NULL, the polygons are not filled.}
 
 \item{fillAlpha}{If not NA (the default), should be an alpha value between 0
 and 1. The alpha of the fill colours are multiplied by this value.}
+
+\item{fillDensities}{If not NA (the default), density of shading lines used
+to fill polygons (passed as argument \code{density} to
+\code{\link[graphics]{polygon}}).}
+
+\item{fillAngles}{If not NA (the default), slope of shading lines used to
+fill polygons (passed as argument \code{angle} to
+\code{\link[graphics]{polygon}}).}
 
 \item{lty}{Line style used to draw the lines.}
 
@@ -55,5 +75,5 @@ JPlotDensities(densities)
 }
 \seealso{
 \code{\link[stats]{density}}, \code{\link[grDevices]{rainbow}},
-  \code{\link[RColorBrewer]{brewer.pal}}
+  \code{\link[RColorBrewer]{brewer.pal}}, \code{\link[graphics]{polygon}}
 }

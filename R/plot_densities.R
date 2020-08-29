@@ -14,6 +14,12 @@
 #'   specified or NULL, the polygons are not filled.
 #' @param fillAlpha If not NA (the default), should be an alpha value between 0
 #'   and 1. The alpha of the fill colours are multiplied by this value.
+#' @param fillDensities If not NA (the default), density of shading lines used
+#'   to fill polygons (passed as argument \code{density} to
+#'   \code{\link[graphics]{polygon}}).
+#' @param fillAngles If not NA (the default), slope of shading lines used to
+#'   fill polygons (passed as argument \code{angle} to
+#'   \code{\link[graphics]{polygon}}).
 #' @param lty Line style used to draw the lines.
 #' @param lwd Line width used to draw the lines.
 #' @param xlim Defines the graphical extents of the x-axis. Defaults to include
@@ -26,7 +32,7 @@
 #' @param ... Additional parameters are passed to \code{\link[graphics]{plot}}.
 #'
 #' @seealso \code{\link[stats]{density}}, \code{\link[grDevices]{rainbow}},
-#'   \code{\link[RColorBrewer]{brewer.pal}}
+#'   \code{\link[RColorBrewer]{brewer.pal}}, \code{\link[graphics]{polygon}}
 #'
 #' @examples
 #' data <- list(
@@ -37,7 +43,7 @@
 #' JPlotDensities(densities)
 #'
 #' @export
-JPlotDensities <- function(densities, lineColours = NULL, fillColours = NULL, fillAlpha = NA, lty = 1, lwd = 2, xlim = NULL, ylim = NULL, ylab = "Density", add = FALSE, ...) {
+JPlotDensities <- function(densities, lineColours = NULL, fillColours = NULL, fillAlpha = NA, fillDensities = NA, fillAngles = NA, lty = 1, lwd = 2, xlim = NULL, ylim = NULL, ylab = "Density", add = FALSE, ...) {
 
   .applyAlpha <- function(colour, alpha) {
     c <- grDevices::col2rgb(colour, alpha = TRUE) / 255
@@ -47,13 +53,15 @@ JPlotDensities <- function(densities, lineColours = NULL, fillColours = NULL, fi
   # Recycle parameters if they're not long enough
   lty <- rep(lty, length.out = length(densities))
   lwd <- rep(lwd, length.out = length(densities))
-
   # Provide reasonable default line colours
   if (is.null(lineColours)) {
     lineColours <- grDevices::rainbow(length(densities))
   }
   # Repeat colours if necessary
   lineColours <- rep(lineColours, length.out = length(densities))
+  # Repeat fill parameters
+  fillDensities <- rep(fillDensities, length.out = length(densities))
+  fillAngles <- rep(fillAngles, length.out = length(densities))
 
   # Create empty plot
   if (!add) {
@@ -72,7 +80,7 @@ JPlotDensities <- function(densities, lineColours = NULL, fillColours = NULL, fi
     i <- 1
     for(d in densities) {
       if (!is.na(fillColours[i]))
-        graphics::polygon(d, col = fillColours[i], border = NA)
+        graphics::polygon(d, col = fillColours[i], density = fillDensities[i], angle = fillAngles[i], border = NA)
       i <- i + 1
     }
   }

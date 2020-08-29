@@ -23,5 +23,10 @@ test_that("plotting densities", {
   JPlotToFile(img, JPlotDensities(densities, fillColours = grDevices::rainbow(3), fillAlpha = .3))
   # Just check that a file was created
   expect_true(file.exists(img))
+
+  # Fill with lines
+  JPlotToFile(img, JPlotDensities(densities, fillColours = grDevices::rainbow(3), fillAlpha = .3,
+                                  fillDensities = 20, fillAngles = c(-45, 0, 45)))
+  expect_true(file.exists(img))
 })
 
