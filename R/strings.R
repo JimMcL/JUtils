@@ -24,7 +24,7 @@ JToSentence <- function(v, sep = ", ", conjunction = " and ") {
   }
 }
 
-#' Captialises the first letter in a string.
+#' Capitalises the first letter in a string.
 #'
 #' Copied (and changed) from the doc for \code{toupper}.
 #'
