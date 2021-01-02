@@ -41,6 +41,8 @@
 #'   exponential = rexp(200))
 #' densities <- lapply(data, density)
 #' JPlotDensities(densities)
+#' # Display legend
+#' legend("topleft", c("Normal", "Uniform", "Exponential"), col = rainbow(3), lwd = 2)
 #'
 #' @export
 JPlotDensities <- function(densities, lineColours = NULL, fillColours = NULL, fillAlpha = NA, fillDensities = NA, fillAngles = NA, lty = 1, lwd = 2, xlim = NULL, ylim = NULL, ylab = "Density", add = FALSE, ...) {
@@ -92,4 +94,3 @@ JPlotDensities <- function(densities, lineColours = NULL, fillColours = NULL, fi
     i <- i + 1
   }
 }
-

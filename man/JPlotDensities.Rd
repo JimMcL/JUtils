@@ -71,6 +71,8 @@ data <- list(
   exponential = rexp(200))
 densities <- lapply(data, density)
 JPlotDensities(densities)
+# Display legend
+legend("topleft", c("Normal", "Uniform", "Exponential"), col = rainbow(3), lwd = 2)
 
 }
 \seealso{

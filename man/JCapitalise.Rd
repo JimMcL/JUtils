@@ -2,7 +2,7 @@
 % Please edit documentation in R/strings.R
 \name{JCapitalise}
 \alias{JCapitalise}
-\title{Captialises the first letter in a string.}
+\title{Capitalises the first letter in a string.}
 \usage{
 JCapitalise(s, strict = FALSE, collapse = NULL)
 }
