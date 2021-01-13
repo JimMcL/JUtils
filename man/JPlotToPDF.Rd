@@ -50,7 +50,7 @@ file.}
 which doesn't exist, the directory will be created.}
 
 \item{...}{Any additional arguments are passed to
-\code{\link[grDevices]{pdf}}, for example, text and font control parameters 
+\code{\link[grDevices]{pdf}}, for example, text and font control parameters
 such as \code{pointsize} and \code{family}.}
 }
 \value{
@@ -61,6 +61,9 @@ The result of evaluating \code{plotExpr} is returned invisibly (which
 Writes the output of a plot to a PDF file. If you are using ggplot, try
 either using \code{JPlotToPDF(filename, print(<plotting code>))} or else
 \code{ggsave()}.
+}
+\details{
+The \code{\link[grDevices]{pdf}} argument \code{pointsize} can be specified to control the resolution of the image (as can all other arguments to \code{pdf}.)
 }
 \seealso{
 \code{\link[grDevices]{pdf}}

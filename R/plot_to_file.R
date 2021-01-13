@@ -179,6 +179,8 @@ JPlotToTIFF <- function(filename, plotExpr,
 #' either using \code{JPlotToPDF(filename, print(<plotting code>))} or else
 #' \code{ggsave()}.
 #'
+#' The \code{\link[grDevices]{pdf}} argument \code{pointsize} can be specified to control the resolution of the image (as can all other arguments to \code{pdf}.)
+#'
 #' @param filename The name of the PDF to create or overwrite.
 #' @param plotExpr A function or expression which will produce the plot to be
 #'   written to the file.
@@ -198,7 +200,7 @@ JPlotToTIFF <- function(filename, plotExpr,
 #' @param createDirectory If TRUE and \code{filename} is located in a directory
 #'   which doesn't exist, the directory will be created.
 #' @param ... Any additional arguments are passed to
-#'   \code{\link[grDevices]{pdf}}, for example, text and font control parameters 
+#'   \code{\link[grDevices]{pdf}}, for example, text and font control parameters
 #'   such as \code{pointsize} and \code{family}.
 #'
 #' @return The result of evaluating \code{plotExpr} is returned invisibly (which
