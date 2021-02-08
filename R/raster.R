@@ -21,6 +21,14 @@
 #'   \code{x, y}.
 #' @param ... Additional arguments are passed on to \code{\link[graphics]{rasterImage}}.
 #'
+#' @examples
+#'\dontrun{
+#' plot(...)
+#' img <- readJPEG("myjpeg.jpg", native = TRUE)
+#' # Draw image centred on (0, 0)
+#' JPlotRaster(img, x = 0, y = 0, width = 2)
+#'}
+#'
 #' @export
 JPlotRaster <- function(img, x, y, width = NA, height = NA,
                         position = c("centre", "center", "bottomright", "bottom", "bottomleft", "left", "topleft", "top", "topright", "right"),

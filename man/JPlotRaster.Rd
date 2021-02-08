@@ -39,3 +39,12 @@ the x- and y-axes.}
 \description{
 Exactly one of \code{width} and \code{height} must be specified.
 }
+\examples{
+\dontrun{
+plot(...)
+img <- readJPEG("myjpeg.jpg", native = TRUE)
+# Draw image centred on (0, 0)
+JPlotRaster(img, x = 0, y = 0, width = 2)
+}
+
+}
