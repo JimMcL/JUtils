@@ -17,6 +17,11 @@
       }
     }
 
+    # If file name is NULL, just plot or print to screen
+    if (is.null(filename)) {
+      openDeviceFn <- closeDevFn <- identity
+    }
+
     openDeviceFn()
     result <- tryCatch({
       if (is.function(result <- plotExpr)) {
@@ -119,7 +124,7 @@ JPlotToPNG <- function(filename, plotExpr,
                        ...) {
   g <- .geometry(width, height, aspectRatio, res, units, c("mm", "cm", "px", "in"))
 
-  .JplotToDevice(filename, plotExpr, onlyIfDoesntExist, createDir = createDirectory, function () {
+  .JplotToDevice(filename, plotExpr, onlyIfDoesntExist, createDir = createDirectory, function() {
     grDevices::png(filename, width = g$width, height = g$height, units = g$units, type = type, res = res, ...)
   })
 }
@@ -168,7 +173,7 @@ JPlotToTIFF <- function(filename, plotExpr,
                         ...) {
   g <- .geometry(width, height, aspectRatio, res, units, c("mm", "cm", "px", "in"))
 
-  .JplotToDevice(filename, plotExpr, onlyIfDoesntExist, createDir = createDirectory, function () {
+  .JplotToDevice(filename, plotExpr, onlyIfDoesntExist, createDir = createDirectory, function() {
     grDevices::tiff(filename, width = g$width, height = g$height, units = g$units, type = type, res = res, ...)
   })
 }
@@ -220,7 +225,7 @@ JPlotToPDF <- function(filename, plotExpr,
                        ...) {
   g <- .geometry(width, height, aspectRatio, 1, units, "in")
 
-  .JplotToDevice(filename, plotExpr, onlyIfDoesntExist, createDir = createDirectory, function () {
+  .JplotToDevice(filename, plotExpr, onlyIfDoesntExist, createDir = createDirectory, function() {
     grDevices::pdf(filename, width = g$width, height = g$height, bg = bg, paper = paper, family = family, ...)
   })
 }
@@ -295,7 +300,7 @@ JPlotToEPS <- function(filename, plotExpr,
                        ...) {
   g <- .geometry(width, height, aspectRatio, 1, units, "in")
 
-  .JplotToDevice(filename, plotExpr, onlyIfDoesntExist, createDir = createDirectory, function () {
+  .JplotToDevice(filename, plotExpr, onlyIfDoesntExist, createDir = createDirectory, function() {
     if (cairo)
       grDevices::cairo_ps(filename, width = g$width, height = g$height, bg = bg, family = family, ...)
     else
@@ -356,7 +361,7 @@ JPlotToSVG <- function(filename, plotExpr,
                        ...) {
   g <- .geometry(width, height, aspectRatio, 1, units, "in")
 
-  .JplotToDevice(filename, plotExpr, onlyIfDoesntExist, createDir = createDirectory, function () {
+  .JplotToDevice(filename, plotExpr, onlyIfDoesntExist, createDir = createDirectory, function() {
       grDevices::svg(filename, width = g$width, height = g$height, bg = bg, family = family, ...)
   })
 }
@@ -442,7 +447,7 @@ JReportToFile <- function(filename, expr, createDirectory = TRUE) {
   options(width = 10000)
 
   .JplotToDevice(filename, expr, onlyIfDoesntExist = FALSE, createDir = createDirectory,
-                 openDeviceFn = function () { sink(filename) },
+                 openDeviceFn = function() { sink(filename) },
                  closeDevFn = sink)
 }
 
