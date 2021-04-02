@@ -298,10 +298,16 @@ test_that("No Width or height fails", {
 
 test_that("report to file", {
   .prepare()
-  f <- tf("test.png")
+  f <- tf("test.txt")
   JReportToFile(f, cat("Hello world!\n"))
   expect_true(file.exists(f))
   lines <- readLines(f)
+  expect_equal(lines, "Hello world!")
+})
+
+test_that("report to NULL file", {
+  .prepare()
+  lines <- capture.output(JReportToFile(NULL, cat("Hello world!\n")))
   expect_equal(lines, "Hello world!")
 })
 

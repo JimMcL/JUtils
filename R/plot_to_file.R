@@ -7,19 +7,19 @@
 .JplotToDevice <- function(filename, plotExpr, onlyIfDoesntExist, openDeviceFn, closeDevFn = grDevices::dev.off, createDir = TRUE) {
   if (!onlyIfDoesntExist || !file.exists(filename)) {
 
-    # If directory doesn't exist, either create it or stop with an error
-    if (!dir.exists(dirname(filename))) {
-      if (createDir) {
-        # cat(sprintf("\nAttempting to create '%s' (in %s)\n", dirname(filename), getwd()))
-        dir.create(dirname(filename), recursive = TRUE)
-      } else {
-        stop(sprintf("Unable to write file '%s' as directory '%s' does not exist", filename, dirname(filename)))
-      }
-    }
-
     # If file name is NULL, just plot or print to screen
     if (is.null(filename)) {
-      openDeviceFn <- closeDevFn <- identity
+      openDeviceFn <- closeDevFn <- function() {}
+    } else {
+      # If directory doesn't exist, either create it or stop with an error
+      if (!dir.exists(dirname(filename))) {
+        if (createDir) {
+          # cat(sprintf("\nAttempting to create '%s' (in %s)\n", dirname(filename), getwd()))
+          dir.create(dirname(filename), recursive = TRUE)
+        } else {
+          stop(sprintf("Unable to write file '%s' as directory '%s' does not exist", filename, dirname(filename)))
+        }
+      }
     }
 
     openDeviceFn()
@@ -78,7 +78,7 @@
 #' either using \code{JPlotToPNG(filename, print(<plotting code>))} or else
 #' \code{ggsave()}.
 #'
-#' @param filename The name of the PNG to create or overwrite.
+#' @param filename The name of the PNG to create or overwrite. If NULL, plot output goes to the current device.
 #' @param plotExpr A function or expression which will produce the plot to be
 #'   written to the file.
 #' @param width The width of the output PNG file in \code{units}.
@@ -135,7 +135,7 @@ JPlotToPNG <- function(filename, plotExpr,
 #' either using \code{JPlotToTIFF(filename, print(<plotting code>))} or else
 #' \code{ggsave()}.
 #'
-#' @param filename The name of the TIFF to create or overwrite.
+#' @param filename The name of the TIFF to create or overwrite. If NULL, plot output goes to the current device.
 #' @param plotExpr A function or expression which will produce the plot to be
 #'   written to the file.
 #' @param width The width of the output TIFF file in \code{units}.
@@ -186,7 +186,7 @@ JPlotToTIFF <- function(filename, plotExpr,
 #'
 #' The \code{\link[grDevices]{pdf}} argument \code{pointsize} can be specified to control the resolution of the image (as can all other arguments to \code{pdf}.)
 #'
-#' @param filename The name of the PDF to create or overwrite.
+#' @param filename The name of the PDF to create or overwrite. If NULL, plot output goes to the current device.
 #' @param plotExpr A function or expression which will produce the plot to be
 #'   written to the file.
 #' @param width The width of the output PDF file in \code{units}.
@@ -244,7 +244,7 @@ JPlotToPDF <- function(filename, plotExpr,
 #' Specify a value for the argument \code{fallback_resolution} to define the
 #' resolution of the bitmap. See \code{\link[grDevices]{cairo}} for details.
 #'
-#' @param filename The name of the EPS to create or overwrite.
+#' @param filename The name of the EPS to create or overwrite. If NULL, plot output goes to the current device.
 #' @param plotExpr A function or expression which will produce the plot to be
 #'   written to the file.
 #' @param width The width of the output EPS file in \code{units}.
@@ -314,7 +314,7 @@ JPlotToEPS <- function(filename, plotExpr,
 #' using \code{JPlotToSVG(filename, print(<plotting code>))} or else
 #' \code{ggsave()}.
 #'
-#' @param filename The name of the SVG file to create or overwrite.
+#' @param filename The name of the SVG file to create or overwrite. If NULL, plot output goes to the current device.
 #' @param plotExpr A function or expression which will produce the plot to be
 #'  written to the file.
 #' @param width The width of the output SVG file in \code{units}.
@@ -373,7 +373,7 @@ JPlotToSVG <- function(filename, plotExpr,
 #' graphics, try either using \code{JPlotToFile(filename, print(<plotting
 #' code>))} or \code{ggsave()}.
 #'
-#' @param filenames The names of one or more files to create or overwrite.
+#' @param filenames The names of one or more files to create or overwrite. If NULL, plot output goes to the current device.
 #' @param plotExpr A function or expression which will produce the plot to be
 #'   written to the file.
 #' @param ... Any additional arguments are passed to the appropriate function.
@@ -427,13 +427,15 @@ JPlotToFile <- function(filenames, plotExpr, ...) {
 #'
 #' Sends the text output of an arbitrary R expression or function to a text file.
 #'
-#' @param filename Name of the file to write to.
+#' @param filename Name of the file to write to. If NULL, output destination is unaffected by this function.
 #' @param expr An expression which outputs the text to be written.
 #' @param createDirectory If TRUE and \code{filename} is located in a directory
 #'   which doesn't exist, the directory will be created.
 #'
 #' @return The result of evaluating \code{plotExpr} is returned invisibly (which
 #'   means it is not automatically printed).
+#'
+#' @seealso \code{\link[utils]{capture.output}} for saving text output into a variable.
 #'
 #' @examples
 #' JReportToFile("test.txt", print("Hello world!"))
