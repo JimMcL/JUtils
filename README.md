@@ -70,7 +70,7 @@ By default, partial transparency cannot be used in postscript or PDF files. The 
 
 #### Postscript and embedded fonts
 
-Fonts are not embedded in PDF plot output. This may not matter if you specify a device-independent font family: `"sans"`, `"serif"` or `"mono"`. Otherwise, you can attempt to embed fonts using `grDevices::embedFonts`, or you can specify `cairo = TRUE` which uses the `grDevices::cairo_pdf` device which will convert to bitmapped text. Obviously this is a compromise solution. For a brief discussion of these issues, see https://hansjoerg.me/2018/02/15/font-embedding-for-latex-and-r-users/.
+Fonts are not embedded in PDF plot output. This may not matter if you specify a device-independent font family: `"sans"`, `"serif"` or `"mono"`. Otherwise, you can attempt to embed fonts using `grDevices::embedFonts` (requires [Ghostscript](https://www.ghostscript.com/) to be installed), or you can specify `cairo = TRUE` which uses the `grDevices::cairo_pdf` device which will convert to bitmapped text. Obviously this is a compromise solution. For a brief discussion of these issues, see https://hansjoerg.me/2018/02/15/font-embedding-for-latex-and-r-users/.
 
 #### Plotting on macOS
 
