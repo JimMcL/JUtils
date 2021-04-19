@@ -222,6 +222,7 @@ JPlotToTIFF <- function(filename, plotExpr,
 #' @param embedFonts If TRUE, \code{\link[grDevices]{embedFonts}} is called on
 #'   the file after creation. This is provided as a convenience. Ghostscript
 #'   must be installed and locatable (see \code{\link[grDevices]{embedFonts}}).
+#'   I \emph{think} this is unnecessary when using the Cairo PDF device.
 #' @param ... Any additional arguments are passed to
 #'   \code{\link[grDevices]{pdf}}, for example, text and font control parameters
 #'   such as \code{pointsize} and \code{family}.

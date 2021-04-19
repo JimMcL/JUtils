@@ -60,7 +60,8 @@ otherwise the \code{\link[grDevices]{pdf}} device is used (see Details).}
 
 \item{embedFonts}{If TRUE, \code{\link[grDevices]{embedFonts}} is called on
 the file after creation. This is provided as a convenience. Ghostscript
-must be installed and locatable (see \code{\link[grDevices]{embedFonts}}).}
+must be installed and locatable (see \code{\link[grDevices]{embedFonts}}).
+I \emph{think} this is unnecessary when using the Cairo PDF device.}
 
 \item{...}{Any additional arguments are passed to
 \code{\link[grDevices]{pdf}}, for example, text and font control parameters
