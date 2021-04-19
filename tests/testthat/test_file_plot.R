@@ -172,7 +172,7 @@ test_that("pdf plotting", {
   img <- tf("test2.pdf")
   JPlotToPDF(img, plotWigglyLines(), width = width, height = height, units = units, embedFonts = TRUE)
   expect_true(file.exists(img))
-  lines <- readLines(img, n = 6)
+  lines <- readLines(img, n = 3) # Don't get too many lines or there are embedded NULs that cause an error
 })
 
 test_that("svg plotting", {
