@@ -208,7 +208,8 @@ JPlotToTIFF <- function(filename, plotExpr,
 #'   file.
 #' @param bg Background colour - may be "transparent" for no background.
 #' @param paper Paper size, defaults to "special" which is the value it must
-#'   have if \code{width} and \code{height} are to be used.
+#'   have if \code{width} and \code{height} are to be used. Ignored if
+#'   \code{cairo} is \code{TRUE}.
 #' @param family The font family to be used. Consider using \code{"sans"},
 #'   \code{"serif"} and \code{"mono"} for consistent viewing results across
 #'   devices.
