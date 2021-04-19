@@ -255,7 +255,7 @@ JPlotToPDF <- function(filename, plotExpr,
 
   # Optionally embed fonts
   if (embedFonts) {
-    embedFonts(fileName)
+    embedFonts(filename)
   }
 
   r

@@ -166,7 +166,13 @@ test_that("pdf plotting", {
   img <- tf("test.pdf")
   JPlotToPDF(img, plotWigglyLines(), width = width, height = height, units = units)
   expect_true(file.exists(img))
-  lines <- readLines(img, n=10)
+  lines <- readLines(img, n = 10)
+
+  # Test embedding fonts. Only works if Ghostscript is installed
+  img <- tf("test2.pdf")
+  JPlotToPDF(img, plotWigglyLines(), width = width, height = height, units = units, embedFonts = TRUE)
+  expect_true(file.exists(img))
+  lines <- readLines(img, n = 6)
 })
 
 test_that("svg plotting", {
