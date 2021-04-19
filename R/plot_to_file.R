@@ -259,7 +259,7 @@ JPlotToPDF <- function(filename, plotExpr,
     embedFonts(filename)
   }
 
-  r
+  invisible(r)
 }
 
 #' Plot to an EPS (encapsulated postscript) file
