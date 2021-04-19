@@ -219,6 +219,9 @@ JPlotToTIFF <- function(filename, plotExpr,
 #'   which doesn't exist, the directory will be created.
 #' @param cairo If TRUE, the \code{\link[grDevices]{cairo_pdf}} device is used,
 #'   otherwise the \code{\link[grDevices]{pdf}} device is used (see Details).
+#' @param embedFonts If TRUE, \code{\link[grDevices]{embedFonts}} is called on
+#'   the file after creation. This is provided as a convenience. Ghostscript
+#'   must be installed and locatable (see \code{\link[grDevices]{embedFonts}}).
 #' @param ... Any additional arguments are passed to
 #'   \code{\link[grDevices]{pdf}}, for example, text and font control parameters
 #'   such as \code{pointsize} and \code{family}.
@@ -239,15 +242,23 @@ JPlotToPDF <- function(filename, plotExpr,
                        onlyIfDoesntExist = FALSE,
                        createDirectory = TRUE,
                        cairo = FALSE,
+                       embedFonts = FALSE,
                        ...) {
   g <- .geometry(width, height, aspectRatio, 1, units, "in")
 
-  .JplotToDevice(filename, plotExpr, onlyIfDoesntExist, createDir = createDirectory, function() {
+  r <- .JplotToDevice(filename, plotExpr, onlyIfDoesntExist, createDir = createDirectory, function() {
     if (cairo)
       grDevices::cairo_pdf(filename, width = g$width, height = g$height, bg = bg, family = family, ...)
     else
       grDevices::pdf(filename, width = g$width, height = g$height, bg = bg, paper = paper, family = family, ...)
   })
+
+  # Optionally embed fonts
+  if (embedFonts) {
+    embedFonts(fileName)
+  }
+
+  r
 }
 
 #' Plot to an EPS (encapsulated postscript) file
