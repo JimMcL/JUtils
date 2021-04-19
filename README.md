@@ -38,7 +38,7 @@ then restart R, as described [here](https://cran.r-project.org/bin/macosx/RMacOS
 
 ### Plotting to a file
 
-`JUtils` provides functions which wrap the standard R functions (from the core `grDevices` package) for plotting to files using base graphics. `JUtils`  provides more flexibility in specifying file sizes, and hides some of the more arcane aspects of the standard functions, yet still provides access to all of the underlying functionality. All functions accept any "real world" units (mm, cm & in). Raster functions (`JPlotToPNG` and `JPlotToTIFF`) also accept pixel ("px") units. For a nice discussion about printing issues in R, see (https://blog.revolutionanalytics.com/2009/01/10-tips-for-making-your-r-graphics-look-their-best.html).
+`JUtils` provides functions which wrap the standard R functions (from the core `grDevices` package) for plotting to files using base graphics. `JUtils`  provides more flexibility in specifying file sizes, and hides some of the more arcane aspects of the standard functions, yet still provides access to all of the underlying functionality. All functions accept any "real world" units (mm, cm & in). Raster functions (`JPlotToPNG` and `JPlotToTIFF`) also accept pixel ("px") units. For a nice discussion about printing issues in R, see https://blog.revolutionanalytics.com/2009/01/10-tips-for-making-your-r-graphics-look-their-best.html.
 
 
     library("JUtils")
@@ -67,6 +67,10 @@ then restart R, as described [here](https://cran.r-project.org/bin/macosx/RMacOS
 #### Transparency and Postscript
 
 By default, partial transparency cannot be used in postscript or PDF files. The compromise solution is to specify the arguments `cairo = TRUE, fallback_resolution = 600` to `JPlotToPDF` or `JPlotToEPS`. Use a fallback resolution that is appropriate for your needs. This is a compromise because a raster image is written to the file, so it is no longer infinitely scaleable. See the help for `JPlotToPDF` or `JPlotToEPS` for more information.
+
+#### Postscript and embedded fonts
+
+Fonts are not embedded in PDF plot output. This may not matter if you specify a device-independent font family: `"sans"`, `"serif"` or `"mono"`. Otherwise, you can attempt to embed fonts using `grDevices::embedFonts`, or you can specify `cairo = TRUE` which uses the `grDevices::cairo_pdf` device which will convert to bitmapped text. Obviously this is a compromise solution. For a brief discussion of these issues, see https://hansjoerg.me/2018/02/15/font-embedding-for-latex-and-r-users/.
 
 #### Plotting on macOS
 
