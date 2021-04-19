@@ -7,7 +7,7 @@
 JPlotToFile(filenames, plotExpr, ...)
 }
 \arguments{
-\item{filenames}{The names of one or more files to create or overwrite.}
+\item{filenames}{The names of one or more files to create or overwrite. If NULL, plot output goes to the current device.}
 
 \item{plotExpr}{A function or expression which will produce the plot to be
 written to the file.}

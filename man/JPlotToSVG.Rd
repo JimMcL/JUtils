@@ -19,7 +19,7 @@ JPlotToSVG(
 )
 }
 \arguments{
-\item{filename}{The name of the SVG file to create or overwrite.}
+\item{filename}{The name of the SVG file to create or overwrite. If NULL, plot output goes to the current device.}
 
 \item{plotExpr}{A function or expression which will produce the plot to be
 written to the file.}

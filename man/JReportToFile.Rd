@@ -7,7 +7,7 @@
 JReportToFile(filename, expr, createDirectory = TRUE)
 }
 \arguments{
-\item{filename}{Name of the file to write to.}
+\item{filename}{Name of the file to write to. If NULL, output destination is unaffected by this function.}
 
 \item{expr}{An expression which outputs the text to be written.}
 
@@ -24,4 +24,7 @@ Sends the text output of an arbitrary R expression or function to a text file.
 \examples{
 JReportToFile("test.txt", print("Hello world!"))
 
+}
+\seealso{
+\code{\link[utils]{capture.output}} for saving text output into a variable.
 }

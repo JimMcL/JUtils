@@ -184,9 +184,19 @@ JPlotToTIFF <- function(filename, plotExpr,
 #' either using \code{JPlotToPDF(filename, print(<plotting code>))} or else
 #' \code{ggsave()}.
 #'
-#' The \code{\link[grDevices]{pdf}} argument \code{pointsize} can be specified to control the resolution of the image (as can all other arguments to \code{pdf}.)
+#' The \code{\link[grDevices]{pdf}} argument \code{pointsize} can be specified
+#' to control the resolution of the image (as can all other arguments to
+#' \code{pdf}.)
 #'
-#' @param filename The name of the PDF to create or overwrite. If NULL, plot output goes to the current device.
+#' The pdf device does \emph{not} embed fonts in the pdf file. This probably
+#' does not matter if you use one of the device-independent font families,
+#' \code{"sans"}, \code{"serif"} and \code{"mono"}, because an appropriate (but
+#' not necessarily identical) font will be used by the viewer. Alternatively,
+#' specifying \code{cairo = TRUE} \emph{may} embed the font, although the
+#' documentation for \code{\link[grDevices]{cairo_pdf}} is confusing.
+#'
+#' @param filename The name of the PDF to create or overwrite. If NULL, plot
+#'   output goes to the current device.
 #' @param plotExpr A function or expression which will produce the plot to be
 #'   written to the file.
 #' @param width The width of the output PDF file in \code{units}.
@@ -197,13 +207,17 @@ JPlotToTIFF <- function(filename, plotExpr,
 #' @param aspectRatio Aspect ratio (\code{width / height}) of the output PDF
 #'   file.
 #' @param bg Background colour - may be "transparent" for no background.
-#' @param paper Paper size, defaults to "special" which is the value it must have if
-#'   \code{width} and \code{height} are to be used.
-#' @param family The font family to be used.
+#' @param paper Paper size, defaults to "special" which is the value it must
+#'   have if \code{width} and \code{height} are to be used.
+#' @param family The font family to be used. Consider using \code{"sans"},
+#'   \code{"serif"} and \code{"mono"} for consistent viewing results across
+#'   devices.
 #' @param onlyIfDoesntExist If TRUE and the output file already exists,
 #'   \code{JPlotToPDF} will do nothing.
 #' @param createDirectory If TRUE and \code{filename} is located in a directory
 #'   which doesn't exist, the directory will be created.
+#' @param cairo If TRUE, the \code{\link[grDevices]{cairo_pdf}} device is used,
+#'   otherwise the \code{\link[grDevices]{pdf}} device is used (see Details).
 #' @param ... Any additional arguments are passed to
 #'   \code{\link[grDevices]{pdf}}, for example, text and font control parameters
 #'   such as \code{pointsize} and \code{family}.
@@ -211,7 +225,8 @@ JPlotToTIFF <- function(filename, plotExpr,
 #' @return The result of evaluating \code{plotExpr} is returned invisibly (which
 #'   means it is not automatically printed).
 #'
-#' @seealso \code{\link[grDevices]{pdf}}
+#' @seealso \code{\link[grDevices]{pdf}}, \code{\link[grDevices]{cairo_pdf}},
+#'   \code{\link[grDevices]{embedFonts}}
 #'
 #' @export
 JPlotToPDF <- function(filename, plotExpr,
@@ -222,11 +237,15 @@ JPlotToPDF <- function(filename, plotExpr,
                        family = "Helvetica",
                        onlyIfDoesntExist = FALSE,
                        createDirectory = TRUE,
+                       cairo = FALSE,
                        ...) {
   g <- .geometry(width, height, aspectRatio, 1, units, "in")
 
   .JplotToDevice(filename, plotExpr, onlyIfDoesntExist, createDir = createDirectory, function() {
-    grDevices::pdf(filename, width = g$width, height = g$height, bg = bg, paper = paper, family = family, ...)
+    if (cairo)
+      grDevices::cairo_pdf(filename, width = g$width, height = g$height, bg = bg, family = family, ...)
+    else
+      grDevices::pdf(filename, width = g$width, height = g$height, bg = bg, paper = paper, family = family, ...)
   })
 }
 

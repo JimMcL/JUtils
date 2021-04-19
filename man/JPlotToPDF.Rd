@@ -16,11 +16,13 @@ JPlotToPDF(
   family = "Helvetica",
   onlyIfDoesntExist = FALSE,
   createDirectory = TRUE,
+  cairo = FALSE,
   ...
 )
 }
 \arguments{
-\item{filename}{The name of the PDF to create or overwrite.}
+\item{filename}{The name of the PDF to create or overwrite. If NULL, plot
+output goes to the current device.}
 
 \item{plotExpr}{A function or expression which will produce the plot to be
 written to the file.}
@@ -38,16 +40,21 @@ file.}
 
 \item{bg}{Background colour - may be "transparent" for no background.}
 
-\item{paper}{Paper size, defaults to "special" which is the value it must have if
-\code{width} and \code{height} are to be used.}
+\item{paper}{Paper size, defaults to "special" which is the value it must
+have if \code{width} and \code{height} are to be used.}
 
-\item{family}{The font family to be used.}
+\item{family}{The font family to be used. Consider using \code{"sans"},
+\code{"serif"} and \code{"mono"} for consistent viewing results across
+devices.}
 
 \item{onlyIfDoesntExist}{If TRUE and the output file already exists,
 \code{JPlotToPDF} will do nothing.}
 
 \item{createDirectory}{If TRUE and \code{filename} is located in a directory
 which doesn't exist, the directory will be created.}
+
+\item{cairo}{If TRUE, the \code{\link[grDevices]{cairo_pdf}} device is used,
+otherwise the \code{\link[grDevices]{pdf}} device is used (see Details).}
 
 \item{...}{Any additional arguments are passed to
 \code{\link[grDevices]{pdf}}, for example, text and font control parameters
@@ -63,8 +70,18 @@ either using \code{JPlotToPDF(filename, print(<plotting code>))} or else
 \code{ggsave()}.
 }
 \details{
-The \code{\link[grDevices]{pdf}} argument \code{pointsize} can be specified to control the resolution of the image (as can all other arguments to \code{pdf}.)
+The \code{\link[grDevices]{pdf}} argument \code{pointsize} can be specified
+to control the resolution of the image (as can all other arguments to
+\code{pdf}.)
+
+The pdf device does \emph{not} embed fonts in the pdf file. This probably
+does not matter if you use one of the device-independent font families,
+\code{"sans"}, \code{"serif"} and \code{"mono"}, because an appropriate (but
+not necessarily identical) font will be used by the viewer. Alternatively,
+specifying \code{cairo = TRUE} \emph{may} embed the font, although the
+documentation for \code{\link[grDevices]{cairo_pdf}} is confusing.
 }
 \seealso{
-\code{\link[grDevices]{pdf}}
+\code{\link[grDevices]{pdf}}, \code{\link[grDevices]{cairo_pdf}},
+  \code{\link[grDevices]{embedFonts}}
 }
