@@ -5,6 +5,10 @@ sudo: false
 cache: packages
 r_packages:
   - covr
+addons:
+    apt:
+        packages:
+        - ghostscript
 
 after_failure:
   - cat /home/travis/build/JimMcL/JUtils/JUtils.Rcheck/00check.log
