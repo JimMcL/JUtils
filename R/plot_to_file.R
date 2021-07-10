@@ -78,7 +78,8 @@
 #' either using \code{JPlotToPNG(filename, print(<plotting code>))} or else
 #' \code{ggsave()}.
 #'
-#' @param filename The name of the PNG to create or overwrite. If NULL, plot output goes to the current device.
+#' @param filename The name of the PNG to create or overwrite. If NULL, plot
+#'   output goes to the current device.
 #' @param plotExpr A function or expression which will produce the plot to be
 #'   written to the file.
 #' @param width The width of the output PNG file in \code{units}.
@@ -87,7 +88,8 @@
 #'   \code{aspectRatio} will be ignored.
 #' @param aspectRatio Aspect ratio (\code{width / height}) of the output PNG
 #'   file.
-#' @param units Units of \code{width} and \code{height}.
+#' @param units Units of \code{width} and \code{height}. Note that defaults
+#'   units are pixels (\code{px}).
 #' @param type Plotting device - defaults to "cairo" if that is an available
 #'   device since it produces nicer looking graphics.
 #' @param res The nominal resolution in ppi. The value is passed in to
@@ -116,7 +118,7 @@
 #' @export
 JPlotToPNG <- function(filename, plotExpr,
                        width = 180, height = NA, aspectRatio = 3 / 2,
-                       units = c("mm", "cm", "px", "in"),
+                       units = c("px", "mm", "cm", "in"),
                        type = ifelse(capabilities()["cairo"], 'cairo', NULL),
                        res = 72,
                        onlyIfDoesntExist = FALSE,
