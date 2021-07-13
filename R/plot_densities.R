@@ -26,9 +26,11 @@
 #'   all the density lines.
 #' @param ylim Defines the graphical extents of the y-axis. Defaults to include
 #'   all the density lines.
-#' @param add If TRUE, the densities are added to an existing plot, otherwse a
+#' @param add If TRUE, the densities are added to an existing plot, otherwise a
 #'   new plot is created.
 #' @param ylab Y label, passed to \code{\link[graphics]{plot}}.
+#' @param legendLabels Optional vector of characters. If specified, a legend will be added to the plot.
+#' @param legendPos Position of optional legend.
 #' @param ... Additional parameters are passed to \code{\link[graphics]{plot}}.
 #'
 #' @seealso \code{\link[stats]{density}}, \code{\link[grDevices]{rainbow}},
@@ -45,7 +47,8 @@
 #' legend("topleft", c("Normal", "Uniform", "Exponential"), col = rainbow(3), lwd = 2)
 #'
 #' @export
-JPlotDensities <- function(densities, lineColours = NULL, fillColours = NULL, fillAlpha = NA, fillDensities = NA, fillAngles = NA, lty = 1, lwd = 2, xlim = NULL, ylim = NULL, ylab = "Density", add = FALSE, ...) {
+JPlotDensities <- function(densities, lineColours = NULL, fillColours = NULL, fillAlpha = NA, fillDensities = NA, fillAngles = NA, lty = 1, lwd = 2, xlim = NULL, ylim = NULL, ylab = "Density", add = FALSE,
+                           legendLabels, legendPos = "topleft", ...) {
 
   .applyAlpha <- function(colour, alpha) {
     c <- grDevices::col2rgb(colour, alpha = TRUE) / 255
@@ -80,7 +83,7 @@ JPlotDensities <- function(densities, lineColours = NULL, fillColours = NULL, fi
       fillColours <- .applyAlpha(fillColours, fillAlpha)
     fillColours <- rep(fillColours, length.out = length(densities))
     i <- 1
-    for(d in densities) {
+    for (d in densities) {
       if (!is.na(fillColours[i]))
         graphics::polygon(d, col = fillColours[i], density = fillDensities[i], angle = fillAngles[i], border = NA)
       i <- i + 1
@@ -89,8 +92,14 @@ JPlotDensities <- function(densities, lineColours = NULL, fillColours = NULL, fi
 
   # Plot densities as lines
   i <- 1
-  for(d in densities) {
+  for (d in densities) {
     graphics::lines(d, col = lineColours[i], lty = lty[i], lwd = lwd[i])
     i <- i + 1
   }
+
+  # Optional legend
+  if (!missing("legendLabels") && !is.null(legendLabels)) {
+    legend(legendPos, legendLabels, col = lineColours, lty = lty, lwd = lwd)
+  }
+
 }

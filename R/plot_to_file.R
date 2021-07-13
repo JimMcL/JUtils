@@ -117,7 +117,7 @@
 #'
 #' @export
 JPlotToPNG <- function(filename, plotExpr,
-                       width = 180, height = NA, aspectRatio = 3 / 2,
+                       width = 600, height = NA, aspectRatio = 3 / 2,
                        units = c("px", "mm", "cm", "in"),
                        type = ifelse(capabilities()["cairo"], 'cairo', NULL),
                        res = 72,

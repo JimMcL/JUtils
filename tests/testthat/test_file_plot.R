@@ -102,13 +102,14 @@ test_that("png plotting in mm", {
   .prepare()
   width <- 180
   res <- 300 # in ppi
+  units <- "mm"
   # Default height, aspect ratio and units
   expectHeight <- 180 / (3 / 2)
 
   .mmToPixels <- function(x) floor(.mmToInches(x) * res)
 
   img <- tf("test.png")
-  JPlotToPNG(img, plotWigglyLines(), width = width, res = res)
+  JPlotToPNG(img, plotWigglyLines(), units = units, width = width, res = res)
   expect_true(file.exists(img))
   png <- readPNG(img, native = TRUE, info = TRUE)
   info <- attr(png, "info")

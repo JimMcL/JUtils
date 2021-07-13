@@ -118,7 +118,7 @@ Combines line plots of multiple densities into a single plot. This is an operati
        exponential = rexp(200))
     densities <- lapply(data, density)
     # Plot them all on a single plot
-    JPlotDensities(densities)
+    JPlotDensities(densities, legendLabels = c("Normal", "Uniform", "Exponential"))
 
 ### Printing text to a file
 

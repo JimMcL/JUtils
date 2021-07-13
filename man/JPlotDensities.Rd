@@ -17,6 +17,8 @@ JPlotDensities(
   ylim = NULL,
   ylab = "Density",
   add = FALSE,
+  legendLabels,
+  legendPos = "topleft",
   ...
 )
 }
@@ -52,8 +54,12 @@ all the density lines.}
 
 \item{ylab}{Y label, passed to \code{\link[graphics]{plot}}.}
 
-\item{add}{If TRUE, the densities are added to an existing plot, otherwse a
+\item{add}{If TRUE, the densities are added to an existing plot, otherwise a
 new plot is created.}
+
+\item{legendLabels}{Optional vector of characters. If specified, a legend will be added to the plot.}
+
+\item{legendPos}{Position of optional legend.}
 
 \item{...}{Additional parameters are passed to \code{\link[graphics]{plot}}.}
 }

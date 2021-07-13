@@ -7,7 +7,7 @@
 JPlotToPNG(
   filename,
   plotExpr,
-  width = 180,
+  width = 600,
   height = NA,
   aspectRatio = 3/2,
   units = c("px", "mm", "cm", "in"),
