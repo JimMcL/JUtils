@@ -132,7 +132,7 @@ JAnimateGIF <- function(nFrames = NULL, frameKeys = 1:nFrames, gifFileName, plot
 
   # Delete temporary pngs
   file.remove(pngs)
-  unlink(subDir)
+  unlink(subDir, recursive = TRUE)
 
   if (identical(result, character(0)))
     invisible(result)
