@@ -38,7 +38,7 @@ file.}
 
 \item{tmpDir}{Name of a directory to be used to create temporary files in.}
 
-\item{...}{Any additional arguments are passed to the \code{JPlotToPNG}
+\item{...}{Any additional arguments are passed to the \code{\link{JPlotToPNG}}
 function.}
 }
 \value{
@@ -89,4 +89,7 @@ nFrames <- 50
 JAnimateGIF(nFrames, gifFileName = "poly.gif", plotFn = .plotPoly, frameRate = 10)
 }
 
+}
+\seealso{
+\code{\link{JPlotToPNG}}
 }

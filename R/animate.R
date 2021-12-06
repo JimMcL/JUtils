@@ -38,11 +38,13 @@
 #'  file.
 #' @param loop Number of times animation should be played. 0 means loop infinitely.
 #' @param tmpDir Name of a directory to be used to create temporary files in.
-#' @param ... Any additional arguments are passed to the \code{JPlotToPNG}
+#' @param ... Any additional arguments are passed to the \code{\link{JPlotToPNG}}
 #'  function.
 #'
 #' @return The error message (as a character vector) from the ImageMack convert
 #'  command, or \code{character(0)} (returned invisibly) on success.
+#'
+#' @seealso \code{\link{JPlotToPNG}}
 #'
 #' @examples
 #'\dontrun{
