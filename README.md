@@ -38,7 +38,7 @@ then restart R, as described [here](https://cran.r-project.org/bin/macosx/RMacOS
 
 ### Plotting to a file
 
-`JUtils` provides functions which wrap the standard R functions (from the core `grDevices` package) for plotting to files using base graphics. `JUtils`  provides more flexibility in specifying file sizes, and hides some of the more arcane aspects of the standard functions, yet still provides access to all of the underlying functionality. All functions accept any "real world" units (mm, cm & in). Raster functions (`JPlotToPNG` and `JPlotToTIFF`) also accept pixel ("px") units. For a nice discussion about printing issues in R, see https://blog.revolutionanalytics.com/2009/01/10-tips-for-making-your-r-graphics-look-their-best.html.
+`JUtils` provides functions which wrap the standard R functions (from the core `grDevices` package) for plotting to files using base graphics. `JUtils`  provides more flexibility in specifying file sizes, and hides some of the more arcane aspects of the standard functions, yet still provides access to all of the underlying functionality. All functions accept any "real world" units (mm, cm & in). Raster functions (`JPlotToPNG`, `JPlotToJPEG` and `JPlotToTIFF`) also accept pixel ("px") units. For a nice discussion about printing issues in R, see https://blog.revolutionanalytics.com/2009/01/10-tips-for-making-your-r-graphics-look-their-best.html.
 
 
     library("JUtils")
@@ -47,6 +47,9 @@ then restart R, as described [here](https://cran.r-project.org/bin/macosx/RMacOS
     # (i.e. height / aspectRatio which defaults to (3 / 2)), resolution 300 ppi.
     # This results in a PNG file with size 2125x1417 pixels
     JPlotToPNG("test.png", plot(1:10 + rnorm(10), type = "o"), width = 180, units = "mm", res = 300)
+    
+    # Plot to JPEG, with image dimensions specified in pixels
+    JPlotToTIFF("test.jpg", plot(1:10 + rnorm(10), type = "o"), width = 1800, height = 1200, units = "px") 
     
     # Plot to TIFF, with image dimensions specified in pixels
     JPlotToTIFF("test.tiff", plot(1:10 + rnorm(10), type = "o"), width = 1800, height = 1200, units = "px") 

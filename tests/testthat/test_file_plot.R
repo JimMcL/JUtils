@@ -1,7 +1,8 @@
 context("Plot to file")
 #library(JUtils)
 library(png)
-library(tiff)
+suppressWarnings(library(jpeg))
+suppressWarnings(library(tiff))
 
 .mmToInches <- function(x) (x / 25.4)
 .cmToInches <- function(x) (x / 2.54)
@@ -139,6 +140,23 @@ test_that("png plotting in in", {
   expect_equal(info$dpi[2], res, tolerance = .1)
 })
 
+test_that("jpeg plotting", {
+  .prepare()
+  width <- 180
+  height <- 120
+  units <- "mm"
+  res <- 72 # in ppi
+
+  .mmToPixels <- function(x) floor(.mmToInches(x) * res)
+
+  img <- tf("test.jpg")
+  JPlotToJPEG(img, plotWigglyLines(), width = width, height = height, res = res, units = units)
+  expect_true(file.exists(img))
+  jpg <- readJPEG(img, native = TRUE)
+  expect_equal(attr(jpg, "dim")[2], .mmToPixels(width))
+  expect_equal(attr(jpg, "dim")[1], .mmToPixels(height))
+})
+
 test_that("tiff plotting", {
   .prepare()
   width <- 180
@@ -151,11 +169,11 @@ test_that("tiff plotting", {
   img <- tf("test.tif")
   JPlotToTIFF(img, plotWigglyLines(), width = width, height = height, res = res, units = units)
   expect_true(file.exists(img))
-  tiff <- readTIFF(img, native = TRUE, info = TRUE)
-  expect_equal(attr(tiff, "dim")[2], .mmToPixels(width))
-  expect_equal(attr(tiff, "dim")[1], .mmToPixels(height))
-  expect_equal(attr(tiff, "x.resolution"), res, tolerance = .1)
-  expect_equal(attr(tiff, "y.resolution"), res, tolerance = .1)
+  jpg <- readTIFF(img, native = TRUE, info = TRUE)
+  expect_equal(attr(jpg, "dim")[2], .mmToPixels(width))
+  expect_equal(attr(jpg, "dim")[1], .mmToPixels(height))
+  expect_equal(attr(jpg, "x.resolution"), res, tolerance = .1)
+  expect_equal(attr(jpg, "y.resolution"), res, tolerance = .1)
 })
 
 test_that("pdf plotting", {

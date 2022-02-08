@@ -131,6 +131,65 @@ JPlotToPNG <- function(filename, plotExpr,
   })
 }
 
+#' Plot to a JPEG file
+#'
+#' Writes the output of a plot to a JPEG file. If you are using ggplot, try
+#' either using \code{JPlotToJPEG(filename, print(<plotting code>))} or else
+#' \code{ggsave()}.
+#'
+#' @param filename The name of the JPEG to create or overwrite. If NULL, plot
+#'   output goes to the current device.
+#' @param plotExpr A function or expression which will produce the plot to be
+#'   written to the file.
+#' @param width The width of the output JPEG file in \code{units}.
+#' @param height The height of the output JPEG file in \code{units}. Defaults to
+#'   \code{width / aspectRatio}. If \code{height} is specified,
+#'   \code{aspectRatio} will be ignored.
+#' @param aspectRatio Aspect ratio (\code{width / height}) of the output JPEG
+#'   file.
+#' @param units Units of \code{width} and \code{height}. Note that defaults
+#'   units are pixels (\code{px}).
+#' @param type Plotting device - defaults to "cairo" if that is an available
+#'   device since it produces nicer looking graphics.
+#' @param res The nominal resolution in ppi. The value is passed in to
+#'   \code{\link[grDevices]{jpeg}}. Increasing the resolution will increase the
+#'   size (in pixels) of the text and graph elements.
+#' @param onlyIfDoesntExist If TRUE and the output file already exists,
+#'   \code{JPlotToJPEG} will do nothing.
+#' @param createDirectory If TRUE and \code{filename} is located in a directory
+#'   which doesn't exist, the directory will be created.
+#' @param ... Any additional arguments are passed to
+#'   \code{\link[grDevices]{jpeg}}.
+#'
+#' @return The result of evaluating \code{plotExpr} is returned invisibly (which
+#'   means it is not automatically printed).
+#'
+#' @seealso \code{\link[grDevices]{jpeg}}
+#'
+#' @examples
+#' JPlotToJPEG("test.jpg", plot(rnorm(50), type = 'l', main = 'Wiggly line'))
+#'
+#' # Plot to a JPEG file with width 180 mm, height 120 mm
+#' # (i.e. height / aspectRatio which defaults to (3 / 2)), resolution 300 ppi.
+#' # This results in a JPEG file with size 2125x1417 pixels
+#' JPlotToJPEG("test.jpg", plot(1:10 + rnorm(10), type = "o"), width = 180, units = "mm", res = 300)
+#'
+#' @export
+JPlotToJPEG <- function(filename, plotExpr,
+                       width = 600, height = NA, aspectRatio = 3 / 2,
+                       units = c("px", "mm", "cm", "in"),
+                       type = ifelse(capabilities()["cairo"], 'cairo', NULL),
+                       res = 72,
+                       onlyIfDoesntExist = FALSE,
+                       createDirectory = TRUE,
+                       ...) {
+  g <- .geometry(width, height, aspectRatio, res, units, c("mm", "cm", "px", "in"))
+
+  .JplotToDevice(filename, plotExpr, onlyIfDoesntExist, createDir = createDirectory, function() {
+    grDevices::jpeg(filename, width = g$width, height = g$height, units = g$units, type = type, res = res, ...)
+  })
+}
+
 #' Plot to a TIFF file
 #'
 #' Writes the output of a plot to a TIFF file. If you are using ggplot, try
@@ -431,8 +490,8 @@ JPlotToFile <- function(filenames, plotExpr, ...) {
       #emf =  ,
       #wmf =  ,
       png =  JPlotToPNG,
-      #jpg =  JPlotToJpeg,
-      #jpeg = JPlotToJpeg,
+      jpg =  JPlotToJPEG,
+      jpeg = JPlotToJPEG,
       #bmp =  JPlotToBMP,
       tif = JPlotToTIFF,
       tiff = JPlotToTIFF
