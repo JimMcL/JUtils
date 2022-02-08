@@ -1,4 +1,4 @@
-[![Travis-CI Build Status](https://travis-ci.org/JimMcL/JUtils.svg?branch=master)](https://travis-ci.org/JimMcL/JUtils)
+[![Travis-CI Build Status](https://travis-ci.com/JimMcL/JUtils.svg?branch=master)](https://travis-ci.org/JimMcL/JUtils)
 [![codecov](https://codecov.io/gh/JimMcL/JUtils/branch/master/graph/badge.svg)](https://codecov.io/gh/JimMcL/JUtils)
 
 # JUtils
