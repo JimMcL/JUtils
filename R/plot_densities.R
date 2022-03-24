@@ -99,7 +99,7 @@ JPlotDensities <- function(densities, lineColours = NULL, fillColours = NULL, fi
 
   # Optional legend
   if (!missing("legendLabels") && !is.null(legendLabels)) {
-    legend(legendPos, legendLabels, col = lineColours, lty = lty, lwd = lwd)
+    graphics::legend(legendPos, legendLabels, col = lineColours, lty = lty, lwd = lwd)
   }
 
 }

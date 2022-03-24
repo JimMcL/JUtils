@@ -26,5 +26,5 @@ JReportToFile("test.txt", print("Hello world!"))
 
 }
 \seealso{
-\code{\link[utils]{capture.output}} for saving text output into a variable.
+\code{\link{sink}}, \code{\link[utils]{capture.output}} for saving text output into a variable.
 }

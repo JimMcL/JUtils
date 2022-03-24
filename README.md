@@ -12,9 +12,11 @@ R utilities to simplify some common operations.
   * [Plotting to a file](#plotting-to-a-file)
   * [Creating an animation](#creating-an-animation)
   * [Adding a raster image to a plot](#adding-a-raster-image-to-a-plot)
+  * [Plotting a list of probability densities](#plotting-a-list-of-probability-densities)
   * [Printing text to a file](#printing-text-to-a-file)
   * [Downloading files](#downloading-files)
   * [String functions](#string-functions)
+  * [Progress bar](#progress-bar)
 
 ## Installation
 JUtils is not available on CRAN, so it must be installed from Github.
@@ -160,3 +162,19 @@ Capitalise a string or set of words.
     # => [1] "The quick brown fox"
     print(JCapWords("the quick brown fox"))
     # => [1] "The Quick Brown Fox"
+
+
+### Progress bar
+
+Displays a progress bar that estimates time to completion based on the timing of tasks so far. The progress bar can be displayed as text written to the console, as a TCL popup or a Windows popup.
+
+    n <- 20
+    pb <- JBuildProgressBar("win", numItems = n, title = "Progress")
+    for (i in 1:n) {
+      # Execute slow task
+      Sys.sleep(runif(1, max = 1))
+      # Update progress bar
+      pb()
+    }
+    # Optionally force close in case there weren't as many items as we expected
+    pb(close = TRUE)

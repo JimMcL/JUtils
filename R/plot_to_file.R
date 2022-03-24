@@ -528,7 +528,7 @@ JPlotToFile <- function(filenames, plotExpr, ...) {
 #' @return The result of evaluating \code{plotExpr} is returned invisibly (which
 #'   means it is not automatically printed).
 #'
-#' @seealso \code{\link[utils]{capture.output}} for saving text output into a variable.
+#' @seealso \code{\link{sink}}, \code{\link[utils]{capture.output}} for saving text output into a variable.
 #'
 #' @examples
 #' JReportToFile("test.txt", print("Hello world!"))
