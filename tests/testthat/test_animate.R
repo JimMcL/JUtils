@@ -14,7 +14,7 @@ test_that("JAnimateGIF works", {
   tryCatch(
   {
     options(warn = 2)
-      JAnimateGIF(frameKeys = seq(0, pi * 2, .1), gifFileName = gif, plotFn = .plotFrame)
+      JAnimateGIF(gif, frameKeys = seq(0, pi * 2, .1), plotFn = .plotFrame)
       expect_true(file.exists(gif))
       info <- file.info(gif)
       expect_true(info$size > 0)

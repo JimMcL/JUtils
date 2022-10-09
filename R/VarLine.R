@@ -293,7 +293,7 @@ tests <- function() {
     #plot(NULL, xlim = c(-1, 1), ylim = c(-1, 1), asp = 1)
     #AltVarLines(x1, y1, 20, "#ff000030")
   }
-  JAnimateGIF(frameKeys = seq(0, 2 * pi, pi / 48), gifFileName = "test.gif", plotFn = .clock, width = 900, height = 900, units = "px")
+  JAnimateGIF(gifFileName = "test.gif", frameKeys = seq(0, 2 * pi, pi / 48), plotFn = .clock, width = 900, height = 900, units = "px")
 
   # Left corner needs rounding
   x1 <- c(-.2, 0, .2)

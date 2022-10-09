@@ -2,8 +2,8 @@ context("Progressbar")
 
 test_that("progressbar", {
   n <- 20
-  expect_error(JBuildProgressBar("linux"))
-  expect_error(JBuildProgressBar(""))
+  expect_error(JBuildProgressBar("linux", n))
+  expect_error(JBuildProgressBar("", n))
 
   out <- capture.output({
     pb <- JBuildProgressBar("text", n)
@@ -11,6 +11,6 @@ test_that("progressbar", {
       pb()
     }
   })
-  expect_length(out, 2) # Expect one line of constatntly updated progress, one completion line
+  expect_length(out, 2) # Expect one line of constantly updated progress, one completion line
 
 })

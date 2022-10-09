@@ -65,11 +65,11 @@
 #'   polygon(cos(angles), sin(angles), col = col, border = "black", lwd = 4)
 #' }
 #'
-#' JAnimateGIF(nFrames, gifFileName = "poly.gif", plotFn = .plotPoly, frameRate = 10)
+#' JAnimateGIF("poly.gif", nFrames, plotFn = .plotPoly, frameRate = 10)
 #'}
 #'
 #' @export
-JAnimateGIF <- function(nFrames = NULL, frameKeys = 1:nFrames, gifFileName, plotFn, frameRate = 30, loop = 0, tmpDir = tempdir(TRUE), ...) {
+JAnimateGIF <- function(gifFileName, nFrames = NULL, frameKeys = 1:nFrames, plotFn, frameRate = 30, loop = 0, tmpDir = tempdir(TRUE), ...) {
 
   # Create a new temporary directory to store all the frames.
   # This way, if an animation is interrupted (leaving behind frame files),

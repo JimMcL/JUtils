@@ -93,7 +93,7 @@ robust way to do this.
                                        type = 'l', lwd = 4, 
                                        xlim = c(-1, 1), ylim = c(-1, 1), 
                                        axes = FALSE, xlab = "", ylab = "")
-    JAnimateGIF(frameKeys = seq(0, pi * 2, .1), gifFileName = "test.gif", plotFn = .plotFrame)
+    JAnimateGIF("test.gif", frameKeys = seq(0, pi * 2, .1), , plotFn = .plotFrame)
 
 
 ### Adding a raster image to a plot
