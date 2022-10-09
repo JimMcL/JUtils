@@ -5,9 +5,9 @@
 \title{Combine multiple plots into an animated GIF file.}
 \usage{
 JAnimateGIF(
+  gifFileName,
   nFrames = NULL,
   frameKeys = 1:nFrames,
-  gifFileName,
   plotFn,
   frameRate = 30,
   loop = 0,
@@ -16,14 +16,14 @@ JAnimateGIF(
 )
 }
 \arguments{
+\item{gifFileName}{Name of the GIF file to be created.}
+
 \item{nFrames}{Number of frames to be generated. You must specify one of
 \code{nFrames} or \code{frameKeys}.}
 
 \item{frameKeys}{Vector of keys to be passed to `plotFn` to identify the frame
 to be plotted. If not specified, `frameKeys` will be set to the sequence
 `1:nFrames`.}
-
-\item{gifFileName}{Name of the GIF file to be created.}
 
 \item{plotFn}{Function which is called once for each frame. It is called once
 for each frame to be generated, with a single argument which is one of the
@@ -86,7 +86,7 @@ nFrames <- 50
   polygon(cos(angles), sin(angles), col = col, border = "black", lwd = 4)
 }
 
-JAnimateGIF(nFrames, gifFileName = "poly.gif", plotFn = .plotPoly, frameRate = 10)
+JAnimateGIF("poly.gif", nFrames, plotFn = .plotPoly, frameRate = 10)
 }
 
 }
