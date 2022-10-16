@@ -5,7 +5,7 @@
 \title{Combine multiple plots into an animated GIF file.}
 \usage{
 JAnimateGIF(
-  gifFileName,
+  videoFileName,
   nFrames = NULL,
   frameKeys = 1:nFrames,
   plotFn,
@@ -16,7 +16,8 @@ JAnimateGIF(
 )
 }
 \arguments{
-\item{gifFileName}{Name of the GIF file to be created.}
+\item{videoFileName}{Name of the video file to be created. The file type is
+inferred from the file extension.}
 
 \item{nFrames}{Number of frames to be generated. You must specify one of
 \code{nFrames} or \code{frameKeys}.}
@@ -34,7 +35,8 @@ error is generated.}
 \item{frameRate}{Play back frame rate - used to set the frame delay in the GIF
 file.}
 
-\item{loop}{Number of times animation should be played. 0 means loop infinitely.}
+\item{loop}{Number of times animation should be played. 0 means loop
+infinitely.}
 
 \item{tmpDir}{Name of a directory to be used to create temporary files in.}
 
@@ -43,7 +45,7 @@ function.}
 }
 \value{
 The error message (as a character vector) from the ImageMack convert
- command, or \code{character(0)} (returned invisibly) on success.
+  command, or \code{character(0)} (returned invisibly) on success.
 }
 \description{
 Works by writing each plot to a PNG file, then combining them into a GIF file

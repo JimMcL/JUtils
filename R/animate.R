@@ -24,30 +24,32 @@
 #' expected.
 #'
 #' @param nFrames Number of frames to be generated. You must specify one of
-#'  \code{nFrames} or \code{frameKeys}.
+#'   \code{nFrames} or \code{frameKeys}.
 #' @param frameKeys Vector of keys to be passed to `plotFn` to identify the frame
-#'  to be plotted. If not specified, `frameKeys` will be set to the sequence
-#'  `1:nFrames`.
-#' @param gifFileName Name of the GIF file to be created.
+#'   to be plotted. If not specified, `frameKeys` will be set to the sequence
+#'   `1:nFrames`.
+#' @param videoFileName Name of the video file to be created. The file type is
+#'   inferred from the file extension.
 #' @param plotFn Function which is called once for each frame. It is called once
-#'  for each frame to be generated, with a single argument which is one of the
-#'  values from \code{frameKeys}. If it does not generate a plot, the frame will
-#'  be silently skipped. If no frames are created for the entire animation, an
-#'  error is generated.
+#'   for each frame to be generated, with a single argument which is one of the
+#'   values from \code{frameKeys}. If it does not generate a plot, the frame will
+#'   be silently skipped. If no frames are created for the entire animation, an
+#'   error is generated.
 #' @param frameRate Play back frame rate - used to set the frame delay in the GIF
-#'  file.
-#' @param loop Number of times animation should be played. 0 means loop infinitely.
+#'   file.
+#' @param loop Number of times animation should be played. 0 means loop
+#'   infinitely.
 #' @param tmpDir Name of a directory to be used to create temporary files in.
 #' @param ... Any additional arguments are passed to the \code{\link{JPlotToPNG}}
-#'  function.
+#'   function.
 #'
 #' @return The error message (as a character vector) from the ImageMack convert
-#'  command, or \code{character(0)} (returned invisibly) on success.
+#'   command, or \code{character(0)} (returned invisibly) on success.
 #'
 #' @seealso \code{\link{JPlotToPNG}}
 #'
 #' @examples
-#'\dontrun{
+#' \dontrun{
 #' # Number of frames in the animation
 #' nFrames <- 50
 #'
@@ -66,10 +68,10 @@
 #' }
 #'
 #' JAnimateGIF("poly.gif", nFrames, plotFn = .plotPoly, frameRate = 10)
-#'}
+#' }
 #'
-#' @export
-JAnimateGIF <- function(gifFileName, nFrames = NULL, frameKeys = 1:nFrames, plotFn, frameRate = 30, loop = 0, tmpDir = tempdir(TRUE), ...) {
+#'@export
+JAnimateGIF <- function(videoFileName, nFrames = NULL, frameKeys = 1:nFrames, plotFn, frameRate = 30, loop = 0, tmpDir = tempdir(TRUE), ...) {
 
   # Create a new temporary directory to store all the frames.
   # This way, if an animation is interrupted (leaving behind frame files),
@@ -112,23 +114,28 @@ JAnimateGIF <- function(gifFileName, nFrames = NULL, frameKeys = 1:nFrames, plot
   # https://imagemagick.org/script/command-line-options.php#delay
   # magick convert jp*.png -delay ? 3d.gif
 
+  ext <- tools::file_ext(videoFileName)
+  if (nchar(ext) == 0)
+    ext <- "gif"
+
   oldDir <- getwd()
+  tmpGif <- paste0("3d.", ext)
   result <- tryCatch({
     setwd(file.path(tmpDir, subDir))
     # Need to specify files with a wildcard rather than explicitly listing them
     # all because with many frames, the command line becomes too long
-    system2("magick", c("convert", "-loop", loop, "-delay", 100 / frameRate, "jp*.png", "3d.gif"), invisible = F, stderr = TRUE)
+    system2("magick", c("convert", "-loop", loop, "-delay", 100 / frameRate, "jp*.png", tmpGif), invisible = F, stderr = TRUE)
   },
   finally = setwd(oldDir)
   )
 
   # Move the GIF file
   if (identical(result, character(0))) {
-    if (!dir.exists(dirname(gifFileName))) {
-      dir.create(dirname(gifFileName), recursive = TRUE)
+    if (!dir.exists(dirname(videoFileName))) {
+      dir.create(dirname(videoFileName), recursive = TRUE)
     }
-    if (!file.rename(file.path(tmpDir, subDir, "3d.gif"), gifFileName)) {
-      stop(sprintf("Unable to create animated PNG %s", gifFileName))
+    if (!file.rename(file.path(tmpDir, subDir, tmpGif), videoFileName)) {
+      stop(sprintf("Unable to create animation file %s", videoFileName))
     }
   }
 
