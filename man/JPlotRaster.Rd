@@ -12,6 +12,7 @@ JPlotRaster(
   height = NA,
   position = c("centre", "center", "bottomright", "bottom", "bottomleft", "left",
     "topleft", "top", "topright", "right"),
+  offset = c(0, 0),
   ...
 )
 }
@@ -33,6 +34,9 @@ the x- and y-axes.}
 \code{"centre"}, the image will be centred on \code{x, y}. if
 \code{"topleft"}, the top left-hand corner of the image will be located at
 \code{x, y}.}
+
+\item{offset}{Vector with length 2. Amount to offset \code{x} and \code{y} by,
+as a proportion of the image display width and height, respectively.}
 
 \item{...}{Additional arguments are passed on to \code{\link[graphics]{rasterImage}}.}
 }

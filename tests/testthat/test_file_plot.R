@@ -7,13 +7,6 @@ suppressWarnings(library(tiff))
 .mmToInches <- function(x) (x / 25.4)
 .cmToInches <- function(x) (x / 2.54)
 
-plotWigglyLines <- function(cex = 1, lwd = 2, ...) {
-  set.seed(1)
-  graphics::plot(rnorm(20), type = "l", main = "Wiggly Lines", ylim = c(-2.2, 3), lwd = lwd, cex = cex, cex.main = cex, ...)
-  graphics::lines(rnorm(20), col = "red", lty = 2, lwd = lwd, ...)
-  legend("topright", legend = c("A black line", "A dashed red line"), lty = c(1, 2), col = c("black", "red"), lwd = lwd, ...)
-}
-
 
 #### Tests
 
@@ -402,28 +395,6 @@ test_that("Incorrect plot return value", {
   expect_true(is.null(val), info = "JPlotToFile with expression returned an incorrect value")
   val <- JPlotToFile(img, function () { plotWigglyLines(); NULL })
   expect_true(is.null(val), info = "JPlotToFile with function returned an incorrect value")
-})
-
-test_that("raster drawing", {
-  .prepare()
-
-  egJpeg <- jpeg::readJPEG("test-img.jpg", native = TRUE)
-  egPng <- png::readPNG("test-img.png", native = TRUE)
-
-  # Too many args
-  expect_error(JPlotRaster(egJpeg, 10, 0, 3, 3, position = "bottomright"), ".*width.*height")
-  # Not enough args
-  expect_error(JPlotRaster(egJpeg, 10, 0, position = "bottomright"), ".*width.*height")
-
-  img <- tf("test.png")
-  JPlotToPNG(img, {
-    plotWigglyLines()
-    JPlotRaster(egJpeg, 10, 0, 3, position = "bottomright")
-    JPlotRaster(egJpeg, 10, 0, height = 2, position = "topleft")
-    JPlotRaster(egPng, 10, 0, 3, position = "topright")
-    JPlotRaster(egPng, 10, 0, height = 2, position = "bottomleft")
-  })
-  expect_true(file.exists(img))
 })
 
 #########################################################################

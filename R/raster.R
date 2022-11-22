@@ -19,6 +19,8 @@
 #'   \code{"centre"}, the image will be centred on \code{x, y}. if
 #'   \code{"topleft"}, the top left-hand corner of the image will be located at
 #'   \code{x, y}.
+#' @param offset Vector with length 2. Amount to offset \code{x} and \code{y} by,
+#'   as a proportion of the image display width and height, respectively.
 #' @param ... Additional arguments are passed on to \code{\link[graphics]{rasterImage}}.
 #'
 #' @examples
@@ -32,6 +34,7 @@
 #' @export
 JPlotRaster <- function(img, x, y, width = NA, height = NA,
                         position = c("centre", "center", "bottomright", "bottom", "bottomleft", "left", "topleft", "top", "topright", "right"),
+                        offset = c(0, 0),
                         ...) {
   position <- match.arg(position)
   if (!xor(is.numeric(width), is.numeric(height)))
@@ -72,6 +75,10 @@ JPlotRaster <- function(img, x, y, width = NA, height = NA,
   if (grepl("bottom", position)) {
     y <- y + height / 2
   }
+
+  # Adjust position by inset
+  x <- x + offset[1] * width
+  y <- y + offset[2] * height
 
   graphics::rasterImage(img, x - width / 2, y - height / 2, x + width / 2, y + height / 2, ...)
 }
