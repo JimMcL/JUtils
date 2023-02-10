@@ -182,9 +182,17 @@ robust way to do this. ImageMagick must be installed and accessible on the PATH.
 
 ### Multi-scene animations
 
-Complex animations can consist of multiple scenes involving smooth transitions. The following example creates an animation with two scenes, a pink rectangle that fades into a blue triangle.
+Complex animations can consist of multiple scenes involving smooth transitions. Multi-scene animations build upon `JAnimateGIF`, which means that the ImageMagick utility must be installed and accessible.
 
-Multi-scene animations build upon `JAnimateGIF`, which means that the ImageMagick utility must be installed and accessible.
+An animation is constructed by building a list of scenes.  A scene
+is a parameterised plotting function, together with set of
+transitions. A transition defines how the values of a parameter
+change over time during the scene.
+
+Transitions make use of bezier curves for flexible smooth
+transitions.  Transitions are largely inspired by CSS animations. See https://cubic-bezier.com/
+
+The following example creates an animation with two scenes, a pink rectangle that fades into a blue triangle.
 
 ```R
 library("JUtils")
