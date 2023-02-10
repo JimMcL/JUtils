@@ -10,13 +10,14 @@ R utilities to simplify some common operations.
 * [Installation](#installation)
 * [Functionality](#functionality)
   * [Plotting to a file](#plotting-to-a-file)
-  * [Creating an animation](#creating-an-animation)
   * [Adding a raster image to a plot](#adding-a-raster-image-to-a-plot)
   * [Plotting a list of probability densities](#plotting-a-list-of-probability-densities)
   * [Printing text to a file](#printing-text-to-a-file)
   * [Downloading files](#downloading-files)
   * [String functions](#string-functions)
   * [Progress bar](#progress-bar)
+  * [Creating an animation](#creating-an-animation)
+  * [Multi-scene animations](#multi-scene-animations)
 
 ## Installation
 JUtils is not available on CRAN, so it must be installed from Github.
@@ -80,21 +81,6 @@ Fonts are not embedded in PDF plot output. This may not matter if you specify a 
 #### Plotting on macOS
 
 On macOS (and perhaps other Unix-like systems), the Cairo library might not be installed by default, so attempts to plot to TIFF or PNG files will fail with an error message such as '`failed to load cairo DLL`'. Solutions are to not use Cairo (e.g. in `JPlotToTIFF` or `JPlotToPNG`, specify the argument `type = "Xlib"` or `type = "quartz"`), or else install XQuartz (or Xlib). See [https://www.xquartz.org/](https://www.xquartz.org/).
-
-### Creating an animation
-
-The "standard" method to create an animation in R is to generate a set of images and then use the 
-ImageMagick utility to combine them into an animated GIF file. `JAnimateGIF` provides a relatively simple and 
-robust way to do this.
-
-    library("JUtils")
-
-    .plotFrame <- function(angle) plot(x = c(sin(angle), 0), y = c(0, cos(angle)), 
-                                       type = 'l', lwd = 4, 
-                                       xlim = c(-1, 1), ylim = c(-1, 1), 
-                                       axes = FALSE, xlab = "", ylab = "")
-    JAnimateGIF("test.gif", frameKeys = seq(0, pi * 2, .1), , plotFn = .plotFrame)
-
 
 ### Adding a raster image to a plot
 
@@ -178,3 +164,79 @@ Displays a progress bar that estimates time to completion based on the timing of
     }
     # Optionally force close in case there weren't as many items as we expected
     pb(close = TRUE)
+
+### Creating an animation
+
+The "standard" method to create an animation in R is to generate a set of images and then use the 
+ImageMagick utility to combine them into an animated GIF file. `JAnimateGIF` provides a relatively simple and 
+robust way to do this. ImageMagick must be installed and accessible on the PATH.
+
+    library("JUtils")
+
+    .plotFrame <- function(angle) plot(x = c(sin(angle), 0), y = c(0, cos(angle)), 
+                                       type = 'l', lwd = 4, 
+                                       xlim = c(-1, 1), ylim = c(-1, 1), 
+                                       axes = FALSE, xlab = "", ylab = "")
+    JAnimateGIF("test.gif", frameKeys = seq(0, pi * 2, .1), , plotFn = .plotFrame)
+
+
+### Multi-scene animations
+
+Complex animations can consist of multiple scenes involving smooth transitions. The following example creates an animation with two scenes, a pink rectangle that fades into a blue triangle.
+
+```R
+library("JUtils")
+
+basePlot <- function() {
+  par(mar = c(0, 0, 0, 0))
+  plot(NULL, xlim = c(0, 1), ylim = c(0, 1), axes = FALSE, xlab = "", ylab = "")
+}
+
+# 30 frames per second (must be the same in all scenes)
+fps <- 30
+
+# Build a list of scenes
+scenes <- list(
+
+  # Scene 1, pink square, 
+  JScene(1,   # Duration 1 second
+         fps,
+         
+         # Define parameters that will change (transition) within the scene
+         width = JTransition(.1, 1, JEaseInOut),
+         height = JTransition(1, .1, JEaseInOut),
+         alpha = JTransition(1, 0, JEaseIn, times = c(0.6, 1)),
+         
+         # Define a function that can plot a single frame, 
+         # given the approriate parameter values
+         plotFn = function(width, height, alpha) {
+         # Initialise the plot
+           basePlot()
+           # Draw the rectangle
+           rect(0.5 - width / 2, 0.5 - height / 2, 0.5 + width / 2, 0.5 + height / 2, 
+                density = NA, col = rgb(0.8, .05, 0.4, alpha))
+         }
+  ),
+  
+  # Scene 2, blue triangle
+  JScene(1, # Duration 1 second
+         fps, 
+         startAfter = -0.4, # start part-way through previous scene
+         
+         # Anime triangle width and transparency (alpha)
+         width = JTransition(.1, 0.8, JEaseInOut),
+         alpha = JTransition(0, 1, JEaseIn, times = c(0, 0.4)),
+         
+         plotFn = function(width, alpha, add) {
+           if (!add)
+             basePlot()
+           polygon(x = c(0.5, 0.5 - width / 2, 0.5 + width / 2),
+                   y = c(0.8, 0.2, 0.2),
+                   density = NA, col = rgb(66 / 255, 200 / 255, 245 / 255, alpha))
+         }
+  )
+)
+
+# Generate the animation, loop indefinitely
+JAnimateScenes("animated.gif", scenes, loop = 0)
+```
