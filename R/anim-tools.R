@@ -149,7 +149,7 @@ JStep <- function(time) function(nPoints) timingFunctionStep(time, nPoints)
 #' @seealso \code{\link{JScene}}
 #'
 #' @export
-JTransition <- function(from, to, timing = ease, times = c(0, 1)) {
+JTransition <- function(from, to, timing = JEase, times = c(0, 1)) {
   list(from = from, to = to, times = times, timing = timing)
 }
 

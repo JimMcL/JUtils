@@ -4,7 +4,7 @@
 \alias{JTransition}
 \title{Construct a JTransition}
 \usage{
-JTransition(from, to, timing = ease, times = c(0, 1))
+JTransition(from, to, timing = JEase, times = c(0, 1))
 }
 \arguments{
 \item{from}{Initial parameter value.}
