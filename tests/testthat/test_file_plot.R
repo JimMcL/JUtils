@@ -1,6 +1,6 @@
 context("Plot to file")
 #library(JUtils)
-library(png)
+suppressWarnings(library(png))
 suppressWarnings(library(jpeg))
 suppressWarnings(library(tiff))
 
