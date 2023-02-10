@@ -9,17 +9,17 @@
 \alias{JBounce}
 \title{Predefined transition timings}
 \usage{
-JEase(nPoints)
+JEase(x)
 
-JLinear(nPoints)
+JLinear(x)
 
-JEaseIn(nPoints)
+JEaseIn(x)
 
-JEaseOut(nPoints)
+JEaseOut(x)
 
-JEaseInOut(nPoints)
+JEaseInOut(x)
 
-JBounce(nPoints)
+JBounce(x)
 }
 \value{
 A timing function.

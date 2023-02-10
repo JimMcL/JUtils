@@ -15,10 +15,15 @@ library(bezier)
 # ================================================================================
 #### Private functions ####
 
-# Interpolates a single segment of points
+# Interpolates a single segment of points, one for each frame
+#
+# @param from Initial paramter value
+# @param to Final parameter value
+# @param nPoints Number of points to derive, including the the start and end points.
+# @param timing A timing function.
 interpValues <- function(from, to, nPoints, timing) {
   # Start with timing values
-  f <- timing(nPoints)
+  f <- timing(seq(0, 1, length.out = nPoints))
   # Interpolate
   from + (to - from) * f
 }
@@ -27,7 +32,7 @@ interpTrans <- function(trans, nFrames) {
   # Convert times to frame numbers
   keyFrames <- round(trans$times * (nFrames - 1) + 1)
 
-  # Intialise with from values
+  # Initialise with from values
   vals <- rep.int(trans$from, nFrames)
 
   # Fill in transition
@@ -43,14 +48,13 @@ interpTrans <- function(trans, nFrames) {
   vals
 }
 
-timingFunctionBezier <- function(p0, p1, p2, p3, nPoints) {
+timingFunctionBezier <- function(p0, p1, p2, p3, x) {
   # Cubic bezier curve
   t <- seq(0, 1, length.out = 40)
   p <- matrix(c(0, 0,  p0, p1,  p2, p3,  1, 1), ncol = 2, byrow = TRUE)
   b <- bezier::bezier(t, p)
   # Linearly interpolate to get points equally spaced along the x-axis
-  xout <- seq(0, 1, length.out = nPoints)
-  y <- approx(b, xout = xout)
+  y <- approx(b, xout = x)
 
   if (F) {
     plot(b)
@@ -60,11 +64,9 @@ timingFunctionBezier <- function(p0, p1, p2, p3, nPoints) {
   y$y
 }
 
-timingFunctionStep <- function(stepTime, nPoints) {
-  # Convert time to frame number
-  stepFrame <- round(stepTime * nPoints)
+timingFunctionStep <- function(stepTime, x) {
   # Get value for each frame
-  ifelse(seq_len(nPoints) < stepFrame, 0, 1)
+  ifelse(stepTime > x, 0, 1)
 }
 
 # ================================================================================
@@ -86,22 +88,22 @@ timingFunctionStep <- function(stepTime, nPoints) {
 #' width = JTransition(.1, 1, JEaseInOut)
 #'
 #' @export
-JEase <- function(nPoints) timingFunctionBezier(0.25, 0.1, 0.25, 1, nPoints)
+JEase <- function(x) timingFunctionBezier(0.25, 0.1, 0.25, 1, x)
 #' @rdname JEase
 #' @export
-JLinear <- function(nPoints) timingFunctionBezier(0, 0, 1, 1, nPoints)
+JLinear <- function(x) timingFunctionBezier(0, 0, 1, 1, x)
 #' @rdname JEase
 #' @export
-JEaseIn <- function(nPoints) timingFunctionBezier(0.42, 0, 1, 1, nPoints)
+JEaseIn <- function(x) timingFunctionBezier(0.42, 0, 1, 1, x)
 #' @rdname JEase
 #' @export
-JEaseOut <- function(nPoints) timingFunctionBezier(0, 0, 0.58, 1, nPoints)
+JEaseOut <- function(x) timingFunctionBezier(0, 0, 0.58, 1, x)
 #' @rdname JEase
 #' @export
-JEaseInOut <- function(nPoints) timingFunctionBezier(0.42, 0, 0.58, 1, nPoints)
+JEaseInOut <- function(x) timingFunctionBezier(0.42, 0, 0.58, 1, x)
 #' @rdname JEase
 #' @export
-JBounce <- function(nPoints) timingFunctionBezier(0.175, 0.885, 0.32, 1.275, nPoints)
+JBounce <- function(x) timingFunctionBezier(0.175, 0.885, 0.32, 1.275, x)
 
 # Invoked by function call (additional parameters required)
 
@@ -110,8 +112,8 @@ JBounce <- function(nPoints) timingFunctionBezier(0.175, 0.885, 0.32, 1.275, nPo
 #' These functions allow you to create custom transition timing functions. See
 #' Examples below for usage.
 #'
-#' @param p0,p1,p2,p3 Define the two control points (P1 & P2) of a cubic
-#'   bezier curve with end points at (0, 0) and (1, 1).
+#' @param p0,p1,p2,p3 Define the two control points (P1 & P2) of a cubic bezier
+#'   curve with end points at (0, 0) and (1, 1).
 #' @param time Time at which to step from initial value to final value. Time is
 #'   expressed as a fraction of the scene duration. The scene starts at time 0
 #'   and ends at time 1.
@@ -124,15 +126,22 @@ JBounce <- function(nPoints) timingFunctionBezier(0.175, 0.885, 0.32, 1.275, nPo
 #' width = JTransition(.1, 1, timing = JBezier(0, 0, 0.58, 1))
 #'
 #' @export
-JBezier <- function(p0, p1, p2, p3) function(nPoints) timingFunctionBezier(p0, p1, p2, p3, nPoints)
+JBezier <- function(p0, p1, p2, p3) function(x) timingFunctionBezier(p0, p1, p2, p3, x)
 #' @rdname JBezier
 #' @export
-JStep <- function(time) function(nPoints) timingFunctionStep(time, nPoints)
+JStep <- function(time) function(x) timingFunctionStep(time, x)
 
 #' Construct a JTransition
 #'
 #' A JTransition defines how a single parameter values changes throughout a
-#' scene.
+#' scene. The parameter changes from \code{from} in the first frame (time
+#' \code{0}), through to \code{to} in the final frame (time \code{1}). The way
+#' it changes is defined by the parameters \code{timing} and \code{times}.
+#'
+#' It is possible to create custom timing functions. A timing function is a
+#' function that accepts one argument, a numeric vector \code{x}, and returns a
+#' mapping from \code{x} to some other value. For example, a simple linear
+#' timing function could be implemented as \code{function(x) x}.
 #'
 #' @param from Initial parameter value.
 #' @param to Final parameter value.
@@ -141,8 +150,8 @@ JStep <- function(time) function(nPoints) timingFunctionStep(time, nPoints)
 #'   proportion of the scene time. A time of 0 indicates the first frame in the
 #'   scene, while 1 is the last frame. If the transition does not start at the
 #'   beginning of the frame, for all earlier frames the parameter will have
-#'   values `from`. Similarly, the parameter will have value `to` for any
-#'   gframes after the last transition frame.
+#'   values `from`. Similarly, the parameter will have value `to` for any frames
+#'   after the last transition frame.
 #'
 #' @return List used to define how a single parameter changes within a scene.
 #'
@@ -192,8 +201,11 @@ JScene <- function(duration, fps, startAfter = 0, ..., plotFn) {
        fps = fps, # Just so it can be checked for consistency with other scenes
        fun = function(frame, add) {
          argList <- as.list(args[frame, ])
-         if (hasAddArg)
+         if (hasAddArg) {
            argList <- c(argList, add = add)
+         } else if (add) {
+           stop("When scenes overlap, plotFn must accept a final \"add\" parameter. See ?JScene")
+         }
          do.call(plotFn, argList)
        })
 }
@@ -286,3 +298,40 @@ JAnimateScenes <- function(videoFileName, scenes, ...) {
 
   invisible(args)
 }
+
+
+###
+
+# Function to generate a diagram demonstrating how JTransitions work
+transitionDiagram <- function(from, to, timingName, times) {
+  par(mar = c(5, 5, 4, 1) + 0.1)
+
+  n <- 100
+  x <- seq(times[1], times[2], length.out = n)
+  y <- interpValues(from, to, n, get(timingName))
+  plot(x, y, type = 'l', lwd = 2,
+       xlim = c(0, 1),
+       xlab = "Time", ylab = "",
+       main = sprintf("JTransition(from = %g, to = %g, timing = %s, times = c(%g, %g))", from, to, timing, times[1], times[2]))
+  title(ylab = "Parameter value", mgp = c(4, 1, 0))
+  abline(h = c(from, to), col = "#0000ff40")
+  dy <- (par()$usr[4] - par()$usr[3]) / 50
+  text(0, to - dy, sprintf(" to=%g", to), adj = c(0, 1))
+  text(1, from + dy, sprintf(" from=%g", from), adj = c(1, 0))
+
+  stCol <- "brown"
+  lines(c(0, times[1]), c(from, from), col = stCol, lwd = 2)
+  abline(v = times[1], col = stCol)
+  text(times[1], from + 0.3 * (to - from), sprintf(" times[1]=%g ", times[1]), adj = 1)
+
+  etCol <- stCol
+  lines(c(times[2], 1), c(to, to), col = etCol, lwd = 2)
+  abline(v = times[2], col = etCol)
+  text(times[2], from + 0.7 * (to - from), sprintf(" times[2]=%g ", times[2]), adj = 0)
+
+}
+
+# transitionDiagram(2, 5, "JEaseInOut", c(0.2, 0.8))
+#
+# SinTiming <- function(x) sin(x * pi * 2.5)
+# transitionDiagram(1, 2, "SinTiming", c(0.2, 0.8))

@@ -10,8 +10,8 @@ JBezier(p0, p1, p2, p3)
 JStep(time)
 }
 \arguments{
-\item{p0, p1, p2, p3}{Define the two control points (P1 & P2) of a cubic
-bezier curve with end points at (0, 0) and (1, 1).}
+\item{p0, p1, p2, p3}{Define the two control points (P1 & P2) of a cubic bezier
+curve with end points at (0, 0) and (1, 1).}
 
 \item{time}{Time at which to step from initial value to final value. Time is
 expressed as a fraction of the scene duration. The scene starts at time 0

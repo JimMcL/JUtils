@@ -17,15 +17,23 @@ JTransition(from, to, timing = JEase, times = c(0, 1))
 proportion of the scene time. A time of 0 indicates the first frame in the
 scene, while 1 is the last frame. If the transition does not start at the
 beginning of the frame, for all earlier frames the parameter will have
-values `from`. Similarly, the parameter will have value `to` for any
-gframes after the last transition frame.}
+values `from`. Similarly, the parameter will have value `to` for any frames
+after the last transition frame.}
 }
 \value{
 List used to define how a single parameter changes within a scene.
 }
 \description{
 A JTransition defines how a single parameter values changes throughout a
-scene.
+scene. The parameter changes from \code{from} in the first frame (time
+\code{0}), through to \code{to} in the final frame (time \code{1}). The way
+it changes is defined by the parameters \code{timing} and \code{times}.
+}
+\details{
+It is possible to create custom timing functions. A timing function is a
+function that accepts one argument, a numeric vector \code{x}, and returns a
+mapping from \code{x} to some other value. For example, a simple linear
+timing function could be implemented as \code{function(x) x}.
 }
 \seealso{
 \code{\link{JScene}}
