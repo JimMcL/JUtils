@@ -22,13 +22,16 @@ JEaseInOut(nPoints)
 JBounce(nPoints)
 }
 \value{
-a timing function.
+A timing function.
 }
 \description{
-These functions are passed by name (i.e. without following \code{()}) as the
+These functions are passed by name (i.e. without following parentheses) as the
 \code{timing} parameter to the \code{\link{JTransition}} function.
 }
 \examples{
 width = JTransition(.1, 1, JEaseInOut)
 
+}
+\seealso{
+\code{\link{JTransition}}, \code{\link{JScene}}, \code{\link{JBezier}}
 }

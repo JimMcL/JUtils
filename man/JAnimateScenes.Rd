@@ -4,21 +4,21 @@
 \alias{JAnimateScenes}
 \title{Animate a list of \code{\link{Jscene}}s.}
 \usage{
-JAnimateScenes(gifFileName, scenes, ...)
+JAnimateScenes(videoFileName, scenes, ...)
 }
 \arguments{
-\item{gifFileName}{Name of the GIF file to be created.}
+\item{videoFileName}{Name of the GIF file to be created.}
 
 \item{scenes}{A list of scene objects, each one created by calling the
 \code{\link{JScene}} constructor.}
 
-\item{...}{Additional poarameters are passed on to \code{\link{JAnimateGIF}}.}
+\item{...}{Additional parameters are passed on to \code{\link{JAnimateGIF}}.}
 }
 \value{
 The list of arguments passed to the \code{\link{JAnimateGIF}} function (invisibly).
 }
 \description{
-Animate a list of \code{\link{Jscene}}s.
+See \code{\link{JAnimateGIF}} for general information about creating animations from R.
 }
 \seealso{
 \code{\link{JAnimateGIF}}, \code{\link{Jscenes}}

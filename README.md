@@ -184,6 +184,8 @@ robust way to do this. ImageMagick must be installed and accessible on the PATH.
 
 Complex animations can consist of multiple scenes involving smooth transitions. The following example creates an animation with two scenes, a pink rectangle that fades into a blue triangle.
 
+Multi-scene animations build upon `JAnimateGIF`, which means that the ImageMagick utility must be installed and accessible.
+
 ```R
 library("JUtils")
 

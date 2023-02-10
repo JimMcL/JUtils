@@ -2,8 +2,7 @@
 % Please edit documentation in R/anim-tools.R
 \name{JPlotScenes}
 \alias{JPlotScenes}
-\title{Function to combine a list of scenes, and return a function that plots a
-single frame from the appropriate scene}
+\title{Construct a plotting function from a list of scenes.}
 \usage{
 JPlotScenes(scenes)
 }
@@ -17,8 +16,9 @@ A function that accepts a single argument, a frame number, and plots
   used as the \code{plotFn} argument to \code{\link{JAnimateGIF}}.
 }
 \description{
-Function to combine a list of scenes, and return a function that plots a
-single frame from the appropriate scene
+\code{JPlotScenes} is not usually called directly, rather it is invoked from
+inside \code{\link{JAnimateScenes}}. Combines a list of scenes, and returns a
+function that plots a single frame from the appropriate scene.
 }
 \seealso{
 \code{\link{JAnimateScenes}}

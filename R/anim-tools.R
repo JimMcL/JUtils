@@ -75,11 +75,12 @@ timingFunctionStep <- function(stepTime, nPoints) {
 
 #' Predefined transition timings
 #'
-#' These functions are passed by name (i.e. without following \code{()}) as the
-#' \code{timing} parameter to the \code{\link{JTransition}} function. They are
-#' not intended to be called directly by the user.
+#' These functions are passed by name (i.e. without following parentheses) as the
+#' \code{timing} parameter to the \code{\link{JTransition}} function.
 #'
-#' @return a timing function.
+#' @return A timing function.
+#'
+#' @seealso \code{\link{JTransition}}, \code{\link{JScene}}, \code{\link{JBezier}}
 #'
 #' @examples
 #' width = JTransition(.1, 1, JEaseInOut)
@@ -87,33 +88,61 @@ timingFunctionStep <- function(stepTime, nPoints) {
 #' @export
 JEase <- function(nPoints) timingFunctionBezier(0.25, 0.1, 0.25, 1, nPoints)
 #' @rdname JEase
+#' @export
 JLinear <- function(nPoints) timingFunctionBezier(0, 0, 1, 1, nPoints)
 #' @rdname JEase
+#' @export
 JEaseIn <- function(nPoints) timingFunctionBezier(0.42, 0, 1, 1, nPoints)
 #' @rdname JEase
+#' @export
 JEaseOut <- function(nPoints) timingFunctionBezier(0, 0, 0.58, 1, nPoints)
 #' @rdname JEase
+#' @export
 JEaseInOut <- function(nPoints) timingFunctionBezier(0.42, 0, 0.58, 1, nPoints)
 #' @rdname JEase
+#' @export
 JBounce <- function(nPoints) timingFunctionBezier(0.175, 0.885, 0.32, 1.275, nPoints)
 
 # Invoked by function call (additional parameters required)
+
+#' Parameterised transition timings
+#'
+#' These functions allow you to create custom transition timing functions. See
+#' Examples below for usage.
+#'
+#' @param p0,p1,p2,p3 Define the two control points (P1 & P2) of a cubic
+#'   bezier curve with end points at (0, 0) and (1, 1).
+#' @param time Time at which to step from initial value to final value. Time is
+#'   expressed as a fraction of the scene duration. The scene starts at time 0
+#'   and ends at time 1.
+#' @return A timing function.
+#'
+#' @seealso \code{\link{JTransition}}, \code{\link{JEase}}, \code{\link{JScene}}
+#'
+#' @examples
+#' # Replicate the \link{JEaseOut} timing function
+#' width = JTransition(.1, 1, timing = JBezier(0, 0, 0.58, 1))
+#'
+#' @export
 JBezier <- function(p0, p1, p2, p3) function(nPoints) timingFunctionBezier(p0, p1, p2, p3, nPoints)
+#' @rdname JBezier
+#' @export
 JStep <- function(time) function(nPoints) timingFunctionStep(time, nPoints)
 
-#' Construct a JTransition. A JTransition defines how a single parameter
-#' values changes throughout a scene.
+#' Construct a JTransition
+#'
+#' A JTransition defines how a single parameter values changes throughout a
+#' scene.
 #'
 #' @param from Initial parameter value.
 #' @param to Final parameter value.
 #' @param timing Animation timing function, such as `JEaseIn`, `JBounce`.
-#' @param times Time period (start, stop) over which the transition
-#'        occurs, as a proportion of the scene time. A time of 0
-#'        indicates the first frame in the scene, while 1 is the last
-#'        frame. If the transition does not start at the beginning of
-#'        the frame, for all earlier frames the parameter will have
-#'        values `from`. Similarly, the parameter will have value `to`
-#'        for any gframes after the last transition frame.
+#' @param times Time period (start, stop) over which the transition occurs, as a
+#'   proportion of the scene time. A time of 0 indicates the first frame in the
+#'   scene, while 1 is the last frame. If the transition does not start at the
+#'   beginning of the frame, for all earlier frames the parameter will have
+#'   values `from`. Similarly, the parameter will have value `to` for any
+#'   gframes after the last transition frame.
 #'
 #' @return List used to define how a single parameter changes within a scene.
 #'
@@ -124,9 +153,11 @@ JTransition <- function(from, to, timing = ease, times = c(0, 1)) {
   list(from = from, to = to, times = times, timing = timing)
 }
 
-#' Construct a JScene, which is a portion of a complex animation. A JScene
-#' consists of some metadata (duration, frame rate), a set of animation
-#' transitions and a plotting function.
+#' Construct a JScene
+#'
+#' A JScene is a portion of a complex animation. It consists of some metadata
+#' (duration, frame rate), a set of animation transitions and a plotting
+#' function.
 #'
 #' @param duration Scene duration in seconds.
 #' @param fps Frame rate (frames per second).
@@ -167,8 +198,11 @@ JScene <- function(duration, fps, startAfter = 0, ..., plotFn) {
        })
 }
 
-#' Function to combine a list of scenes, and return a function that plots a
-#' single frame from the appropriate scene
+#' Construct a plotting function from a list of scenes.
+#'
+#' \code{JPlotScenes} is not usually called directly, rather it is invoked from
+#' inside \code{\link{JAnimateScenes}}. Combines a list of scenes, and returns a
+#' function that plots a single frame from the appropriate scene.
 #'
 #' @param scenes A list of scene objects, each one created by calling the
 #'   \code{\link{JScene}} constructor.
@@ -215,32 +249,35 @@ JPlotScenes <- function(scenes) {
 #' @return Number of frames in the animation specified by \code{scenes}.
 #'
 #' @export
-JScenesFrames <- function(scenes) {
+JScenesnFrames <- function(scenes) {
   sum(sapply(scenes, function(s) s$nFrames + s$offset))
 }
 
 #' Animate a list of \code{\link{Jscene}}s.
 #'
-#' @param gifFileName Name of the GIF file to be created.
+#' See \code{\link{JAnimateGIF}} for general information about creating animations from R.
+#'
+#' @param videoFileName Name of the GIF file to be created.
 #' @param scenes A list of scene objects, each one created by calling the
 #'   \code{\link{JScene}} constructor.
-#' @param ... Additional poarameters are passed on to \code{\link{JAnimateGIF}}.
+#' @param ... Additional parameters are passed on to \code{\link{JAnimateGIF}}.
 #'
 #' @return The list of arguments passed to the \code{\link{JAnimateGIF}} function (invisibly).
 #'
 #' @seealso \code{\link{JAnimateGIF}}, \code{\link{Jscenes}}
 #'
 #' @export
-JAnimateScenes <- function(gifFileName, scenes, ...) {
+JAnimateScenes <- function(videoFileName, scenes, ...) {
 
   # Sanity check - frame rate should be the same for all scenes
   sfps <- sapply(scenes, function(s) s$fps)
-  if (!identical(rep(scenes[[1]]$fps, length(scenes)), sfps)) {
+  fps <- scenes[[1]]$fps
+  if (!identical(rep(fps, length(scenes)), sfps)) {
     stop(sprintf("All scenes in list must have the same frame rate: found %s", paste(sfps, collapse = ", ")))
   }
 
-  args <- list(gifFileName = gifFileName,
-               nFrames = JScenesFrames(scenes),
+  args <- list(videoFileName = videoFileName,
+               nFrames = JScenesnFrames(scenes),
                plotFn = JPlotScenes(scenes),
                frameRate = fps,
                ...)

@@ -2,8 +2,7 @@
 % Please edit documentation in R/anim-tools.R
 \name{JTransition}
 \alias{JTransition}
-\title{Construct a JTransition. A JTransition defines how a single parameter
-values changes throughout a scene.}
+\title{Construct a JTransition}
 \usage{
 JTransition(from, to, timing = ease, times = c(0, 1))
 }
@@ -14,20 +13,19 @@ JTransition(from, to, timing = ease, times = c(0, 1))
 
 \item{timing}{Animation timing function, such as `JEaseIn`, `JBounce`.}
 
-\item{times}{Time period (start, stop) over which the transition
-occurs, as a proportion of the scene time. A time of 0
-indicates the first frame in the scene, while 1 is the last
-frame. If the transition does not start at the beginning of
-the frame, for all earlier frames the parameter will have
-values `from`. Similarly, the parameter will have value `to`
-for any gframes after the last transition frame.}
+\item{times}{Time period (start, stop) over which the transition occurs, as a
+proportion of the scene time. A time of 0 indicates the first frame in the
+scene, while 1 is the last frame. If the transition does not start at the
+beginning of the frame, for all earlier frames the parameter will have
+values `from`. Similarly, the parameter will have value `to` for any
+gframes after the last transition frame.}
 }
 \value{
 List used to define how a single parameter changes within a scene.
 }
 \description{
-Construct a JTransition. A JTransition defines how a single parameter
-values changes throughout a scene.
+A JTransition defines how a single parameter values changes throughout a
+scene.
 }
 \seealso{
 \code{\link{JScene}}

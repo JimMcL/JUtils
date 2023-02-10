@@ -2,9 +2,7 @@
 % Please edit documentation in R/anim-tools.R
 \name{JScene}
 \alias{JScene}
-\title{Construct a JScene, which is a portion of a complex animation. A JScene
-consists of some metadata (duration, frame rate), a set of animation
-transitions and a plotting function.}
+\title{Construct a JScene}
 \usage{
 JScene(duration, fps, startAfter = 0, ..., plotFn)
 }
@@ -30,9 +28,9 @@ A list, known as a _JScene_, which can be included in a list of
   scenes then used to create an animation.
 }
 \description{
-Construct a JScene, which is a portion of a complex animation. A JScene
-consists of some metadata (duration, frame rate), a set of animation
-transitions and a plotting function.
+A JScene is a portion of a complex animation. It consists of some metadata
+(duration, frame rate), a set of animation transitions and a plotting
+function.
 }
 \seealso{
 \code{\link{JAnimateScenes}}
