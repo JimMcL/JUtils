@@ -159,7 +159,7 @@ JStep <- function(time) function(x) timingFunctionStep(time, x)
 #'
 #' @export
 JTransition <- function(from, to, timing = JEase, times = c(0, 1)) {
-  list(from = from, to = to, times = times, timing = timing)
+  list(from = from, to = to, timing = timing, times = times)
 }
 
 #' Construct a JScene
@@ -214,7 +214,8 @@ JScene <- function(duration, fps, startAfter = 0, ..., plotFn) {
 #'
 #' \code{JPlotScenes} is not usually called directly, rather it is invoked from
 #' inside \code{\link{JAnimateScenes}}. Combines a list of scenes, and returns a
-#' function that plots a single frame from the appropriate scene.
+#' function that plots a single frame from the appropriate scene. Can be useful
+#' for debugging an animations, because it can be used to plot a single frame.
 #'
 #' @param scenes A list of scene objects, each one created by calling the
 #'   \code{\link{JScene}} constructor.
@@ -225,6 +226,16 @@ JScene <- function(duration, fps, startAfter = 0, ..., plotFn) {
 #'
 #' @seealso \code{\link{JAnimateScenes}}
 #'
+#' @examples
+#' # Construct an animation
+#' scenes <- list(JScene(1, 20,
+#'                pt2 = JTransition(0, 1),
+#'                plotFn = function(pt2) {
+#'                  plot(c(0, pt2), c(0, pt2), type = "b", xlim = c(0, 1))
+#'                }))
+#' # Plot frame 10 to see what it looks like
+#' JPlotScenes(scenes)(10)
+
 #' @export
 JPlotScenes <- function(scenes) {
 
@@ -243,13 +254,14 @@ JPlotScenes <- function(scenes) {
       }
 
       if (frame < startFrame) {
-        if (sceneCount == 0)
-          stop(sprintf("Internal error: couldn't find scene that starts at frame %d", frame))
-        return(invisible(NULL))
+        break
       }
 
       startFrame <- endFrame + 1
     }
+
+    if (sceneCount == 0)
+      stop(sprintf("Error: couldn't find scene for frame %d", frame))
   }
 }
 

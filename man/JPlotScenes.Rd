@@ -18,7 +18,18 @@ A function that accepts a single argument, a frame number, and plots
 \description{
 \code{JPlotScenes} is not usually called directly, rather it is invoked from
 inside \code{\link{JAnimateScenes}}. Combines a list of scenes, and returns a
-function that plots a single frame from the appropriate scene.
+function that plots a single frame from the appropriate scene. Can be useful
+for debugging an animations, because it can be used to plot a single frame.
+}
+\examples{
+# Construct an animation
+scenes <- list(JScene(1, 20,
+               pt2 = JTransition(0, 1),
+               plotFn = function(pt2) {
+                 plot(c(0, pt2), c(0, pt2), type = "b", xlim = c(0, 1))
+               }))
+# Plot frame 10 to see what it looks like
+JPlotScenes(scenes)(10)
 }
 \seealso{
 \code{\link{JAnimateScenes}}
