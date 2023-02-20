@@ -1,5 +1,7 @@
-[![Travis-CI Build Status](https://travis-ci.com/JimMcL/JUtils.svg?branch=master)](https://travis-ci.com/JimMcL/JUtils)
-[![codecov](https://codecov.io/gh/JimMcL/JUtils/branch/master/graph/badge.svg)](https://codecov.io/gh/JimMcL/JUtils)
+<!-- badges: start -->
+[![check-standard](https://github.com/JimMcL/JUtils/actions/workflows/check-standard.yaml/badge.svg)](https://github.com/JimMcL/JUtils/actions/workflows/check-standard.yaml)
+[![test-coverage](https://github.com/JimMcL/JUtils/actions/workflows/test-coverage.yaml/badge.svg)](https://github.com/JimMcL/JUtils/actions/workflows/test-coverage.yaml)
+<!-- badges: end -->
 
 # JUtils
 
