@@ -3,4 +3,4 @@
 ^\.travis\.yml$
 ^presentation$
 ^\.github$
-^R/VarLine.R$
+^\.*VarLine.R$
