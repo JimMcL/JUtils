@@ -21,6 +21,9 @@ JEaseInOut(x)
 
 JBounce(x)
 }
+\arguments{
+\item{x}{x-value passed to the function automatically. See \code{Examples} below.}
+}
 \value{
 A timing function.
 }

@@ -83,5 +83,5 @@ legend("topleft", c("Normal", "Uniform", "Exponential"), col = rainbow(3), lwd =
 }
 \seealso{
 \code{\link[stats]{density}}, \code{\link[grDevices]{rainbow}},
-  \code{\link[RColorBrewer]{brewer.pal}}, \code{\link[graphics]{polygon}}
+  \code{RColorBrewer::brewer.pal}, \code{\link[graphics]{polygon}}
 }

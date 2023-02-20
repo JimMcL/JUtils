@@ -54,6 +54,6 @@ test_that("multi-scene animations", {
   )
 
   # Generate the animation, loop indefinitely
-  expect_error(JAnimateScenes("animated.gif", scenes, loop = 0), NA)
+  expect_error(JAnimateScenes(tf("animated.gif"), scenes, loop = 0), NA)
 
 })

@@ -54,7 +54,7 @@ timingFunctionBezier <- function(p0, p1, p2, p3, x) {
   p <- matrix(c(0, 0,  p0, p1,  p2, p3,  1, 1), ncol = 2, byrow = TRUE)
   b <- bezier::bezier(t, p)
   # Linearly interpolate to get points equally spaced along the x-axis
-  y <- approx(b, xout = x)
+  y <- stats::approx(b, xout = x)
 
   if (F) {
     plot(b)
@@ -79,6 +79,8 @@ timingFunctionStep <- function(stepTime, x) {
 #'
 #' These functions are passed by name (i.e. without following parentheses) as the
 #' \code{timing} parameter to the \code{\link{JTransition}} function.
+#'
+#' @param x x-value passed to the function automatically. See \code{Examples} below.
 #'
 #' @return A timing function.
 #'
@@ -193,7 +195,7 @@ JScene <- function(duration, fps, startAfter = 0, ..., plotFn) {
   # Convert to data frame
   args <- do.call(cbind, args)
   # Does the function accept an "add" parameter?
-  hasAddArg <- "add" %in% formalArgs(match.fun(plotFn))
+  hasAddArg <- "add" %in% methods::formalArgs(match.fun(plotFn))
 
   # Return a function that draws 1 frame
   list(nFrames = nFrames,
@@ -313,37 +315,37 @@ JAnimateScenes <- function(videoFileName, scenes, ...) {
 
 
 ###
+### This could go into a vignette
 
-# Function to generate a diagram demonstrating how JTransitions work
-transitionDiagram <- function(from, to, timingName, times) {
-  par(mar = c(5, 5, 4, 1) + 0.1)
-
-  n <- 100
-  x <- seq(times[1], times[2], length.out = n)
-  y <- interpValues(from, to, n, get(timingName))
-  plot(x, y, type = 'l', lwd = 2,
-       xlim = c(0, 1),
-       xlab = "Time", ylab = "",
-       main = sprintf("JTransition(from = %g, to = %g, timing = %s, times = c(%g, %g))", from, to, timing, times[1], times[2]))
-  title(ylab = "Parameter value", mgp = c(4, 1, 0))
-  abline(h = c(from, to), col = "#0000ff40")
-  dy <- (par()$usr[4] - par()$usr[3]) / 50
-  text(0, to - dy, sprintf(" to=%g", to), adj = c(0, 1))
-  text(1, from + dy, sprintf(" from=%g", from), adj = c(1, 0))
-
-  stCol <- "brown"
-  lines(c(0, times[1]), c(from, from), col = stCol, lwd = 2)
-  abline(v = times[1], col = stCol)
-  text(times[1], from + 0.3 * (to - from), sprintf(" times[1]=%g ", times[1]), adj = 1)
-
-  etCol <- stCol
-  lines(c(times[2], 1), c(to, to), col = etCol, lwd = 2)
-  abline(v = times[2], col = etCol)
-  text(times[2], from + 0.7 * (to - from), sprintf(" times[2]=%g ", times[2]), adj = 0)
-
-}
-
-# transitionDiagram(2, 5, "JEaseInOut", c(0.2, 0.8))
+# # Function to generate a diagram demonstrating how JTransitions work
+# transitionDiagram <- function(from, to, timingName, times) {
+#   par(mar = c(5, 5, 4, 1) + 0.1)
 #
-# SinTiming <- function(x) sin(x * pi * 2.5)
-# transitionDiagram(1, 2, "SinTiming", c(0.2, 0.8))
+#   n <- 100
+#   x <- seq(times[1], times[2], length.out = n)
+#   y <- interpValues(from, to, n, get(timingName))
+#   plot(x, y, type = 'l', lwd = 2,
+#        xlim = c(0, 1),
+#        xlab = "Time", ylab = "",
+#        main = sprintf("JTransition(from = %g, to = %g, timing = %s, times = c(%g, %g))", from, to, timingName, times[1], times[2]))
+#   title(ylab = "Parameter value", mgp = c(4, 1, 0))
+#   abline(h = c(from, to), col = "#0000ff40")
+#   dy <- (par()$usr[4] - par()$usr[3]) / 50
+#   text(0, to - dy, sprintf(" to=%g", to), adj = c(0, 1))
+#   text(1, from + dy, sprintf(" from=%g", from), adj = c(1, 0))
+#
+#   stCol <- "brown"
+#   lines(c(0, times[1]), c(from, from), col = stCol, lwd = 2)
+#   abline(v = times[1], col = stCol)
+#   text(times[1], from + 0.3 * (to - from), sprintf(" times[1]=%g ", times[1]), adj = 1)
+#
+#   etCol <- stCol
+#   lines(c(times[2], 1), c(to, to), col = etCol, lwd = 2)
+#   abline(v = times[2], col = etCol)
+#   text(times[2], from + 0.7 * (to - from), sprintf(" times[2]=%g ", times[2]), adj = 0)
+# }
+#
+# # transitionDiagram(2, 5, "JEaseInOut", c(0.2, 0.8))
+# #
+# # SinTiming <- function(x) sin(x * pi * 2.5)
+# # transitionDiagram(1, 2, "SinTiming", c(0.2, 0.8))

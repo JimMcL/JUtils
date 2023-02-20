@@ -34,7 +34,7 @@
 #' @param ... Additional parameters are passed to \code{\link[graphics]{plot}}.
 #'
 #' @seealso \code{\link[stats]{density}}, \code{\link[grDevices]{rainbow}},
-#'   \code{\link[RColorBrewer]{brewer.pal}}, \code{\link[graphics]{polygon}}
+#'   \code{RColorBrewer::brewer.pal}, \code{\link[graphics]{polygon}}
 #'
 #' @examples
 #' data <- list(
