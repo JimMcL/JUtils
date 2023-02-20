@@ -11,20 +11,23 @@ JAnimateGIF(
   plotFn,
   frameRate = 30,
   loop = 0,
+  gifMethod = c("auto", "magick-r", "gifski", "magick"),
+  optimize = FALSE,
+  progress = FALSE,
   tmpDir = tempdir(TRUE),
   ...
 )
 }
 \arguments{
 \item{videoFileName}{Name of the video file to be created. The file type is
-inferred from the file extension.}
+inferred from the file extension, but must be GIF if \code{gifMethod == "gifski"}.}
 
 \item{nFrames}{Number of frames to be generated. You must specify one of
 \code{nFrames} or \code{frameKeys}.}
 
-\item{frameKeys}{Vector of keys to be passed to `plotFn` to identify the frame
-to be plotted. If not specified, `frameKeys` will be set to the sequence
-`1:nFrames`.}
+\item{frameKeys}{Vector of keys to be passed to \code{plotFn} to identify the frame
+to be plotted. If not specified, \code{frameKeys} will be set to the sequence
+\code{1:nFrames}.}
 
 \item{plotFn}{Function which is called once for each frame. It is called once
 for each frame to be generated, with a single argument which is one of the
@@ -38,6 +41,20 @@ file.}
 \item{loop}{Number of times animation should be played. 0 means loop
 infinitely.}
 
+\item{gifMethod}{Specify the library/tool used to convert from PNG to GIF:
+\itemize{
+  \item{\code{"magick-r"}}{ uses the \href{https://cran.r-project.org/web/packages/magick/vignettes/intro.html}{magick R
+  package}.}
+  \item{\code{"magick"}}{ uses the \href{https://imagemagick.org/script/download.php}{ImageMagick command line
+  application}.}
+  \item{\code{"gifski"}}{ uses the \href{https://gif.ski/}{gifski R package}.}
+  \item{\code{"auto"}}{ uses \code{"magick-r"} if it is installed, otherwise uses \code{"gifski"} if it is installed, otherwises uses \code{"magick"}.}
+}}
+
+\item{optimize}{Only used if \code{gifMethod == "magick-r"}. Passed to \link[magick]{image_animate}.}
+
+\item{progress}{Only used if \code{gifMethod == "gifski"}. Passed to \link[gifski]{gifski}; if TRUE, prints some progress messages.}
+
 \item{tmpDir}{Name of a directory to be used to create temporary files in.}
 
 \item{...}{Any additional arguments are passed to the \code{\link{JPlotToPNG}}
@@ -48,12 +65,12 @@ The error message (as a character vector) from the ImageMack convert
   command, or \code{character(0)} (returned invisibly) on success.
 }
 \description{
-Works by writing each plot to a PNG file, then combining them into a GIF file
-using the ImageMagick utility. Frames are created by calling a custom plot
-function.
+Writes each frame to a PNG file, then combines them into a GIF
+file. Frames are created by calling a custom plot function. The PNG to GIF
+conversion is performed by a 3rd party R package or application.
 }
 \details{
-You must have \href{https://imagemagick.org/script/download.php}{ImageMagick}
+You must have a suitable image conversion tool installed - see the documentation of the argument \code{gifMethod} for details. \href{https://imagemagick.org/script/download.php}{ImageMagick}
 installed, and the ImageMagick bin subdirectory must be in your PATH
 environment variable. If ImageMagick is not installed, or is not in your PATH,
 \code{JAnimateGIF} will fail with an exception such as:
