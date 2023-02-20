@@ -56,11 +56,6 @@ timingFunctionBezier <- function(p0, p1, p2, p3, x) {
   # Linearly interpolate to get points equally spaced along the x-axis
   y <- stats::approx(b, xout = x)
 
-  if (F) {
-    plot(b)
-    lines(y)
-  }
-
   y$y
 }
 
@@ -279,7 +274,7 @@ JScenesnFrames <- function(scenes) {
   sum(sapply(scenes, function(s) s$nFrames + s$offset))
 }
 
-#' Animate a list of \code{\link{Jscene}}s.
+#' Animate a list of \code{\link{JScene}}s.
 #'
 #' See \code{\link{JAnimateGIF}} for general information about creating animations from R.
 #'
@@ -290,7 +285,7 @@ JScenesnFrames <- function(scenes) {
 #'
 #' @return The list of arguments passed to the \code{\link{JAnimateGIF}} function (invisibly).
 #'
-#' @seealso \code{\link{JAnimateGIF}}, \code{\link{Jscenes}}
+#' @seealso \code{\link{JAnimateGIF}}, \code{\link{JScene}}
 #'
 #' @export
 JAnimateScenes <- function(videoFileName, scenes, ...) {

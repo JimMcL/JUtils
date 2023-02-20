@@ -63,12 +63,14 @@ either using \code{JPlotToJPEG(filename, print(<plotting code>))} or else
 \code{ggsave()}.
 }
 \examples{
+\dontrun{
 JPlotToJPEG("test.jpg", plot(rnorm(50), type = 'l', main = 'Wiggly line'))
 
 # Plot to a JPEG file with width 180 mm, height 120 mm
 # (i.e. height / aspectRatio which defaults to (3 / 2)), resolution 300 ppi.
 # This results in a JPEG file with size 2125x1417 pixels
 JPlotToJPEG("test.jpg", plot(1:10 + rnorm(10), type = "o"), width = 180, units = "mm", res = 300)
+}
 
 }
 \seealso{

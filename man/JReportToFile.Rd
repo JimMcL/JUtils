@@ -22,7 +22,9 @@ The result of evaluating \code{plotExpr} is returned invisibly (which
 Sends the text output of an arbitrary R expression or function to a text file.
 }
 \examples{
+\dontrun{
 JReportToFile("test.txt", print("Hello world!"))
+}
 
 }
 \seealso{

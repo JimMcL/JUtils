@@ -2,7 +2,7 @@
 % Please edit documentation in R/anim-tools.R
 \name{JAnimateScenes}
 \alias{JAnimateScenes}
-\title{Animate a list of \code{\link{Jscene}}s.}
+\title{Animate a list of \code{\link{JScene}}s.}
 \usage{
 JAnimateScenes(videoFileName, scenes, ...)
 }
@@ -21,5 +21,5 @@ The list of arguments passed to the \code{\link{JAnimateGIF}} function (invisibl
 See \code{\link{JAnimateGIF}} for general information about creating animations from R.
 }
 \seealso{
-\code{\link{JAnimateGIF}}, \code{\link{Jscenes}}
+\code{\link{JAnimateGIF}}, \code{\link{JScene}}
 }

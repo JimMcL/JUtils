@@ -8,6 +8,11 @@ cleanupTestFiles <- function() {
   do.call(file.remove, list(list.files(TEST_DIR, full.names = TRUE)))
 }
 
+cleanupTestDir <- function() {
+  cleanupTestFiles()
+  unlink(TEST_DIR, recursive = TRUE, force = TRUE)
+}
+
 
 .prepare <- function() {
   if (!dir.exists(TEST_DIR))

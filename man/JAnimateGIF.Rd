@@ -43,7 +43,7 @@ infinitely.}
 
 \item{gifMethod}{Specify the library/tool used to convert from PNG to GIF:
 \itemize{
-  \item{\code{"magick-r"}}{ uses the \href{https://cran.r-project.org/web/packages/magick/vignettes/intro.html}{magick R
+  \item{\code{"magick-r"}}{ uses the \href{https://docs.ropensci.org/magick/articles/intro.html}{magick R
   package}.}
   \item{\code{"magick"}}{ uses the \href{https://imagemagick.org/script/download.php}{ImageMagick command line
   application}.}
@@ -80,7 +80,7 @@ environment variable. If ImageMagick is not installed, or is not in your PATH,
 
 For a general discussion about creating an animation in R, see
 \url{https://stackoverflow.com/questions/1298100/creating-a-movie-from-a-series-of-plots-in-r},
-or \url{https://www.r-graph-gallery.com/animation/}.
+or \url{https://r-graph-gallery.com/animation}.
 
 The png to gif conversion can be quite time consuming for a large number of
 frames, so start with a small number of frames to ensure everything works as

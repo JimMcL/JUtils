@@ -108,12 +108,14 @@
 #' @seealso \code{\link[grDevices]{png}}
 #'
 #' @examples
+#' \dontrun{
 #' JPlotToPNG("test.png", plot(rnorm(50), type = 'l', main = 'Wiggly line'))
 #'
 #' # Plot to a PNG file with width 180 mm, height 120 mm
 #' # (i.e. height / aspectRatio which defaults to (3 / 2)), resolution 300 ppi.
 #' # This results in a PNG file with size 2125x1417 pixels
 #' JPlotToPNG("test.png", plot(1:10 + rnorm(10), type = "o"), width = 180, units = "mm", res = 300)
+#' }
 #'
 #' @export
 JPlotToPNG <- function(filename, plotExpr,
@@ -167,12 +169,14 @@ JPlotToPNG <- function(filename, plotExpr,
 #' @seealso \code{\link[grDevices]{jpeg}}
 #'
 #' @examples
+#' \dontrun{
 #' JPlotToJPEG("test.jpg", plot(rnorm(50), type = 'l', main = 'Wiggly line'))
 #'
 #' # Plot to a JPEG file with width 180 mm, height 120 mm
 #' # (i.e. height / aspectRatio which defaults to (3 / 2)), resolution 300 ppi.
 #' # This results in a JPEG file with size 2125x1417 pixels
 #' JPlotToJPEG("test.jpg", plot(1:10 + rnorm(10), type = "o"), width = 180, units = "mm", res = 300)
+#' }
 #'
 #' @export
 JPlotToJPEG <- function(filename, plotExpr,
@@ -531,12 +535,14 @@ JPlotToFile <- function(filenames, plotExpr, ...) {
 #' @seealso \code{\link{sink}}, \code{\link[utils]{capture.output}} for saving text output into a variable.
 #'
 #' @examples
+#' \dontrun{
 #' JReportToFile("test.txt", print("Hello world!"))
+#' }
 #'
 #' @export
 JReportToFile <- function(filename, expr, createDirectory = TRUE) {
   oldOptions <- options()
-  on.exit(options(oldOptions))
+  on.exit(options(oldOptions), add = TRUE, after = FALSE)
   # Normally, text output is wrapped based on the console window size. This
   # doesn't make sense when writing to a file, so make the width very big
   options(width = 10000)

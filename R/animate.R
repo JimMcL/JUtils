@@ -10,7 +10,7 @@ pickGIFMethod <- function() {
   }
 }
 
-pngToGIFMagickR <- function(pngs, pngDir, videoFileName, loop, frameRate, optimize) {
+pngToGIFMagickR <- function(pngs, videoFileName, loop, frameRate, optimize) {
   imgs <- magick::image_read(pngs)
   anim <- magick::image_join(imgs)
   anim <- magick::image_animate(anim, delay = 100 / frameRate, loop = loop, optimize = optimize)
@@ -18,7 +18,7 @@ pngToGIFMagickR <- function(pngs, pngDir, videoFileName, loop, frameRate, optimi
   character(0)
 }
 
-pngToGIFGifskiR <- function(pngs, pngDir, videoFileName, loop, frameRate, progress) {
+pngToGIFGifskiR <- function(pngs, videoFileName, loop, frameRate, progress) {
   # Get image size from first frame
   info <- png::readPNG(pngs[1], info = TRUE)
   dim <- attr(info, "dim")
@@ -27,7 +27,7 @@ pngToGIFGifskiR <- function(pngs, pngDir, videoFileName, loop, frameRate, progre
                  delay = 1 / frameRate, loop = ifelse(loop <= 0, TRUE, loop), progress = progress)
 }
 
-pngToGIFMagick <- function(pngs, pngDir, videoFileName, loop, frameRate, ext, subDir, tmpDir) {
+pngToGIFMagick <- function(pngs, videoFileName, loop, frameRate, ext, subDir, tmpDir) {
   # ImageMagick command to convert multiple pngs to animated gif.
   # By default, the delay is in ticks, where 1 tick = 100th sec.
   # https://imagemagick.org/script/command-line-options.php#delay
@@ -73,7 +73,7 @@ pngToGIFMagick <- function(pngs, pngDir, videoFileName, loop, frameRate, ext, su
 #'
 #' For a general discussion about creating an animation in R, see
 #' \url{https://stackoverflow.com/questions/1298100/creating-a-movie-from-a-series-of-plots-in-r},
-#' or \url{https://www.r-graph-gallery.com/animation/}.
+#' or \url{https://r-graph-gallery.com/animation}.
 #'
 #' The png to gif conversion can be quite time consuming for a large number of
 #' frames, so start with a small number of frames to ensure everything works as
@@ -97,7 +97,7 @@ pngToGIFMagick <- function(pngs, pngDir, videoFileName, loop, frameRate, ext, su
 #'   infinitely.
 #' @param gifMethod Specify the library/tool used to convert from PNG to GIF:
 #' \itemize{
-#'   \item{\code{"magick-r"}}{ uses the \href{https://cran.r-project.org/web/packages/magick/vignettes/intro.html}{magick R
+#'   \item{\code{"magick-r"}}{ uses the \href{https://docs.ropensci.org/magick/articles/intro.html}{magick R
 #'   package}.}
 #'   \item{\code{"magick"}}{ uses the \href{https://imagemagick.org/script/download.php}{ImageMagick command line
 #'   application}.}
@@ -195,11 +195,11 @@ JAnimateGIF <- function(videoFileName, nFrames = NULL, frameKeys = 1:nFrames,
   }
 
   if (gifMethod == "magick-r") {
-    result <- pngToGIFMagickR(pngs, pngDir, videoFileName, loop, frameRate, optimize)
+    result <- pngToGIFMagickR(pngs, videoFileName, loop, frameRate, optimize)
   } else if (gifMethod == "magick") {
-    result <- pngToGIFMagick(pngs, pngDir, videoFileName, loop, frameRate, ext, subDir, tmpDir)
+    result <- pngToGIFMagick(pngs, videoFileName, loop, frameRate, ext, subDir, tmpDir)
   } else if (gifMethod == "gifski") {
-    result <- pngToGIFGifskiR(pngs, pngDir, videoFileName, loop, frameRate, progress)
+    result <- pngToGIFGifskiR(pngs, videoFileName, loop, frameRate, progress)
   }
 
   # Delete temporary pngs
