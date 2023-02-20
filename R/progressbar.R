@@ -77,8 +77,9 @@ forecastGuess <- function(timesSoFar, n) {
 
   if (length(timesSoFar > 1)) {
     l <- stats::lm(time ~ x, data = data.frame(x = seq_along(timesSoFar), time = timesSoFar))
-    r2 <- abs(summary(l)$r.squared)
-    c <- stats::coef(summary(l))
+    sl <- summary(l)
+    r2 <- abs(sl$r.squared)
+    c <- stats::coef(sl)
     p <- if (nrow(c) < 2) { 1 } else { c[2,4] }
     if (!is.na(p) && r2 > 0.5) {
       trendWeight <- 1 - p
