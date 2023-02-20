@@ -1,6 +1,6 @@
 <!-- badges: start -->
 [![check-standard](https://github.com/JimMcL/JUtils/actions/workflows/check-standard.yaml/badge.svg)](https://github.com/JimMcL/JUtils/actions/workflows/check-standard.yaml)
-[![test-coverage](https://github.com/JimMcL/JUtils/actions/workflows/test-coverage.yaml/badge.svg)](https://github.com/JimMcL/JUtils/actions/workflows/test-coverage.yaml)
+[![codecov](https://codecov.io/gh/JimMcL/JUtils/branch/master/graph/badge.svg?token=WIUHIx9qiK)](https://codecov.io/gh/JimMcL/JUtils)
 <!-- badges: end -->
 
 # JUtils
