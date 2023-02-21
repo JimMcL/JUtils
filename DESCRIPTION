@@ -13,6 +13,4 @@ Imports: grDevices, httr, tools, bezier, methods, stats
 Suggests: testthat, 
   png, 
   jpeg,
-  tiff,
-  magick,
-  gifski
+  tiff
