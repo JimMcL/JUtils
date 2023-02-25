@@ -48,7 +48,7 @@ infinitely.}
   \item{\code{"magick"}}{ uses the \href{https://imagemagick.org/script/download.php}{ImageMagick command line
   application}.}
   \item{\code{"gifski"}}{ uses the \href{https://gif.ski/}{gifski R package}.}
-  \item{\code{"auto"}}{ uses \code{"magick-r"} if it is installed, otherwise uses \code{"gifski"} if it is installed, otherwises uses \code{"magick"}.}
+  \item{\code{"auto"}}{ uses \code{"gifski"} if it is installed, otherwise uses \code{"magick-r"} if it is installed, otherwise uses \code{"magick"}.}
 }}
 
 \item{optimize}{Only used if \code{gifMethod == "magick-r"}. Passed to \link[magick]{image_animate}.}

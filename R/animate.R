@@ -1,10 +1,10 @@
 
 # Choose a method for generating a GIF from a sequence of still frames
 pickGIFMethod <- function() {
-  if (requireNamespace("magick", quietly = TRUE)) {
-    "magick-r"
-  } else if (requireNamespace("gifski", quietly = TRUE)) {
+  if (requireNamespace("gifski", quietly = TRUE)) {
     "gifski"
+  } else if (requireNamespace("magick", quietly = TRUE)) {
+    "magick-r"
   } else {
     "magick"
   }
@@ -102,7 +102,7 @@ pngToGIFMagick <- function(pngs, videoFileName, loop, frameRate, ext, subDir, tm
 #'   \item{\code{"magick"}}{ uses the \href{https://imagemagick.org/script/download.php}{ImageMagick command line
 #'   application}.}
 #'   \item{\code{"gifski"}}{ uses the \href{https://gif.ski/}{gifski R package}.}
-#'   \item{\code{"auto"}}{ uses \code{"magick-r"} if it is installed, otherwise uses \code{"gifski"} if it is installed, otherwises uses \code{"magick"}.}
+#'   \item{\code{"auto"}}{ uses \code{"gifski"} if it is installed, otherwise uses \code{"magick-r"} if it is installed, otherwise uses \code{"magick"}.}
 #' }
 #' @param optimize Only used if \code{gifMethod == "magick-r"}. Passed to \link[magick]{image_animate}.
 #' @param progress Only used if \code{gifMethod == "gifski"}. Passed to \link[gifski]{gifski}; if TRUE, prints some progress messages.
