@@ -173,7 +173,7 @@ JPlotToPNG <- function(filename, plotExpr,
 #'   looking graphics. Ignored if \code{tryToUseRagg == TRUE} and \code{ragg} is
 #'   installed.
 #' @param res The nominal resolution in ppi. The value is passed unchanged in to
-#'   \code{\link[ragg]{jpeg}} or \code{\link[grDevices]{jpeg}}. Increasing the
+#'   \code{\link[ragg]{agg_jpeg}} or \code{\link[grDevices]{jpeg}}. Increasing the
 #'   resolution will increase the size (in pixels) of the text and graph
 #'   elements.
 #' @param onlyIfDoesntExist If TRUE and the output file already exists,
