@@ -25,6 +25,7 @@ pngToGIFGifskiR <- function(pngs, videoFileName, loop, frameRate, progress) {
   # Gifski uses a different convention for loop than magick, and also hard-wires GIF size
   gifski::gifski(pngs, videoFileName, width = dim[2], height = dim[1],
                  delay = 1 / frameRate, loop = ifelse(loop <= 0, TRUE, loop), progress = progress)
+  character(0)
 }
 
 pngToGIFMagick <- function(pngs, videoFileName, loop, frameRate, ext, subDir, tmpDir) {
