@@ -11,6 +11,7 @@ JPlotToJPEG(
   height = NA,
   aspectRatio = 3/2,
   units = c("px", "mm", "cm", "in"),
+  tryToUseRagg = TRUE,
   type = ifelse(capabilities()["cairo"], "cairo", NULL),
   res = 72,
   onlyIfDoesntExist = FALSE,
@@ -37,12 +38,20 @@ file.}
 \item{units}{Units of \code{width} and \code{height}. Note that defaults
 units are pixels (\code{px}).}
 
-\item{type}{Plotting device - defaults to "cairo" if that is an available
-device since it produces nicer looking graphics.}
+\item{tryToUseRagg}{If \code{TRUE} (the default) and the \code{ragg} package
+is installed, the JPEG file will be created using
+\code{\link[ragg]{agg_jpeg}}, otherwise \code{\link[grDevices]{jpeg}} will
+be used. See \url{https://ragg.r-lib.org} for more information.}
 
-\item{res}{The nominal resolution in ppi. The value is passed in to
-\code{\link[grDevices]{jpeg}}. Increasing the resolution will increase the
-size (in pixels) of the text and graph elements.}
+\item{type}{Plotting device; passed directly to \code{\link[grDevices]{jpeg}}.
+Defaults to "cairo" if that is an available device since it produces nicer
+looking graphics. Ignored if \code{tryToUseRagg == TRUE} and \code{ragg} is
+installed.}
+
+\item{res}{The nominal resolution in ppi. The value is passed unchanged in to
+\code{\link[ragg]{jpeg}} or \code{\link[grDevices]{jpeg}}. Increasing the
+resolution will increase the size (in pixels) of the text and graph
+elements.}
 
 \item{onlyIfDoesntExist}{If TRUE and the output file already exists,
 \code{JPlotToJPEG} will do nothing.}
@@ -50,7 +59,7 @@ size (in pixels) of the text and graph elements.}
 \item{createDirectory}{If TRUE and \code{filename} is located in a directory
 which doesn't exist, the directory will be created.}
 
-\item{...}{Any additional arguments are passed to
+\item{...}{Any additional arguments are passed to \code{\link[ragg]{agg_jpeg}} or
 \code{\link[grDevices]{jpeg}}.}
 }
 \value{
@@ -74,5 +83,5 @@ JPlotToJPEG("test.jpg", plot(1:10 + rnorm(10), type = "o"), width = 180, units =
 
 }
 \seealso{
-\code{\link[grDevices]{jpeg}}
+\code{\link[ragg]{agg_jpeg}}, \code{\link[grDevices]{jpeg}}
 }

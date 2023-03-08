@@ -11,6 +11,7 @@ JPlotToTIFF(
   height = NA,
   aspectRatio = 3/2,
   units = c("mm", "cm", "px", "in"),
+  tryToUseRagg = TRUE,
   type = ifelse(capabilities()["cairo"], "cairo", NULL),
   res = 72,
   onlyIfDoesntExist = FALSE,
@@ -35,8 +36,15 @@ file.}
 
 \item{units}{Units of \code{width} and \code{height}.}
 
-\item{type}{Plotting device - defaults to "cairo" if that is an available
-device since it produces nicer looking graphics.}
+\item{tryToUseRagg}{If \code{TRUE} (the default) and the \code{ragg} package
+is installed, the TIFF file will be created using
+\code{\link[ragg]{agg_tiff}}, otherwise \code{\link[grDevices]{tiff}} will be
+used. See \url{https://ragg.r-lib.org} for more information.}
+
+\item{type}{Plotting device; passed directly to \code{\link[grDevices]{tiff}}.
+Defaults to "cairo" if that is an available device since it produces nicer
+looking graphics. Ignored if \code{tryToUseRagg == TRUE} and \code{ragg} is
+installed.}
 
 \item{res}{The nominal resolution in ppi. The value is passed in to
 \code{\link[grDevices:png]{grDevices::tiff()}}. Increasing the resolution
@@ -49,7 +57,7 @@ will increase the size (in pixels) of the text and graph elements.}
 which doesn't exist, the directory will be created.}
 
 \item{...}{Any additional arguments are passed to
-\code{\link[grDevices:png]{grDevices::tiff()}}.}
+\code{\link[ragg]{agg_tiff}} or \code{\link[grDevices]{tiff}}.}
 }
 \value{
 The result of evaluating \code{plotExpr} is returned invisibly (which
@@ -61,5 +69,5 @@ either using \code{JPlotToTIFF(filename, print(<plotting code>))} or else
 \code{ggsave()}.
 }
 \seealso{
-\code{\link[grDevices]{png}}
+\code{\link[ragg]{agg_tiff}}, \code{\link[grDevices]{tiff}}
 }

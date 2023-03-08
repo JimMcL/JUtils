@@ -1,6 +1,5 @@
 # Functions for plotting to files
 #
-# V1.0
 
 # "Private" function to run some code with output going somewhere special.
 # The result of evaulating the code is returned invisibly.
@@ -90,22 +89,29 @@
 #'   file.
 #' @param units Units of \code{width} and \code{height}. Note that defaults
 #'   units are pixels (\code{px}).
-#' @param type Plotting device - defaults to "cairo" if that is an available
-#'   device since it produces nicer looking graphics.
-#' @param res The nominal resolution in ppi. The value is passed in to
-#'   \code{\link[grDevices]{png}}. Increasing the resolution will increase the
-#'   size (in pixels) of the text and graph elements.
+#' @param tryToUseRagg If \code{TRUE} (the default) and the \code{ragg} package
+#'   is installed, the PNG file will be created using
+#'   \code{\link[ragg]{agg_png}}, otherwise \code{\link[grDevices]{png}} will be
+#'   used. See \url{https://ragg.r-lib.org} for more information.
+#' @param type Plotting device; passed directly to \code{\link[grDevices]{png}}.
+#'   Defaults to "cairo" if that is an available device since it produces nicer
+#'   looking graphics. Ignored if \code{tryToUseRagg == TRUE} and \code{ragg} is
+#'   installed.
+#' @param res The nominal resolution in ppi. The value is simply passed in to
+#'   \code{\link[ragg]{agg_png}} or \code{\link[grDevices]{png}}. Increasing the
+#'   resolution will increase the size (in pixels) of the text and graph
+#'   elements.
 #' @param onlyIfDoesntExist If TRUE and the output file already exists,
 #'   \code{JPlotToPNG} will do nothing.
 #' @param createDirectory If TRUE and \code{filename} is located in a directory
 #'   which doesn't exist, the directory will be created.
-#' @param ... Any additional arguments are passed to
-#'   \code{\link[grDevices]{png}}.
+#' @param ... Any additional arguments are passed to either
+#'   \code{\link[ragg]{agg_png}} or \code{\link[grDevices]{png}}.
 #'
 #' @return The result of evaluating \code{plotExpr} is returned invisibly (which
 #'   means it is not automatically printed).
 #'
-#' @seealso \code{\link[grDevices]{png}}
+#' @seealso \code{\link[ragg]{agg_png}}, \code{\link[grDevices]{png}}
 #'
 #' @examples
 #' \dontrun{
@@ -121,6 +127,7 @@
 JPlotToPNG <- function(filename, plotExpr,
                        width = 600, height = NA, aspectRatio = 3 / 2,
                        units = c("px", "mm", "cm", "in"),
+                       tryToUseRagg = TRUE,
                        type = ifelse(capabilities()["cairo"], 'cairo', NULL),
                        res = 72,
                        onlyIfDoesntExist = FALSE,
@@ -128,9 +135,15 @@ JPlotToPNG <- function(filename, plotExpr,
                        ...) {
   g <- .geometry(width, height, aspectRatio, res, units, c("mm", "cm", "px", "in"))
 
-  .JplotToDevice(filename, plotExpr, onlyIfDoesntExist, createDir = createDirectory, function() {
-    grDevices::png(filename, width = g$width, height = g$height, units = g$units, type = type, res = res, ...)
-  })
+  if (tryToUseRagg && requireNamespace("ragg", quietly = TRUE)) {
+    .JplotToDevice(filename, plotExpr, onlyIfDoesntExist, createDir = createDirectory, function() {
+      ragg::agg_png(filename, width = g$width, height = g$height, units = g$units, res = res, ...)
+    })
+  } else {
+    .JplotToDevice(filename, plotExpr, onlyIfDoesntExist, createDir = createDirectory, function() {
+      grDevices::png(filename, width = g$width, height = g$height, units = g$units, type = type, res = res, ...)
+    })
+  }
 }
 
 #' Plot to a JPEG file
@@ -151,22 +164,29 @@ JPlotToPNG <- function(filename, plotExpr,
 #'   file.
 #' @param units Units of \code{width} and \code{height}. Note that defaults
 #'   units are pixels (\code{px}).
-#' @param type Plotting device - defaults to "cairo" if that is an available
-#'   device since it produces nicer looking graphics.
-#' @param res The nominal resolution in ppi. The value is passed in to
-#'   \code{\link[grDevices]{jpeg}}. Increasing the resolution will increase the
-#'   size (in pixels) of the text and graph elements.
+#' @param tryToUseRagg If \code{TRUE} (the default) and the \code{ragg} package
+#'   is installed, the JPEG file will be created using
+#'   \code{\link[ragg]{agg_jpeg}}, otherwise \code{\link[grDevices]{jpeg}} will
+#'   be used. See \url{https://ragg.r-lib.org} for more information.
+#' @param type Plotting device; passed directly to \code{\link[grDevices]{jpeg}}.
+#'   Defaults to "cairo" if that is an available device since it produces nicer
+#'   looking graphics. Ignored if \code{tryToUseRagg == TRUE} and \code{ragg} is
+#'   installed.
+#' @param res The nominal resolution in ppi. The value is passed unchanged in to
+#'   \code{\link[ragg]{jpeg}} or \code{\link[grDevices]{jpeg}}. Increasing the
+#'   resolution will increase the size (in pixels) of the text and graph
+#'   elements.
 #' @param onlyIfDoesntExist If TRUE and the output file already exists,
 #'   \code{JPlotToJPEG} will do nothing.
 #' @param createDirectory If TRUE and \code{filename} is located in a directory
 #'   which doesn't exist, the directory will be created.
-#' @param ... Any additional arguments are passed to
+#' @param ... Any additional arguments are passed to \code{\link[ragg]{agg_jpeg}} or
 #'   \code{\link[grDevices]{jpeg}}.
 #'
 #' @return The result of evaluating \code{plotExpr} is returned invisibly (which
 #'   means it is not automatically printed).
 #'
-#' @seealso \code{\link[grDevices]{jpeg}}
+#' @seealso \code{\link[ragg]{agg_jpeg}}, \code{\link[grDevices]{jpeg}}
 #'
 #' @examples
 #' \dontrun{
@@ -182,6 +202,7 @@ JPlotToPNG <- function(filename, plotExpr,
 JPlotToJPEG <- function(filename, plotExpr,
                        width = 600, height = NA, aspectRatio = 3 / 2,
                        units = c("px", "mm", "cm", "in"),
+                       tryToUseRagg = TRUE,
                        type = ifelse(capabilities()["cairo"], 'cairo', NULL),
                        res = 72,
                        onlyIfDoesntExist = FALSE,
@@ -189,9 +210,15 @@ JPlotToJPEG <- function(filename, plotExpr,
                        ...) {
   g <- .geometry(width, height, aspectRatio, res, units, c("mm", "cm", "px", "in"))
 
-  .JplotToDevice(filename, plotExpr, onlyIfDoesntExist, createDir = createDirectory, function() {
-    grDevices::jpeg(filename, width = g$width, height = g$height, units = g$units, type = type, res = res, ...)
-  })
+  if (tryToUseRagg && requireNamespace("ragg", quietly = TRUE)) {
+    .JplotToDevice(filename, plotExpr, onlyIfDoesntExist, createDir = createDirectory, function() {
+      ragg::agg_jpeg(filename, width = g$width, height = g$height, units = g$units, res = res, ...)
+    })
+  } else {
+    .JplotToDevice(filename, plotExpr, onlyIfDoesntExist, createDir = createDirectory, function() {
+      grDevices::jpeg(filename, width = g$width, height = g$height, units = g$units, type = type, res = res, ...)
+    })
+  }
 }
 
 #' Plot to a TIFF file
@@ -210,8 +237,14 @@ JPlotToJPEG <- function(filename, plotExpr,
 #' @param aspectRatio Aspect ratio (\code{width / height}) of the output TIFF
 #'   file.
 #' @param units Units of \code{width} and \code{height}.
-#' @param type Plotting device - defaults to "cairo" if that is an available
-#'   device since it produces nicer looking graphics.
+#' @param tryToUseRagg If \code{TRUE} (the default) and the \code{ragg} package
+#'   is installed, the TIFF file will be created using
+#'   \code{\link[ragg]{agg_tiff}}, otherwise \code{\link[grDevices]{tiff}} will be
+#'   used. See \url{https://ragg.r-lib.org} for more information.
+#' @param type Plotting device; passed directly to \code{\link[grDevices]{tiff}}.
+#'   Defaults to "cairo" if that is an available device since it produces nicer
+#'   looking graphics. Ignored if \code{tryToUseRagg == TRUE} and \code{ragg} is
+#'   installed.
 #' @param res The nominal resolution in ppi. The value is passed in to
 #'   \code{\link[grDevices:png]{grDevices::tiff()}}. Increasing the resolution
 #'   will increase the size (in pixels) of the text and graph elements.
@@ -220,17 +253,18 @@ JPlotToJPEG <- function(filename, plotExpr,
 #' @param createDirectory If TRUE and \code{filename} is located in a directory
 #'   which doesn't exist, the directory will be created.
 #' @param ... Any additional arguments are passed to
-#'   \code{\link[grDevices:png]{grDevices::tiff()}}.
+#'   \code{\link[ragg]{agg_tiff}} or \code{\link[grDevices]{tiff}}.
 #'
 #' @return The result of evaluating \code{plotExpr} is returned invisibly (which
 #'   means it is not automatically printed).
 #'
-#' @seealso \code{\link[grDevices]{png}}
+#' @seealso \code{\link[ragg]{agg_tiff}}, \code{\link[grDevices]{tiff}}
 #'
 #' @export
 JPlotToTIFF <- function(filename, plotExpr,
                         width = 180, height = NA, aspectRatio = 3 / 2,
                         units = c("mm", "cm", "px", "in"),
+                        tryToUseRagg = TRUE,
                         type = ifelse(capabilities()["cairo"], 'cairo', NULL),
                         res = 72,
                         onlyIfDoesntExist = FALSE,
@@ -238,9 +272,15 @@ JPlotToTIFF <- function(filename, plotExpr,
                         ...) {
   g <- .geometry(width, height, aspectRatio, res, units, c("mm", "cm", "px", "in"))
 
-  .JplotToDevice(filename, plotExpr, onlyIfDoesntExist, createDir = createDirectory, function() {
-    grDevices::tiff(filename, width = g$width, height = g$height, units = g$units, type = type, res = res, ...)
-  })
+  if (tryToUseRagg && requireNamespace("ragg", quietly = TRUE)) {
+    .JplotToDevice(filename, plotExpr, onlyIfDoesntExist, createDir = createDirectory, function() {
+      ragg::agg_tiff(filename, width = g$width, height = g$height, units = g$units, res = res, ...)
+    })
+  } else {
+    .JplotToDevice(filename, plotExpr, onlyIfDoesntExist, createDir = createDirectory, function() {
+      grDevices::tiff(filename, width = g$width, height = g$height, units = g$units, type = type, res = res, ...)
+    })
+  }
 }
 
 #' Plot to a PDF file

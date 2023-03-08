@@ -15,4 +15,5 @@ Suggests: testthat,
   jpeg,
   tiff,
   magick,
-  gifski
+  gifski,
+  ragg

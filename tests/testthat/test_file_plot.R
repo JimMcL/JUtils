@@ -29,6 +29,17 @@ test_that("png plotting", {
   expect_equal(info$dim[2], .mmToPixels(height))
   expect_equal(info$dpi[1], res, tolerance = .1)
   expect_equal(info$dpi[2], res, tolerance = .1)
+
+  # Test non-ragg device
+  img <- tf("test-def.png")
+  JPlotToPNG(img, plotWigglyLines(), tryToUseRagg = FALSE, width = width, height = height, res = res, units = units)
+  expect_true(file.exists(img))
+  png <- readPNG(img, native = TRUE, info = TRUE)
+  info <- attr(png, "info")
+  expect_equal(info$dim[1], .mmToPixels(width))
+  expect_equal(info$dim[2], .mmToPixels(height))
+  expect_equal(info$dpi[1], res, tolerance = .1)
+  expect_equal(info$dpi[2], res, tolerance = .1)
 })
 
 test_that("png plotting fn", {
@@ -148,6 +159,13 @@ test_that("jpeg plotting", {
   jpg <- readJPEG(img, native = TRUE)
   expect_equal(attr(jpg, "dim")[2], .mmToPixels(width))
   expect_equal(attr(jpg, "dim")[1], .mmToPixels(height))
+
+  img <- tf("test-def.jpg")
+  JPlotToJPEG(img, plotWigglyLines(), tryToUseRagg = FALSE, width = width, height = height, res = res, units = units)
+  expect_true(file.exists(img))
+  jpg <- readJPEG(img, native = TRUE)
+  expect_equal(attr(jpg, "dim")[2], .mmToPixels(width))
+  expect_equal(attr(jpg, "dim")[1], .mmToPixels(height))
 })
 
 test_that("tiff plotting", {
@@ -161,6 +179,15 @@ test_that("tiff plotting", {
 
   img <- tf("test.tif")
   JPlotToTIFF(img, plotWigglyLines(), width = width, height = height, res = res, units = units)
+  expect_true(file.exists(img))
+  jpg <- readTIFF(img, native = TRUE, info = TRUE)
+  expect_equal(attr(jpg, "dim")[2], .mmToPixels(width))
+  expect_equal(attr(jpg, "dim")[1], .mmToPixels(height))
+  expect_equal(attr(jpg, "x.resolution"), res, tolerance = .1)
+  expect_equal(attr(jpg, "y.resolution"), res, tolerance = .1)
+
+  img <- tf("test-def.tif")
+  JPlotToTIFF(img, plotWigglyLines(), tryToUseRagg = FALSE, width = width, height = height, res = res, units = units)
   expect_true(file.exists(img))
   jpg <- readTIFF(img, native = TRUE, info = TRUE)
   expect_equal(attr(jpg, "dim")[2], .mmToPixels(width))
