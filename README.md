@@ -45,6 +45,8 @@ then restart R, as described [here](https://cran.r-project.org/bin/macosx/RMacOS
 
 `JUtils` provides functions which wrap the standard R functions (from the core `grDevices` package) for plotting to files using base graphics. `JUtils`  provides more flexibility in specifying file sizes, and hides some of the more arcane aspects of the standard functions, yet still provides access to all of the underlying functionality. All functions accept any "real world" units (mm, cm & in). Raster functions (`JPlotToPNG`, `JPlotToJPEG` and `JPlotToTIFF`) also accept pixel ("px") units. For a nice discussion about printing issues in R, see https://blog.revolutionanalytics.com/2009/01/10-tips-for-making-your-r-graphics-look-their-best.html.
 
+By default, if the [ragg](https://ragg.r-lib.org/) package is installed, `JUtils` will use it for plotting to PNG, JPEG or TIFF files. If [ragg](https://ragg.r-lib.org/) is not installed, `JUtils` will use the standard `grDevices` functionality. The [ragg](https://ragg.r-lib.org/) package may be faster than `grDevices`, has better font support, and may produce better quality plots, although personal experience suggests that is not always the case.
+
 
     library("JUtils")
 
