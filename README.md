@@ -47,7 +47,7 @@ then restart R, as described [here](https://cran.r-project.org/bin/macosx/RMacOS
 
 Be aware that if you use `par(mfrow = ...)` to plot with 2 or more rows or columns, R automatically reduces `cex`. If you are unaware of this behaviour, it can cause major headaches when creating multiple plots for a publication with different numbers of panels. One solution is to explicitly set `par(cex = ...)` _after_ setting `par(mfrow = ...)`.
 
-By default, if the [ragg](https://ragg.r-lib.org/) package is installed, `JUtils` will use it for plotting to PNG, JPEG or TIFF files. If [ragg](https://ragg.r-lib.org/) is not installed, `JUtils` will use the standard `grDevices` functionality. The [ragg](https://ragg.r-lib.org/) package may be faster than `grDevices`, has better font support, and may produce better quality plots, although personal experience suggests that is not always the case.
+By default, if the [ragg](https://ragg.r-lib.org/) package is installed, `JUtils` will use it for plotting to PNG, JPEG or TIFF files. If [ragg](https://ragg.r-lib.org/) is not installed, `JUtils` will use the standard `grDevices` functionality. The [ragg](https://ragg.r-lib.org/) package may be faster than `grDevices`, has better font support (e.g. `par(family = "Segoe UI")` works as expected), and may produce better quality plots, although plot quality may sometimes be a subjective matter.
 
 
     library("JUtils")
