@@ -1,3 +1,10 @@
+###############################################################################
+                              #### NOTE #####
+# When running tests on GitHub actions on MacOS, quartz is not installed so the
+# cairo devices do not work (even though capabilities()["cairo"] == TRUE).
+# Consequently, I skip all cairo plotting tests on mac
+###############################################################################
+
 context("Plot to file")
 #library(JUtils)
 suppressWarnings(library(png))
@@ -30,8 +37,8 @@ test_that("png plotting", {
   expect_equal(info$dpi[1], res, tolerance = .1)
   expect_equal(info$dpi[2], res, tolerance = .1)
 
-  # Skip
-  # Only test if cairo is available
+  # Only test if cairo is available, Cairo is unavailable on GitHub actions on
+  # macOS, because quartz is not installed
   skip_on_os("mac")
 
   # Test non-ragg device
@@ -164,7 +171,6 @@ test_that("jpeg plotting", {
   expect_equal(attr(jpg, "dim")[2], .mmToPixels(width))
   expect_equal(attr(jpg, "dim")[1], .mmToPixels(height))
 
-  # I don't know why the following plot fails if cairo is not available
   # Only test if cairo is available
   skip_on_os("mac")
 
@@ -194,7 +200,6 @@ test_that("tiff plotting", {
   expect_equal(attr(jpg, "x.resolution"), res, tolerance = .1)
   expect_equal(attr(jpg, "y.resolution"), res, tolerance = .1)
 
-  # I don't know why the following plot fails if cairo is not available
   # Only test if cairo is available
   skip_on_os("mac")
 
@@ -409,6 +414,9 @@ test_that("test postscript transparency", {
   # Expect normal postscript to produce a warning
   f <- tf("test1.eps")
   expect_warning(JPlotToEPS(f, plotAlpha))
+
+  # Only test if cairo is available
+  skip_on_os("mac")
   # Cairo postscript handles transparency by converting to raster
   f <- tf("test2.eps")
   expect_silent(JPlotToEPS(f, plotAlpha, cairo = TRUE, fallback_resolution = 400))
@@ -422,25 +430,25 @@ test_that("Incorrect plot return value", {
   lines <- readLines(f)
   expect_equal(lines, "Hello world!")
   expect_equal(val, 123, info = "JReportToFile with expression returned an incorrect value")
-  val <- JReportToFile(f, function () { cat("Hello world!\n"); 123 })
+  val <- JReportToFile(f, function() { cat("Hello world!\n"); 123 })
   expect_equal(val, 123, info = "JReportToFile with function returned an incorrect value")
 
   img <- tf("test.png")
   val <- JPlotToPNG(img, { plotWigglyLines(); 123 })
   expect_true(file.exists(img))
   expect_equal(val, 123, info = "JPlotToPNG with expression returned an incorrect value")
-  val <- JPlotToPNG(img, function () { plotWigglyLines(); 123 })
+  val <- JPlotToPNG(img, function() { plotWigglyLines(); 123 })
   expect_true(file.exists(img))
   expect_equal(val, 123, info = "JPlotToPNG with function returned an incorrect value")
 
   val <- JPlotToFile(img, { plotWigglyLines(); 123 })
   expect_equal(val, 123, info = "JPlotToFile with expression returned an incorrect value")
-  val <- JPlotToFile(img, function () { plotWigglyLines(); 123 })
+  val <- JPlotToFile(img, function() { plotWigglyLines(); 123 })
   expect_equal(val, 123, info = "JPlotToFile with function returned an incorrect value")
 
   val <- JPlotToFile(img, { plotWigglyLines(); NULL })
   expect_true(is.null(val), info = "JPlotToFile with expression returned an incorrect value")
-  val <- JPlotToFile(img, function () { plotWigglyLines(); NULL })
+  val <- JPlotToFile(img, function() { plotWigglyLines(); NULL })
   expect_true(is.null(val), info = "JPlotToFile with function returned an incorrect value")
 })
 
