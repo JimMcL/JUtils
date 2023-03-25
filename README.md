@@ -86,7 +86,7 @@ Fonts are not embedded in PDF plot output. This may not matter if you specify a 
 
 #### Plotting on macOS
 
-On macOS (and perhaps other Unix-like systems), the Cairo library might not be installed by default, so attempts to plot to TIFF or PNG files will fail with an error message such as '`failed to load cairo DLL`'. Solutions are to not use Cairo (e.g. in `JPlotToTIFF` or `JPlotToPNG`, specify the argument `type = "Xlib"` or `type = "quartz"`), or else install XQuartz (or Xlib). See [https://www.xquartz.org/](https://www.xquartz.org/).
+On macOS (and perhaps other Unix-like systems), the Cairo library might not be installed by default, so attempts to plot to TIFF or PNG files will fail with an error message such as '`failed to load cairo DLL`'. The simplest solution is to install and use `ragg` (which prevents the use of Cairo). Alternatively, specify the argument `type = "Xlib"` or `type = "quartz"` to `JPlotToTIFF` or `JPlotToPNG`. This may require you to install XQuartz (or Xlib). See [https://www.xquartz.org/](https://www.xquartz.org/). As far as I am aware, SVG can only be produced if Cairo is available.
 
 ---
 

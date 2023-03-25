@@ -30,6 +30,10 @@ test_that("png plotting", {
   expect_equal(info$dpi[1], res, tolerance = .1)
   expect_equal(info$dpi[2], res, tolerance = .1)
 
+  # I don't know why the following plot fails if cairo is not available
+  # Only test if cairo is available
+  skip_if_not(capabilities()["cairo"])
+
   # Test non-ragg device
   img <- tf("test-def.png")
   JPlotToPNG(img, plotWigglyLines(), tryToUseRagg = FALSE, width = width, height = height, res = res, units = units)
@@ -160,7 +164,11 @@ test_that("jpeg plotting", {
   expect_equal(attr(jpg, "dim")[2], .mmToPixels(width))
   expect_equal(attr(jpg, "dim")[1], .mmToPixels(height))
 
-  img <- tf("test-def.jpg")
+  # I don't know why the following plot fails if cairo is not available
+  # Only test if cairo is available
+  skip_if_not(capabilities()["cairo"])
+
+    img <- tf("test-def.jpg")
   JPlotToJPEG(img, plotWigglyLines(), tryToUseRagg = FALSE, width = width, height = height, res = res, units = units)
   expect_true(file.exists(img))
   jpg <- readJPEG(img, native = TRUE)
@@ -185,6 +193,10 @@ test_that("tiff plotting", {
   expect_equal(attr(jpg, "dim")[1], .mmToPixels(height))
   expect_equal(attr(jpg, "x.resolution"), res, tolerance = .1)
   expect_equal(attr(jpg, "y.resolution"), res, tolerance = .1)
+
+  # I don't know why the following plot fails if cairo is not available
+  # Only test if cairo is available
+  skip_if_not(capabilities()["cairo"])
 
   img <- tf("test-def.tif")
   JPlotToTIFF(img, plotWigglyLines(), tryToUseRagg = FALSE, width = width, height = height, res = res, units = units)
@@ -234,7 +246,7 @@ test_that("svg plotting", {
   img <- tf("test.svg")
   JPlotToSVG(img, plotWigglyLines(), width = width, height = height, units = units)
   expect_true(file.exists(img))
-  lines <- readLines(img, n=10)
+  lines <- readLines(img, n = 10)
 })
 
 test_that("svg transparency", {
@@ -262,13 +274,13 @@ test_that("eps plotting", {
   img <- tf("test1.eps")
   JPlotToEPS(img, plotWigglyLines(), width = width, height = height, units = units)
   expect_true(file.exists(img))
-  lines1 <- readLines(img, n=10)
+  lines1 <- readLines(img, n = 10)
 
   # Identical except for font
   img <- tf("test2.eps")
   JPlotToEPS(img, plotWigglyLines(), width = width, height = height, units = units, family = "mono")
   expect_true(file.exists(img))
-  lines2 <- readLines(img, n=10)
+  lines2 <- readLines(img, n = 10)
   expect_true(lines1[2] != lines2[2])
 })
 
@@ -281,7 +293,7 @@ test_that("General plotting", {
   img <- tf("test.eps")
   JPlotToFile(img, plotWigglyLines(), width = width, height = height, units = units)
   expect_true(file.exists(img))
-  lines <- readLines(img, n=10)
+  lines <- readLines(img, n = 10)
 })
 
 test_that("Multiple plots expr", {
@@ -295,7 +307,7 @@ test_that("Multiple plots expr", {
   for (img in imgs) {
     expect_true(file.exists(img), info = img)
   }
-  lines <- readLines(imgs[1], n=10, warn = FALSE)
+  lines <- readLines(imgs[1], n = 10, warn = FALSE)
 })
 
 test_that("Multiple plots fn", {
@@ -309,7 +321,7 @@ test_that("Multiple plots fn", {
   for (img in imgs) {
     expect_true(file.exists(img), info = img)
   }
-  lines <- readLines(imgs[1], n=10, warn = FALSE)
+  lines <- readLines(imgs[1], n = 10, warn = FALSE)
 })
 
 test_that("Height from AR", {
