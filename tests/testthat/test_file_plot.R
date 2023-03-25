@@ -32,6 +32,7 @@ test_that("png plotting", {
 
   # I don't know why the following plot fails if cairo is not available
   # Only test if cairo is available
+  print(capabilities())
   skip_if_not(capabilities()["cairo"])
 
   # Test non-ragg device
@@ -168,7 +169,7 @@ test_that("jpeg plotting", {
   # Only test if cairo is available
   skip_if_not(capabilities()["cairo"])
 
-    img <- tf("test-def.jpg")
+  img <- tf("test-def.jpg")
   JPlotToJPEG(img, plotWigglyLines(), tryToUseRagg = FALSE, width = width, height = height, res = res, units = units)
   expect_true(file.exists(img))
   jpg <- readJPEG(img, native = TRUE)
