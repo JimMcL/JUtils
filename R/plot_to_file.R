@@ -96,7 +96,8 @@
 #' @param type Plotting device; passed directly to \code{\link[grDevices]{png}}.
 #'   Defaults to "cairo" if that is an available device since it produces nicer
 #'   looking graphics. Ignored if \code{tryToUseRagg == TRUE} and \code{ragg} is
-#'   installed.
+#'   installed. Note that R can be compiled with Cairo support, but it still
+#'   won't work on MacOS if Quartz is not installed.
 #' @param res The nominal resolution in ppi. The value is simply passed in to
 #'   \code{\link[ragg]{agg_png}} or \code{\link[grDevices]{png}}. Increasing the
 #'   resolution will increase the size (in pixels) of the text and graph
@@ -128,7 +129,7 @@ JPlotToPNG <- function(filename, plotExpr,
                        width = 600, height = NA, aspectRatio = 3 / 2,
                        units = c("px", "mm", "cm", "in"),
                        tryToUseRagg = TRUE,
-                       type = ifelse(capabilities()["cairo"], 'cairo', NULL),
+                       type = ifelse(capabilities()["cairo"], 'cairo', NULL), # Unfortunately, this test can't determine whether Quartz is actually installed!
                        res = 72,
                        onlyIfDoesntExist = FALSE,
                        createDirectory = TRUE,

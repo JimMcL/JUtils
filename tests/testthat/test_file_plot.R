@@ -30,10 +30,9 @@ test_that("png plotting", {
   expect_equal(info$dpi[1], res, tolerance = .1)
   expect_equal(info$dpi[2], res, tolerance = .1)
 
-  # I don't know why the following plot fails if cairo is not available
+  # Skip
   # Only test if cairo is available
-  print(capabilities())
-  skip_if_not(capabilities()["cairo"])
+  skip_on_os("mac")
 
   # Test non-ragg device
   img <- tf("test-def.png")
@@ -167,7 +166,7 @@ test_that("jpeg plotting", {
 
   # I don't know why the following plot fails if cairo is not available
   # Only test if cairo is available
-  skip_if_not(capabilities()["cairo"])
+  skip_on_os("mac")
 
   img <- tf("test-def.jpg")
   JPlotToJPEG(img, plotWigglyLines(), tryToUseRagg = FALSE, width = width, height = height, res = res, units = units)
@@ -197,7 +196,7 @@ test_that("tiff plotting", {
 
   # I don't know why the following plot fails if cairo is not available
   # Only test if cairo is available
-  skip_if_not(capabilities()["cairo"])
+  skip_on_os("mac")
 
   img <- tf("test-def.tif")
   JPlotToTIFF(img, plotWigglyLines(), tryToUseRagg = FALSE, width = width, height = height, res = res, units = units)
@@ -227,7 +226,7 @@ test_that("pdf plotting", {
   lines <- readLines(img, n = 3) # Don't get too many lines or there are embedded NULs that cause an error on some systems
 
   # Only test if cairo is available
-  skip_if_not(capabilities()["cairo"])
+  skip_on_os("mac")
   # Test using the cairo_pdf device
   img <- tf("test3.pdf")
   JPlotToPDF(img, plotWigglyLines(), width = width, height = height, units = units, cairo = TRUE)
@@ -237,7 +236,7 @@ test_that("pdf plotting", {
 
 test_that("svg plotting", {
   # Only test if cairo is available
-  skip_if_not(capabilities()["cairo"])
+  skip_on_os("mac")
 
   .prepare()
   width <- 180
@@ -252,7 +251,7 @@ test_that("svg plotting", {
 
 test_that("svg transparency", {
   # SVG only works with cairo
-  skip_if_not(capabilities()["cairo"])
+  skip_on_os("mac")
 
   .prepare()
 
