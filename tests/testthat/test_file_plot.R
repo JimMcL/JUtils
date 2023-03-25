@@ -213,6 +213,8 @@ test_that("pdf plotting", {
   expect_true(file.exists(img))
   lines <- readLines(img, n = 3) # Don't get too many lines or there are embedded NULs that cause an error on some systems
 
+  # Only test if cairo is available
+  skip_if_not(capabilities()["cairo"])
   # Test using the cairo_pdf device
   img <- tf("test3.pdf")
   JPlotToPDF(img, plotWigglyLines(), width = width, height = height, units = units, cairo = TRUE)
@@ -221,6 +223,9 @@ test_that("pdf plotting", {
 })
 
 test_that("svg plotting", {
+  # Only test if cairo is available
+  skip_if_not(capabilities()["cairo"])
+
   .prepare()
   width <- 180
   height <- 120
@@ -233,6 +238,9 @@ test_that("svg plotting", {
 })
 
 test_that("svg transparency", {
+  # SVG only works with cairo
+  skip_if_not(capabilities()["cairo"])
+
   .prepare()
 
   plotAlpha <- function() {
