@@ -16,7 +16,7 @@ R utilities to simplify some common operations.
   * [Multi-scene animations](#multi-scene-animations)
   * [Adding a raster image to a plot](#adding-a-raster-image-to-a-plot)
   * [Plotting a list of probability densities](#plotting-a-list-of-probability-densities)
-  * [Printing text to a file](#printing-text-to-a-file)
+  * [Writing text to a file](#writing-text-to-a-file)
   * [Downloading files](#downloading-files)
   * [String functions](#string-functions)
   * [Progress bar](#progress-bar)
@@ -49,32 +49,33 @@ Be aware that if you use `par(mfrow = ...)` to plot with 2 or more rows or colum
 
 By default, if the [ragg](https://ragg.r-lib.org/) package is installed, `JUtils` will use it for plotting to PNG, JPEG or TIFF files. If [ragg](https://ragg.r-lib.org/) is not installed, `JUtils` will use the standard `grDevices` functionality. The [ragg](https://ragg.r-lib.org/) package may be faster than `grDevices`, has better font support (e.g. `par(family = "Segoe UI")` works as expected), and may produce better quality plots, although plot quality may sometimes be a subjective matter.
 
+```R
+library("JUtils")
 
-    library("JUtils")
+# Plot to a PNG file with width 180 mm, height 120 mm 
+# (i.e. height / aspectRatio which defaults to (3 / 2)), resolution 300 ppi.
+# This results in a PNG file with size 2125x1417 pixels
+JPlotToPNG("test.png", plot(1:10 + rnorm(10), type = "o"), width = 180, units = "mm", res = 300)
+    
+# Plot to JPEG, with image dimensions specified in pixels
+JPlotToTIFF("test.jpg", plot(1:10 + rnorm(10), type = "o"), width = 1800, height = 1200, units = "px") 
+    
+# Plot to TIFF, with image dimensions specified in pixels
+JPlotToTIFF("test.tiff", plot(1:10 + rnorm(10), type = "o"), width = 1800, height = 1200, units = "px") 
+    
+# Plot to a PDF file, with graphics region 18 cm x 12 cm
+JPlotToPDF("test.pdf", plot(1:10 + rnorm(10), type = "o"), width = 18, units = "cm")
+    
+# Generate encapsulated postscript using the Cairo graphics device
+JPlotToEPS("test.eps", plot(1:10 + rnorm(10), type = "o"), cairo = TRUE, width = 18, units = "cm")
 
-    # Plot to a PNG file with width 180 mm, height 120 mm 
-    # (i.e. height / aspectRatio which defaults to (3 / 2)), resolution 300 ppi.
-    # This results in a PNG file with size 2125x1417 pixels
-    JPlotToPNG("test.png", plot(1:10 + rnorm(10), type = "o"), width = 180, units = "mm", res = 300)
-    
-    # Plot to JPEG, with image dimensions specified in pixels
-    JPlotToTIFF("test.jpg", plot(1:10 + rnorm(10), type = "o"), width = 1800, height = 1200, units = "px") 
-    
-    # Plot to TIFF, with image dimensions specified in pixels
-    JPlotToTIFF("test.tiff", plot(1:10 + rnorm(10), type = "o"), width = 1800, height = 1200, units = "px") 
-    
-    # Plot to a PDF file, with graphics region 18 cm x 12 cm
-    JPlotToPDF("test.pdf", plot(1:10 + rnorm(10), type = "o"), width = 18, units = "cm")
-    
-    # Generate encapsulated postscript using the Cairo graphics device
-    JPlotToEPS("test.eps", plot(1:10 + rnorm(10), type = "o"), cairo = TRUE, width = 18, units = "cm")
+# Plot to a SVG file with width 180 mm, height 120 mm 
+JPlotToSVG("test.svg", plot(1:10 + rnorm(10), type = "o"), width = 180, units = "mm")
 
-    # Plot to a SVG file with width 180 mm, height 120 mm 
-    JPlotToSVG("test.svg", plot(1:10 + rnorm(10), type = "o"), width = 180, units = "mm")
-
-    # JPlotToFile selects the file type based on the file name, then passes all of its arguments 
-    # on to the appropriate JPlotTo* function. It can also plot to multiple files at once.
-    JPlotToFile(c("test.png", "test.eps"), plot(1:10))
+# JPlotToFile selects the file type based on the file name, then passes all of its arguments 
+# on to the appropriate JPlotTo* function. It can also plot to multiple files at once.
+JPlotToFile(c("test.png", "test.eps"), plot(1:10))
+```
 
 #### Transparency and Postscript
 
@@ -82,7 +83,10 @@ By default, partial transparency cannot be used in postscript or PDF files. The 
 
 #### Postscript and embedded fonts
 
-Fonts are not embedded in PDF plot output. This may not matter if you specify a device-independent font family: `"sans"`, `"serif"` or `"mono"`. Otherwise, you can attempt to embed fonts using `grDevices::embedFonts` (requires [Ghostscript](https://www.ghostscript.com/) to be installed), or you can specify `cairo = TRUE` which uses the `grDevices::cairo_pdf` device which will convert to bitmapped text. Obviously this is a compromise solution. For a brief discussion of these issues, see https://hansjoerg.me/2018/02/15/font-embedding-for-latex-and-r-users/.
+By default, fonts are not embedded in PDF plot output. This may not matter if you specify a device-independent font family: `"sans"`, `"serif"` or `"mono"`, or if you know where the file will be viewed. If linked fonts are unacceptable, e.g. you are required to produce a [PDF/A](https://en.wikipedia.org/wiki/PDF/A) file, then:
+
+ * you can attempt to embed fonts by passing `embedFonts = TRUE` to `JPlotToPDF`, or equivalently, calling `grDevices::embedFonts` after creating your PDF file (both methods require [Ghostscript](https://www.ghostscript.com/) to be installed);
+ * you can specify `cairo = TRUE` when calling `JPlotToPDF` or `JPlotToEPS`, which uses the `grDevices::cairo_pdf`. The `cairo_pdf` device converts to bitmapped text. Obviously this is a compromise solution since bitmapped text is not infinitely scalable, and will only work if the Cairo device is available. For a brief discussion of these issues, see https://hansjoerg.me/2018/02/15/font-embedding-for-latex-and-r-users/.
 
 #### Plotting on macOS
 
@@ -98,14 +102,15 @@ robust way to do this. You must have either the `magick` R package installed, th
 
 You provide a function to plot a single frame given the frame key, and `JAnimateGIF` will write each frame to a PNG file then combine them into a GIF.
 
-    library("JUtils")
+```R
+library("JUtils")
 
-    .plotFrame <- function(angle) plot(x = c(sin(angle), 0), y = c(0, cos(angle)), 
-                                       type = 'l', lwd = 4, 
-                                       xlim = c(-1, 1), ylim = c(-1, 1), 
-                                       axes = FALSE, xlab = "", ylab = "")
-    JAnimateGIF("test.gif", frameKeys = seq(0, pi * 2, .1), , plotFn = .plotFrame)
-
+.plotFrame <- function(angle) plot(x = c(sin(angle), 0), y = c(0, cos(angle)), 
+                                   type = 'l', lwd = 4, 
+                                   xlim = c(-1, 1), ylim = c(-1, 1), 
+                                   axes = FALSE, xlab = "", ylab = "")
+JAnimateGIF("test.gif", frameKeys = seq(0, pi * 2, .1), , plotFn = .plotFrame)
+```
 
 #### Multi-scene animations
 
@@ -160,7 +165,7 @@ scenes <- list(
          fps, 
          startAfter = -0.4, # start part-way through previous scene
          
-         # Anime triangle width and transparency (alpha)
+         # Animate triangle width and transparency (alpha)
          width = JTransition(.1, 0.8, JEaseInOut),
          alpha = JTransition(0, 1, JEaseIn, times = c(0, 0.4)),
          
@@ -184,43 +189,49 @@ JAnimateScenes("animated.gif", scenes, loop = 0)
 
 A raster image (i.e. a GIF of JPEG file) can be drawn to a plot using `graphics::rasterImage`. However, if you want to draw it with the correct aspect ratio, calculating the required position is not straightforward. `JPlotRaster` is a wrapper around `rasterImage` which calculates the correct position of the image, then draws it, based on a point and the desired width of the plotted image. The point defaults to the position of the centre of the image, but can alternatively be a corner or point on the middle of an edge.
 
-    library(jpeg)
-    library("JUtils")
+```R
+library(jpeg)
+library("JUtils")
     
-    plot(...)
-    img <- readJPEG("myjpeg.jpg", native = TRUE)
-    # Draw image centred on (0, 0)
-    JPlotRaster(img, x = 0, y = 0, width = 2)
-    # Draw image with top-left corner at (2, 1)
-    JPlotRaster(img, x = 2, y = 1, width = 2, position = "topleft")
-    
+plot(...)
+img <- readJPEG("myjpeg.jpg", native = TRUE)
+# Draw image centred on (0, 0)
+JPlotRaster(img, x = 0, y = 0, width = 2)
+# Draw image with top-left corner at (2, 1)
+JPlotRaster(img, x = 2, y = 1, width = 2, position = "topleft")
+```
+
 ---
 
 ### Plotting a list of probability densities
 
 Combines line plots of multiple densities into a single plot. This is an operation I perform fairly frequently, so this is here to simplify my life.
 
-    library("JUtils")
+```R
+library("JUtils")
     
-    # Get a list of densities from somewhere
-    data <- list(
-       normal = rnorm(100),
-       uniform = runif(50),
-       exponential = rexp(200))
-    densities <- lapply(data, density)
-    # Plot them all on a single plot
-    JPlotDensities(densities, legendLabels = c("Normal", "Uniform", "Exponential"))
+# Get a list of densities from somewhere
+data <- list(
+             normal = rnorm(100),
+             uniform = runif(50),
+             exponential = rexp(200))
+densities <- lapply(data, density)
+# Plot them all on a single plot
+JPlotDensities(densities, legendLabels = c("Normal", "Uniform", "Exponential"))
+```
 
 ---
 
-### Printing text to a file
+### Writing text to a file
 
 The function `JReportToFile` runs a function or an expression, and redirects all output to a file.
 
-    library("JUtils")
+```R
+library("JUtils")
 
-    # Write "Hello world!" to the file called test.txt
-    JReportToFile("test.txt", print("Hello world!"))
+# Write "Hello world!" to the file called test.txt
+JReportToFile("test.txt", print("Hello world!"))
+```
 
 ---
 
@@ -228,14 +239,15 @@ The function `JReportToFile` runs a function or an expression, and redirects all
 
 The function `JDownload` is used to download a URL to a local file. The local file is tracked so that a second call to `JDownload` with the same URL will not download it again, but simply return the name of the previously downloaded file. However, it will be downloaded again if it has changed since the last download.
 
-    library("JUtils")
+```R
+library("JUtils")
 
-    # Fairly slow the first time
-    jpgFile <- JDownload("https://farm5.staticflickr.com/4507/37847388931_959d812490_o_d.jpg")
+# Fairly slow the first time
+jpgFile <- JDownload("https://farm5.staticflickr.com/4507/37847388931_959d812490_o_d.jpg")
 
-    # Quick the second time
-    jpgFile <- JDownload("https://farm5.staticflickr.com/4507/37847388931_959d812490_o_d.jpg")
-
+# Quick the second time
+jpgFile <- JDownload("https://farm5.staticflickr.com/4507/37847388931_959d812490_o_d.jpg")
+```
 
 ---
 
@@ -243,18 +255,21 @@ The function `JDownload` is used to download a URL to a local file. The local fi
 
 Ever wanted to convert a vector of values to a human-readable list? Try JToSentence!
 
-    library("JUtils")
+```R
+library("JUtils")
 
-    print(JToSentence(c("apple", "banana", "mandarin", "mango")))
-    # => [1] "apple, banana, mandarin and mango"
-    
+print(JToSentence(c("apple", "banana", "mandarin", "mango")))
+# => [1] "apple, banana, mandarin and mango"
+```
+
 Capitalise a string or set of words.
 
-    print(JCapitalise("the quick brown fox"))
-    # => [1] "The quick brown fox"
-    print(JCapWords("the quick brown fox"))
-    # => [1] "The Quick Brown Fox"
-
+```R
+print(JCapitalise("the quick brown fox"))
+# => [1] "The quick brown fox"
+print(JCapWords("the quick brown fox"))
+# => [1] "The Quick Brown Fox"
+```
 
 ---
 
@@ -262,14 +277,16 @@ Capitalise a string or set of words.
 
 Displays a progress bar that estimates time to completion based on the timing of tasks so far. The progress bar can be displayed as text written to the console, as a TCL popup or a Windows popup.
 
-    n <- 20
-    pb <- JBuildProgressBar("win", numItems = n, title = "Progress")
-    for (i in 1:n) {
-      # Execute slow task
-      Sys.sleep(runif(1, max = 1))
-      # Update progress bar
-      pb()
-    }
-    # Optionally force close in case there weren't as many items as we expected
-    pb(close = TRUE)
-
+```R
+n <- 20
+# Prepare progress bar
+pb <- JBuildProgressBar("win", numItems = n, title = "Progress")
+for (i in 1:n) {
+  # Execute slow task
+  Sys.sleep(runif(1, max = 1))
+  # Update progress bar
+  pb()
+}
+# Optionally force close in case there weren't as many items as we expected
+pb(close = TRUE)
+```
