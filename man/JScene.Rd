@@ -24,7 +24,7 @@ plot rather than create a new plot. The \code{add} is only used for
 overlapping scenes.}
 }
 \value{
-A list, known as a _JScene_, which can be included in a list of
+A list, known as a \code{JScene}, that can be included in a list of
   scenes then used to create an animation.
 }
 \description{
@@ -33,5 +33,5 @@ A JScene is a portion of a complex animation. It consists of some metadata
 function.
 }
 \seealso{
-\code{\link{JAnimateScenes}}
+\code{\link{JAnimateScenes}}, \code{\link{JTransition}}, \code{\link{JPlotScenes}}
 }

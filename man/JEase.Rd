@@ -32,7 +32,8 @@ These functions are passed by name (i.e. without following parentheses) as the
 \code{timing} parameter to the \code{\link{JTransition}} function.
 }
 \examples{
-width = JTransition(.1, 1, JEaseInOut)
+# Vary width from 0.1 to 1, with faster change in the middle of the scene
+width = JTransition(0.1, 1, JEaseInOut)
 
 }
 \seealso{

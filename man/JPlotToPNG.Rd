@@ -46,7 +46,8 @@ used. See \url{https://ragg.r-lib.org} for more information.}
 \item{type}{Plotting device; passed directly to \code{\link[grDevices]{png}}.
 Defaults to "cairo" if that is an available device since it produces nicer
 looking graphics. Ignored if \code{tryToUseRagg == TRUE} and \code{ragg} is
-installed.}
+installed. Note that R can be compiled with Cairo support, but it still
+won't work on MacOS if Quartz is not installed.}
 
 \item{res}{The nominal resolution in ppi. The value is simply passed in to
 \code{\link[ragg]{agg_png}} or \code{\link[grDevices]{png}}. Increasing the

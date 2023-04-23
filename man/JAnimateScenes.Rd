@@ -15,11 +15,37 @@ JAnimateScenes(videoFileName, scenes, ...)
 \item{...}{Additional parameters are passed on to \code{\link{JAnimateGIF}}.}
 }
 \value{
-The list of arguments passed to the \code{\link{JAnimateGIF}} function (invisibly).
+The list of arguments passed to the \code{\link{JAnimateGIF}}
+  function (invisibly).
 }
 \description{
-See \code{\link{JAnimateGIF}} for general information about creating animations from R.
+Animates a \code{list} of \code{\link{JScene}} objects by plotting each frame
+and then combining them into a single animated GIF.
+}
+\details{
+See \code{\link{JAnimateGIF}} for general information about creating
+animations from R.
+}
+\examples{
+\dontrun{
+scenes <- list(JScene(1, 20,
+                      pt1 = JTransition(1, 0, JEaseInOut),
+                      pt2 = JTransition(0, 1),
+                      plotFn = function(pt1, pt2) {
+                        plot(c(pt1, pt2), c(1, pt2), type = "b", xlim = c(0, 1), ylim = c(0, 1))
+                      }),
+
+               JScene(1, 20,
+                      pt1 = JTransition(0, 1, JEaseInOut),
+                      pt2 = JTransition(1, 0, JEaseIn),
+                      plotFn = function(pt1, pt2) {
+                        plot(c(pt1, pt2), c(1, pt2), type = "b", xlim = c(0, 1), ylim = c(0, 1))
+                      })
+)
+JAnimateScenes("animation.gif", scenes)
+}
+
 }
 \seealso{
-\code{\link{JAnimateGIF}}, \code{\link{JScene}}
+\code{\link{JAnimateGIF}}, \code{\link{JScene}}, \code{\link{JTransition}}, \code{\link{JEase}}
 }

@@ -82,7 +82,8 @@ timingFunctionStep <- function(stepTime, x) {
 #' @seealso \code{\link{JTransition}}, \code{\link{JScene}}, \code{\link{JBezier}}
 #'
 #' @examples
-#' width = JTransition(.1, 1, JEaseInOut)
+#' # Vary width from 0.1 to 1, with faster change in the middle of the scene
+#' width = JTransition(0.1, 1, JEaseInOut)
 #'
 #' @export
 JEase <- function(x) timingFunctionBezier(0.25, 0.1, 0.25, 1, x)
@@ -177,10 +178,10 @@ JTransition <- function(from, to, timing = JEase, times = c(0, 1)) {
 #'   plot rather than create a new plot. The \code{add} is only used for
 #'   overlapping scenes.
 #'
-#' @return A list, known as a _JScene_, which can be included in a list of
+#' @return A list, known as a \code{JScene}, that can be included in a list of
 #'   scenes then used to create an animation.
 #'
-#' @seealso \code{\link{JAnimateScenes}}
+#' @seealso \code{\link{JAnimateScenes}}, \code{\link{JTransition}}, \code{\link{JPlotScenes}}
 #'
 #' @export
 JScene <- function(duration, fps, startAfter = 0, ..., plotFn) {
@@ -209,10 +210,11 @@ JScene <- function(duration, fps, startAfter = 0, ..., plotFn) {
 
 #' Construct a plotting function from a list of scenes.
 #'
-#' \code{JPlotScenes} is not usually called directly, rather it is invoked from
-#' inside \code{\link{JAnimateScenes}}. Combines a list of scenes, and returns a
-#' function that plots a single frame from the appropriate scene. Can be useful
-#' for debugging an animations, because it can be used to plot a single frame.
+#' \code{JPlotScenes} is not usually called directly, rather it is invoked
+#' internally from inside \code{\link{JAnimateScenes}}. Combines a list of
+#' scenes, and returns a function that plots a single frame from the appropriate
+#' scene. Can be useful for debugging an animation, because it can be used to
+#' plot a single frame.
 #'
 #' @param scenes A list of scene objects, each one created by calling the
 #'   \code{\link{JScene}} constructor.
@@ -276,16 +278,40 @@ JScenesnFrames <- function(scenes) {
 
 #' Animate a list of \code{\link{JScene}}s.
 #'
-#' See \code{\link{JAnimateGIF}} for general information about creating animations from R.
+#' Animates a \code{list} of \code{\link{JScene}} objects by plotting each frame
+#' and then combining them into a single animated GIF.
+#'
+#' See \code{\link{JAnimateGIF}} for general information about creating
+#' animations from R.
 #'
 #' @param videoFileName Name of the GIF file to be created.
 #' @param scenes A list of scene objects, each one created by calling the
 #'   \code{\link{JScene}} constructor.
 #' @param ... Additional parameters are passed on to \code{\link{JAnimateGIF}}.
 #'
-#' @return The list of arguments passed to the \code{\link{JAnimateGIF}} function (invisibly).
+#' @return The list of arguments passed to the \code{\link{JAnimateGIF}}
+#'   function (invisibly).
 #'
-#' @seealso \code{\link{JAnimateGIF}}, \code{\link{JScene}}
+#' @seealso \code{\link{JAnimateGIF}}, \code{\link{JScene}}, \code{\link{JTransition}}, \code{\link{JEase}}
+#'
+#' @examples
+#' \dontrun{
+#' scenes <- list(JScene(1, 20,
+#'                       pt1 = JTransition(1, 0, JEaseInOut),
+#'                       pt2 = JTransition(0, 1),
+#'                       plotFn = function(pt1, pt2) {
+#'                         plot(c(pt1, pt2), c(1, pt2), type = "b", xlim = c(0, 1), ylim = c(0, 1))
+#'                       }),
+#'
+#'                JScene(1, 20,
+#'                       pt1 = JTransition(0, 1, JEaseInOut),
+#'                       pt2 = JTransition(1, 0, JEaseIn),
+#'                       plotFn = function(pt1, pt2) {
+#'                         plot(c(pt1, pt2), c(1, pt2), type = "b", xlim = c(0, 1), ylim = c(0, 1))
+#'                       })
+#' )
+#' JAnimateScenes("animation.gif", scenes)
+#'}
 #'
 #' @export
 JAnimateScenes <- function(videoFileName, scenes, ...) {
@@ -312,6 +338,13 @@ JAnimateScenes <- function(videoFileName, scenes, ...) {
 ###
 ### This could go into a vignette
 
+# interpValues <- function(from, to, nPoints, timing) {
+#   # Start with timing values
+#   f <- timing(seq(0, 1, length.out = nPoints))
+#   # Interpolate
+#   from + (to - from) * f
+# }
+#
 # # Function to generate a diagram demonstrating how JTransitions work
 # transitionDiagram <- function(from, to, timingName, times) {
 #   par(mar = c(5, 5, 4, 1) + 0.1)
