@@ -31,6 +31,7 @@ scenes <- list(JScene(1, 20,
                }))
 # Plot frame 10 to see what it looks like
 JPlotScenes(scenes)(10)
+
 }
 \seealso{
 \code{\link{JAnimateScenes}}

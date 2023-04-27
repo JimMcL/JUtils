@@ -32,6 +32,28 @@ A JScene is a portion of a complex animation. It consists of some metadata
 (duration, frame rate), a set of animation transitions and a plotting
 function.
 }
+\examples{
+# Construct a single-scene animation
+scenes <- list(JScene(1, # Duration
+                      20, # Frame rate
+
+                      # Named parameters
+                      pt1 = JTransition(1, 0),
+                      pt2 = JTransition(0, 1),
+
+                      # Plotting function with parameters matching those defined above
+                      plotFn = function(pt1, pt2) {
+                        plot(c(pt1, 1 - pt2), c(pt2, pt1), type = "b", xlim = c(0, 1), ylim = c(0, 1))
+                      }))
+# Plot 20 frames
+for (i in 1:20) {
+  JPlotScenes(scenes)(i)
+  # Crude way to animate in real time
+  dev.flush()
+  Sys.sleep(0.05)
+}
+
+}
 \seealso{
 \code{\link{JAnimateScenes}}, \code{\link{JTransition}}, \code{\link{JPlotScenes}}
 }
