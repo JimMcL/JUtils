@@ -143,7 +143,7 @@ JStep <- function(time) function(x) timingFunctionStep(time, x)
 #'
 #' @param from Initial parameter value.
 #' @param to Final parameter value.
-#' @param timing Animation timing function, such as `JEaseIn`, `JBounce`.
+#' @param timing Animation timing function, such as \code{\link{JEaseIn}}, \code{\link{JBounce}}.
 #' @param times Time period (start, stop) over which the transition occurs, as a
 #'   proportion of the scene time. A time of 0 indicates the first frame in the
 #'   scene, while 1 is the last frame. If the transition does not start at the
@@ -153,7 +153,7 @@ JStep <- function(time) function(x) timingFunctionStep(time, x)
 #'
 #' @return List used to define how a single parameter changes within a scene.
 #'
-#' @seealso \code{\link{JScene}}
+#' @seealso \code{\link{JScene}}, \code{\link{JEase}}, \code{\link{JBezier}}
 #'
 #' @export
 JTransition <- function(from, to, timing = JEase, times = c(0, 1)) {

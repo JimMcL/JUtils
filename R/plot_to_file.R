@@ -331,7 +331,7 @@ JPlotToTIFF <- function(filename, plotExpr,
 #'   I \emph{think} this is unnecessary when using the Cairo PDF device.
 #' @param ... Any additional arguments are passed to
 #'   \code{\link[grDevices]{pdf}}, for example, text and font control parameters
-#'   such as \code{pointsize} and \code{family}.
+#'   such as \code{pointsize}.
 #'
 #' @return The result of evaluating \code{plotExpr} is returned invisibly (which
 #'   means it is not automatically printed).

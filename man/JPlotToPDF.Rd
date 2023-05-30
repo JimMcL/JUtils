@@ -65,7 +65,7 @@ I \emph{think} this is unnecessary when using the Cairo PDF device.}
 
 \item{...}{Any additional arguments are passed to
 \code{\link[grDevices]{pdf}}, for example, text and font control parameters
-such as \code{pointsize} and \code{family}.}
+such as \code{pointsize}.}
 }
 \value{
 The result of evaluating \code{plotExpr} is returned invisibly (which

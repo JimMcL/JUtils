@@ -11,7 +11,7 @@ JTransition(from, to, timing = JEase, times = c(0, 1))
 
 \item{to}{Final parameter value.}
 
-\item{timing}{Animation timing function, such as `JEaseIn`, `JBounce`.}
+\item{timing}{Animation timing function, such as \code{\link{JEaseIn}}, \code{\link{JBounce}}.}
 
 \item{times}{Time period (start, stop) over which the transition occurs, as a
 proportion of the scene time. A time of 0 indicates the first frame in the
@@ -36,5 +36,5 @@ mapping from \code{x} to some other value. For example, a simple linear
 timing function could be implemented as \code{function(x) x}.
 }
 \seealso{
-\code{\link{JScene}}
+\code{\link{JScene}}, \code{\link{JEase}}, \code{\link{JBezier}}
 }
