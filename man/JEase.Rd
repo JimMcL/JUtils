@@ -35,6 +35,11 @@ These functions are passed by name (i.e. without following parentheses) as the
 # Vary width from 0.1 to 1, with faster change in the middle of the scene
 width = JTransition(0.1, 1, JEaseInOut)
 
+# Function to graphically visualise a timing function
+VisualiseTimingFun <- function(fn) plot(seq(0, 1, .01), fn(seq(0, 1, .01)), type = "l")
+# Visualise the JEase timing function
+VisualiseTimingFun(JEase)
+
 }
 \seealso{
 \code{\link{JTransition}}, \code{\link{JScene}}, \code{\link{JBezier}}

@@ -85,6 +85,11 @@ timingFunctionStep <- function(stepTime, x) {
 #' # Vary width from 0.1 to 1, with faster change in the middle of the scene
 #' width = JTransition(0.1, 1, JEaseInOut)
 #'
+#' # Function to graphically visualise a timing function
+#' VisualiseTimingFun <- function(fn) plot(seq(0, 1, .01), fn(seq(0, 1, .01)), type = "l")
+#' # Visualise the JEase timing function
+#' VisualiseTimingFun(JEase)
+#'
 #' @export
 JEase <- function(x) timingFunctionBezier(0.25, 0.1, 0.25, 1, x)
 #' @rdname JEase
@@ -120,8 +125,23 @@ JBounce <- function(x) timingFunctionBezier(0.175, 0.885, 0.32, 1.275, x)
 #' @seealso \code{\link{JTransition}}, \code{\link{JEase}}, \code{\link{JScene}}
 #'
 #' @examples
+#' \dontrun{
 #' # Replicate the \link{JEaseOut} timing function
-#' width = JTransition(.1, 1, timing = JBezier(0, 0, 0.58, 1))
+#' JScene(1, 30,
+#'        width = JTransition(.1, 1, timing = JBezier(0, 0, 0.58, 1)),
+#'        plotFn = function(width) {
+#'            # Do something with width
+#'        })
+#' }
+#'
+#' # Function to graphically visualise a timing function
+#' VisualiseTimingFun <- function(fn) plot(seq(0, 1, .001), fn(seq(0, 1, .001)), type = "l")
+#'
+#' # Visualise a custom step function
+#' VisualiseTimingFun(JStep(0.3))
+#'
+#' # Visualise a custom bezier function which begins slowly and ends fast
+#' VisualiseTimingFun(JBezier(0.7, 0.1, 0.95, 0.7))
 #'
 #' @export
 JBezier <- function(p0, p1, p2, p3) function(x) timingFunctionBezier(p0, p1, p2, p3, x)

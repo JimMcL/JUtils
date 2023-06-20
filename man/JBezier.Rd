@@ -25,8 +25,23 @@ These functions allow you to create custom transition timing functions. See
 Examples below for usage.
 }
 \examples{
+\dontrun{
 # Replicate the \link{JEaseOut} timing function
-width = JTransition(.1, 1, timing = JBezier(0, 0, 0.58, 1))
+JScene(1, 30,
+       width = JTransition(.1, 1, timing = JBezier(0, 0, 0.58, 1)),
+       plotFn = function(width) {
+           # Do something with width
+       })
+}
+
+# Function to graphically visualise a timing function
+VisualiseTimingFun <- function(fn) plot(seq(0, 1, .001), fn(seq(0, 1, .001)), type = "l")
+
+# Visualise a custom step function
+VisualiseTimingFun(JStep(0.3))
+
+# Visualise a custom bezier function which begins slowly and ends fast
+VisualiseTimingFun(JBezier(0.7, 0.1, 0.95, 0.7))
 
 }
 \seealso{
