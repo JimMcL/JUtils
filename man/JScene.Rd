@@ -15,7 +15,7 @@ JScene(duration, fps, startAfter = 0, ..., plotFn)
 the end of the previous scene that this scene starts.}
 
 \item{...}{Ordered set of transitions. Transitions may be named for
-documentation purposes, but the names are not used.}
+documentation purposes, but names are not required.}
 
 \item{plotFn}{The parameterised plotting function. Called with one positional
 argument for each transition, and an optional final boolean argument,
@@ -37,7 +37,7 @@ function.
 scenes <- list(JScene(1, # Duration
                       20, # Frame rate
 
-                      # Named parameters
+                      # Parameters to be passed to plotFn
                       pt1 = JTransition(1, 0),
                       pt2 = JTransition(0, 1),
 

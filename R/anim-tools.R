@@ -157,7 +157,9 @@ JStep <- function(time) function(x) timingFunctionStep(time, x)
 #'
 #' @export
 JTransition <- function(from, to, timing = JEase, times = c(0, 1)) {
-  list(from = from, to = to, timing = timing, times = times)
+  tr <- list(from = from, to = to, timing = timing, times = times)
+  class(tr) <- c("JTransition", class(tr))
+  tr
 }
 
 #' Construct a JScene
@@ -171,7 +173,7 @@ JTransition <- function(from, to, timing = JEase, times = c(0, 1)) {
 #' @param startAfter Timing of the start of this frame. Number of seconds after
 #'   the end of the previous scene that this scene starts.
 #' @param ... Ordered set of transitions. Transitions may be named for
-#'   documentation purposes, but the names are not used.
+#'   documentation purposes, but names are not required.
 #' @param plotFn The parameterised plotting function. Called with one positional
 #'   argument for each transition, and an optional final boolean argument,
 #'   \code{add}, which is \code{TRUE} if the function should add to an existing
@@ -188,7 +190,7 @@ JTransition <- function(from, to, timing = JEase, times = c(0, 1)) {
 #' scenes <- list(JScene(1, # Duration
 #'                       20, # Frame rate
 #'
-#'                       # Named parameters
+#'                       # Parameters to be passed to plotFn
 #'                       pt1 = JTransition(1, 0),
 #'                       pt2 = JTransition(0, 1),
 #'
@@ -208,6 +210,16 @@ JTransition <- function(from, to, timing = JEase, times = c(0, 1)) {
 JScene <- function(duration, fps, startAfter = 0, ..., plotFn) {
   nFrames <- floor(duration * fps)
   transitions <- list(...)
+  # Play silly buggers to handle variable args with optional startAfter.
+  # If startAfter isn't specified, the first transition is interpreted as startAfter
+  if (inherits(startAfter, "JTransition")) {
+    transitions <- append(transitions, list(startAfter), after = 0)
+    startAfter <- 0
+  }
+  badTransitions <- sapply(transitions, function(t) !inherits(t, "JTransition"))
+  if (any(badTransitions)) {
+    stop(sprintf("Invalid animation argument, use JTransition to define arguments"))
+  }
   args <- lapply(transitions, interpTrans, nFrames)
   # Convert to data frame
   args <- do.call(cbind, args)

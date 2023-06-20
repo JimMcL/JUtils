@@ -56,4 +56,39 @@ test_that("multi-scene animations", {
   # Generate the animation, loop indefinitely
   expect_error(JAnimateScenes(tf("animated.gif"), scenes, loop = 0), NA)
 
+  # Unnamed arguments
+  scenes <- list(JScene(1, fps,
+
+                        # Animate triangle width and transparency (alpha)
+                        JTransition(.1, 0.8, JEaseInOut),
+                        JTransition(0, 1, JEaseIn, times = c(0, 0.4)),
+
+                        plotFn = function(width, alpha) {
+                          basePlot()
+                          polygon(x = c(0.5, 0.5 - width / 2, 0.5 + width / 2),
+                                  y = c(0.8, 0.2, 0.2),
+                                  density = NA, col = rgb(66 / 255, 200 / 255, 245 / 255, alpha))
+                        }
+  ))
+  # Generate the animation
+  expect_error(JAnimateScenes(tf("animated.gif"), scenes), NA)
+
+
+  # Wrongly named arguments
+  scenes <- list(JScene(1, fps,
+
+                        # Animate triangle width and transparency (alpha)
+                        xxx = JTransition(.1, 0.8, JEaseInOut),
+                        yyy = JTransition(0, 1, JEaseIn, times = c(0, 0.4)),
+
+                        plotFn = function(width, alpha) {
+                          basePlot()
+                          polygon(x = c(0.5, 0.5 - width / 2, 0.5 + width / 2),
+                                  y = c(0.8, 0.2, 0.2),
+                                  density = NA, col = rgb(66 / 255, 200 / 255, 245 / 255, alpha))
+                        }
+  ))
+  # Generate the animation
+  expect_error(JAnimateScenes(tf("animated.gif"), scenes))
+
 })
