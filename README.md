@@ -117,7 +117,7 @@ JAnimateGIF("test.gif", frameKeys = seq(0, pi * 2, .1), , plotFn = .plotFrame)
 Complex animations can consist of multiple scenes involving smooth transitions. Multi-scene animations build upon `JAnimateGIF`, which means that an appropriate tool for generating GIFs must be installed and accessible.
 
 An animation is constructed by building a list of scenes.  A scene
-is a parameterised plotting function, together with set of
+is a parameterised plotting function, together with a set of
 transitions. A transition defines how the values of a parameter
 change over time during the scene.
 
