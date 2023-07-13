@@ -47,7 +47,7 @@ scenes <- list(JScene(1, # Duration
                       }))
 # Plot 20 frames
 for (i in 1:20) {
-  JPlotScenes(scenes)(i)
+  JPlotSceneFn(scenes)(i)
   # Crude way to animate in real time
   dev.flush()
   Sys.sleep(0.05)
@@ -55,5 +55,5 @@ for (i in 1:20) {
 
 }
 \seealso{
-\code{\link{JAnimateScenes}}, \code{\link{JTransition}}, \code{\link{JPlotScenes}}
+\code{\link{JAnimateScenes}}, \code{\link{JTransition}}, \code{\link{JPlotSceneFn}}
 }

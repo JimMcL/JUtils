@@ -47,5 +47,5 @@ JAnimateScenes("animation.gif", scenes)
 
 }
 \seealso{
-\code{\link{JAnimateGIF}}, \code{\link{JScene}}, \code{\link{JTransition}}, \code{\link{JEase}}
+\code{\link{JAnimateGIF}}, \code{\link{JScene}}, \code{\link{JTransition}}, \code{\link{JEase}}, \code{\link{JPlotSceneFn}}
 }

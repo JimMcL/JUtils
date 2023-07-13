@@ -203,7 +203,7 @@ JTransition <- function(from, to, timing = JEase, times = c(0, 1)) {
 #' @return A list, known as a \code{JScene}, that can be included in a list of
 #'   scenes then used to create an animation.
 #'
-#' @seealso \code{\link{JAnimateScenes}}, \code{\link{JTransition}}, \code{\link{JPlotScenes}}
+#' @seealso \code{\link{JAnimateScenes}}, \code{\link{JTransition}}, \code{\link{JPlotSceneFn}}
 #'
 #' @examples
 #' # Construct a single-scene animation
@@ -220,7 +220,7 @@ JTransition <- function(from, to, timing = JEase, times = c(0, 1)) {
 #'                       }))
 #' # Plot 20 frames
 #' for (i in 1:20) {
-#'   JPlotScenes(scenes)(i)
+#'   JPlotSceneFn(scenes)(i)
 #'   # Crude way to animate in real time
 #'   dev.flush()
 #'   Sys.sleep(0.05)
@@ -263,7 +263,7 @@ JScene <- function(duration, fps, startAfter = 0, ..., plotFn) {
 
 #' Construct a plotting function from a list of scenes.
 #'
-#' \code{JPlotScenes} is not usually called directly, rather it is invoked
+#' \code{JPlotSceneFn} is not usually called directly, rather it is invoked
 #' internally from inside \code{\link{JAnimateScenes}}. Combines a list of
 #' scenes, and returns a function that plots a single frame from the appropriate
 #' scene. Can be useful for debugging an animation, because it can be used to
@@ -286,10 +286,10 @@ JScene <- function(duration, fps, startAfter = 0, ..., plotFn) {
 #'                  plot(c(0, pt2), c(0, pt2), type = "b", xlim = c(0, 1))
 #'                }))
 #' # Plot frame 10 to see what it looks like
-#' JPlotScenes(scenes)(10)
+#' JPlotSceneFn(scenes)(10)
 #'
 #' @export
-JPlotScenes <- function(scenes) {
+JPlotSceneFn <- function(scenes) {
 
   function(frame) {
     # Which scene(s) is this frame part of?
@@ -345,7 +345,7 @@ JScenesnFrames <- function(scenes) {
 #' @return The list of arguments passed to the \code{\link{JAnimateGIF}}
 #'   function (invisibly).
 #'
-#' @seealso \code{\link{JAnimateGIF}}, \code{\link{JScene}}, \code{\link{JTransition}}, \code{\link{JEase}}
+#' @seealso \code{\link{JAnimateGIF}}, \code{\link{JScene}}, \code{\link{JTransition}}, \code{\link{JEase}}, \code{\link{JPlotSceneFn}}
 #'
 #' @examples
 #' \dontrun{
@@ -378,7 +378,7 @@ JAnimateScenes <- function(videoFileName, scenes, ...) {
 
   args <- list(videoFileName = videoFileName,
                nFrames = JScenesnFrames(scenes),
-               plotFn = JPlotScenes(scenes),
+               plotFn = JPlotSceneFn(scenes),
                frameRate = fps,
                ...)
 
