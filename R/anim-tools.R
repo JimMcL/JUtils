@@ -79,7 +79,7 @@ timingFunctionStep <- function(stepTime, x) {
 #'
 #' @return A timing function.
 #'
-#' @seealso \code{\link{JTransition}}, \code{\link{JScene}}, \code{\link{JBezier}}
+#' @seealso \code{\link{JTransition}}, \code{\link{JScene}}, \code{\link{JBezier}}, \code{\link{JLoop}}
 #'
 #' @examples
 #' # Vary width from 0.1 to 1, with faster change in the middle of the scene
@@ -122,7 +122,7 @@ JBounce <- function(x) timingFunctionBezier(0.175, 0.885, 0.32, 1.275, x)
 #'   and ends at time 1.
 #' @return A timing function.
 #'
-#' @seealso \code{\link{JTransition}}, \code{\link{JEase}}, \code{\link{JScene}}
+#' @seealso \code{\link{JTransition}}, \code{\link{JEase}}, \code{\link{JScene}}, \code{\link{JLoop}}, \code{\link{JEase}}
 #'
 #' @examples
 #' \dontrun{
@@ -148,6 +148,38 @@ JBezier <- function(p0, p1, p2, p3) function(x) timingFunctionBezier(p0, p1, p2,
 #' @rdname JBezier
 #' @export
 JStep <- function(time) function(x) timingFunctionStep(time, x)
+
+#' Looping transition timing function
+#'
+#' Creates a custom transition timing function that loops smoothly, i.e. the
+#' value animates from its initial value to the final value then back to the
+#' initial value. It is implemented as a sin function, so it starts and stops
+#' smoothly. `JLoop` is passed by name (i.e. without parentheses), while
+#' `JLoops` must be invoked with a single argument, `nCycles`.
+#'
+#' @param nCycles Number of times to loop within the transition.
+#' @return A timing function.
+#'
+#' @seealso \code{\link{JTransition}}, \code{\link{JEase}},
+#'   \code{\link{JBezier}}, \code{\link{JScene}}
+#'
+#' @examples
+#' \dontrun{
+#' # Loop
+#' JScene(1, 30,
+#'        width = JTransition(0, 1, timing = JLoop), # Loop once during the transition
+#'        height = JTransition(0, 1, timing = JLoops(3)), # Loop 3 times
+#'        plotFn = function(width, height) {
+#'            # width values will animate from 0 to 1 then back to 0
+#'            # height values will change from 0 to 1 and back 3 times
+#'        })
+#' }
+#'
+#' @export
+JLoop <- function(x) JLoops(1)(x)
+#' @rdname JLoop
+#' @export
+JLoops <- function(nCycles) function(x) sin(nCycles * x * 2 * pi - pi / 2) / 2 + 0.5
 
 #' Construct a JTransition
 #'

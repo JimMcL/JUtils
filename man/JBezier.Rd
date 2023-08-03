@@ -45,5 +45,5 @@ VisualiseTimingFun(JBezier(0.7, 0.1, 0.95, 0.7))
 
 }
 \seealso{
-\code{\link{JTransition}}, \code{\link{JEase}}, \code{\link{JScene}}
+\code{\link{JTransition}}, \code{\link{JEase}}, \code{\link{JScene}}, \code{\link{JLoop}}, \code{\link{JEase}}
 }
