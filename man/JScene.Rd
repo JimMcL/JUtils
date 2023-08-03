@@ -43,7 +43,8 @@ scenes <- list(JScene(1, # Duration
 
                       # Plotting function with parameters matching those defined above
                       plotFn = function(pt1, pt2) {
-                        plot(c(pt1, 1 - pt2), c(pt2, pt1), type = "b", xlim = c(0, 1), ylim = c(0, 1))
+                        plot(c(pt1, 1 - pt2), c(pt2, pt1), type = "b",
+                             xlim = c(0, 1), ylim = c(0, 1))
                       }))
 # Plot 20 frames
 for (i in 1:20) {
