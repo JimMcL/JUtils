@@ -154,10 +154,11 @@ JStep <- function(time) function(x) timingFunctionStep(time, x)
 #' Creates a custom transition timing function that loops smoothly, i.e. the
 #' value animates from its initial value to the final value then back to the
 #' initial value. It is implemented as a sin function, so it starts and stops
-#' smoothly. `JLoop` is passed by name (i.e. without parentheses), while
-#' `JLoops` must be invoked with a single argument, `nCycles`.
+#' smoothly. \code{JLoop} is passed by name (i.e. without parentheses), whereas
+#' \code{JLoops} must be invoked with a single argument, \code{nCycles}.
 #'
 #' @param nCycles Number of times to loop within the transition.
+#' @param x x-value passed to the function automatically. See \code{Examples} below.
 #' @return A timing function.
 #'
 #' @seealso \code{\link{JTransition}}, \code{\link{JEase}},

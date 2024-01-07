@@ -110,5 +110,5 @@ JAnimateGIF("poly.gif", nFrames, plotFn = .plotPoly, frameRate = 10)
 
 }
 \seealso{
-\code{\link{JPlotToPNG}}
+\code{\link{JPlotToPNG}}, \code{\link{JAnimateScenes}} for smoothly animating changing parameters.
 }

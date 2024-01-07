@@ -14,6 +14,7 @@
 #' JFill(c(NA, 1, 2, 3, NA, 4, NA, NA))
 #' ## [1] NA  1  2  3  3  4  4  4
 #'
+#' @export
 JFill <- function(x, badValues = is.na(x), indices = FALSE) {
   goodValues <- !badValues
   # Get indices of good values

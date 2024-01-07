@@ -114,7 +114,7 @@ pngToGIFMagick <- function(pngs, videoFileName, loop, frameRate, ext, subDir, tm
 #' @return The error message (as a character vector) from the ImageMack convert
 #'   command, or \code{character(0)} (returned invisibly) on success.
 #'
-#' @seealso \code{\link{JPlotToPNG}}
+#' @seealso \code{\link{JPlotToPNG}}, \code{\link{JAnimateScenes}} for smoothly animating changing parameters. 
 #'
 #' @examples
 #' \dontrun{

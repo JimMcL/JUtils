@@ -4,7 +4,7 @@
 \alias{JFill}
 \title{Fill "bad" values in a vector with the most recent "good" values}
 \usage{
-JFill(x, badValues = is.na(x), returnIndices = FALSE)
+JFill(x, badValues = is.na(x), indices = FALSE)
 }
 \arguments{
 \item{x}{Vector to be filled}
@@ -12,7 +12,7 @@ JFill(x, badValues = is.na(x), returnIndices = FALSE)
 \item{badValues}{Logical vector identifying the "bad" values in `x`, i.e. the
 values to be replaced}
 
-\item{returnIndices}{If TRUE, return indices into `x`, otherwise values from
+\item{indices}{If TRUE, return indices into `x`, otherwise values from
 `x`.}
 }
 \value{
