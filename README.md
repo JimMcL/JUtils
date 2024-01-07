@@ -19,6 +19,7 @@ R utilities to simplify some common operations.
   * [Writing text to a file](#writing-text-to-a-file)
   * [Downloading files](#downloading-files)
   * [String functions](#string-functions)
+  * [Fill in missing values](#fill-missing-values)
   * [Progress bar](#progress-bar)
 
 ## Installation
@@ -270,6 +271,23 @@ print(JCapitalise("the quick brown fox"))
 print(JCapWords("the quick brown fox"))
 # => [1] "The Quick Brown Fox"
 ```
+
+---
+
+### Fill missing values
+
+Use `JFill` to replace missing values in a vector with the last non-missing value. By default, `NA` values are interpreted as missing.
+
+```R
+x <- c("", "Group 1", "", "", "", "Group 2", "", "")
+ # Specify that empty strings are missing
+ JFill(x, x == "")
+# [1] NA        "Group 1" "Group 1" "Group 1" "Group 1" "Group 2" "Group 2" "Group 2"
+# Get indices of last good value, rather than the value
+JFill(x, x == "", indices = TRUE)
+# [1] NA  2  2  2  2  6  6  6
+```
+
 
 ---
 

@@ -21,7 +21,7 @@ A timing function.
 Creates a custom transition timing function that loops smoothly, i.e. the
 value animates from its initial value to the final value then back to the
 initial value. It is implemented as a sin function, so it starts and stops
-smoothly. \code{JLoop} is passed by name (i.e. without parentheses), while
+smoothly. \code{JLoop} is passed by name (i.e. without parentheses), whereas
 \code{JLoops} must be invoked with a single argument, \code{nCycles}.
 }
 \examples{
