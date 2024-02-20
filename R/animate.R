@@ -58,13 +58,48 @@ pngToGIFMagick <- function(pngs, videoFileName, loop, frameRate, ext, subDir, tm
   result
 }
 
+pngToGIFFFMpeg <- function(pngs, videoFileName, loop, frameRate, ext, subDir, tmpDir, ndigits) {
+  # FFMpeg command to convert multiple pngs to animated gif.
+  # Command based on https://shotstack.io/learn/use-ffmpeg-to-convert-images-to-video/
+  # "-y" says answer yes to questions
+  # ffmpeg -framerate 1 -i jp%3d.png -c:v libx264 -r ? -y 3d.mp4
+
+  if (loop != 1) {
+    stop("loop must be 1 when animating with ffmpeg")
+  }
+  oldDir <- getwd()
+  tmpGif <- paste0("3d.", ext)
+  result <- tryCatch({
+    setwd(file.path(tmpDir, subDir))
+    # Need to specify files with a wildcard rather than explicitly listing them
+    # all because with many frames, the command line becomes too long
+    cmd <- c(#"-stream_loop", loop - 1,
+             "-framerate", "1", "-i", sprintf("jp%%%dd.png", ndigits),
+             "-r", frameRate, "-y", tmpGif)
+    system2("ffmpeg", cmd, invisible = F, stderr = TRUE)
+  },
+  finally = setwd(oldDir)
+  )
+
+  # Move the output file
+  if (!dir.exists(dirname(videoFileName))) {
+    dir.create(dirname(videoFileName), recursive = TRUE)
+  }
+  if (!file.rename(file.path(tmpDir, subDir, tmpGif), videoFileName)) {
+    stop(sprintf("Unable to create animation file %s", videoFileName))
+  }
+
+  result
+}
+
 #' Combine multiple plots into an animated GIF file.
 #'
 #' Writes each frame to a PNG file, then combines them into a GIF
 #' file. Frames are created by calling a custom plot function. The PNG to GIF
 #' conversion is performed by a 3rd party R package or application.
 #'
-#' You must have a suitable image conversion tool installed - see the documentation of the argument \code{gifMethod} for details. \href{https://imagemagick.org/script/download.php}{ImageMagick}
+#' You must have a suitable image conversion tool installed - see the documentation
+#' of the argument \code{gifMethod} for details. \href{https://imagemagick.org/script/download.php}{ImageMagick}
 #' installed, and the ImageMagick bin subdirectory must be in your PATH
 #' environment variable. If ImageMagick is not installed, or is not in your PATH,
 #' \code{JAnimateGIF} will fail with an exception such as:
@@ -79,6 +114,9 @@ pngToGIFMagick <- function(pngs, videoFileName, loop, frameRate, ext, subDir, tm
 #' The png to gif conversion can be quite time consuming for a large number of
 #' frames, so start with a small number of frames to ensure everything works as
 #' expected.
+#'
+#' In theory, magick can create mpeg files, but I can't get it to work, so use
+#' \code{gifMethod="ffmpeg"} for file formats other than GIF.
 #'
 #' @param nFrames Number of frames to be generated. You must specify one of
 #'   \code{nFrames} or \code{frameKeys}.
@@ -103,6 +141,7 @@ pngToGIFMagick <- function(pngs, videoFileName, loop, frameRate, ext, subDir, tm
 #'   \item{\code{"magick"}}{ uses the \href{https://imagemagick.org/script/download.php}{ImageMagick command line
 #'   application}.}
 #'   \item{\code{"gifski"}}{ uses the \href{https://gif.ski/}{gifski R package}.}
+#'   \item{\code{"ffmpeg"}}{ uses the \href{https://ffmpeg.org/}{FFMpeg command line application}.}
 #'   \item{\code{"auto"}}{ uses \code{"gifski"} if it is installed, otherwise uses \code{"magick-r"} if it is installed, otherwise uses \code{"magick"}.}
 #' }
 #' @param optimize Only used if \code{gifMethod == "magick-r"}. Passed to \link[magick]{image_animate}.
@@ -114,7 +153,7 @@ pngToGIFMagick <- function(pngs, videoFileName, loop, frameRate, ext, subDir, tm
 #' @return The error message (as a character vector) from the ImageMack convert
 #'   command, or \code{character(0)} (returned invisibly) on success.
 #'
-#' @seealso \code{\link{JPlotToPNG}}, \code{\link{JAnimateScenes}} for smoothly animating changing parameters. 
+#' @seealso \code{\link{JPlotToPNG}}, \code{\link{JAnimateScenes}} for smoothly animating changing parameters.
 #'
 #' @examples
 #' \dontrun{
@@ -141,7 +180,7 @@ pngToGIFMagick <- function(pngs, videoFileName, loop, frameRate, ext, subDir, tm
 #' @export
 JAnimateGIF <- function(videoFileName, nFrames = NULL, frameKeys = 1:nFrames,
                         plotFn, frameRate = 30, loop = 0,
-                        gifMethod = c("auto", "magick-r", "gifski", "magick"),
+                        gifMethod = c("auto", "magick-r", "gifski", "magick", "ffmpeg"),
                         optimize = FALSE, progress = FALSE,
                         tmpDir = tempdir(TRUE),
                         ...) {
@@ -201,6 +240,8 @@ JAnimateGIF <- function(videoFileName, nFrames = NULL, frameKeys = 1:nFrames,
     result <- pngToGIFMagick(pngs, videoFileName, loop, frameRate, ext, subDir, tmpDir)
   } else if (gifMethod == "gifski") {
     result <- pngToGIFGifskiR(pngs, videoFileName, loop, frameRate, progress)
+  } else if (gifMethod == "ffmpeg") {
+    result <- pngToGIFFFMpeg(pngs, videoFileName, loop, frameRate, ext, subDir, tmpDir, ndigits)
   }
 
   # Delete temporary pngs
