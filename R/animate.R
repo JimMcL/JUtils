@@ -89,7 +89,7 @@ pngToGIFFFMpeg <- function(pngs, videoFileName, loop, frameRate, ext, subDir, tm
     stop(sprintf("Unable to create animation file %s", videoFileName))
   }
 
-  result
+  invisible(result)
 }
 
 #' Combine multiple plots into an animated GIF file.
@@ -248,7 +248,8 @@ JAnimateGIF <- function(videoFileName, nFrames = NULL, frameKeys = 1:nFrames,
   file.remove(pngs)
   unlink(subDir, recursive = TRUE)
 
-  if (identical(result, character(0)))
+  # ffmpeg prints a lot of junk on success, so make it invisible
+  if (identical(result, character(0)) || gifMethod == "ffmpeg")
     invisible(result)
   else
     result

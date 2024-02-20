@@ -11,7 +11,7 @@ JAnimateGIF(
   plotFn,
   frameRate = 30,
   loop = 0,
-  gifMethod = c("auto", "magick-r", "gifski", "magick"),
+  gifMethod = c("auto", "magick-r", "gifski", "magick", "ffmpeg"),
   optimize = FALSE,
   progress = FALSE,
   tmpDir = tempdir(TRUE),
@@ -48,6 +48,7 @@ infinitely.}
   \item{\code{"magick"}}{ uses the \href{https://imagemagick.org/script/download.php}{ImageMagick command line
   application}.}
   \item{\code{"gifski"}}{ uses the \href{https://gif.ski/}{gifski R package}.}
+  \item{\code{"ffmpeg"}}{ uses the \href{https://ffmpeg.org/}{FFMpeg command line application}.}
   \item{\code{"auto"}}{ uses \code{"gifski"} if it is installed, otherwise uses \code{"magick-r"} if it is installed, otherwise uses \code{"magick"}.}
 }}
 
@@ -70,7 +71,8 @@ file. Frames are created by calling a custom plot function. The PNG to GIF
 conversion is performed by a 3rd party R package or application.
 }
 \details{
-You must have a suitable image conversion tool installed - see the documentation of the argument \code{gifMethod} for details. \href{https://imagemagick.org/script/download.php}{ImageMagick}
+You must have a suitable image conversion tool installed - see the documentation
+of the argument \code{gifMethod} for details. \href{https://imagemagick.org/script/download.php}{ImageMagick}
 installed, and the ImageMagick bin subdirectory must be in your PATH
 environment variable. If ImageMagick is not installed, or is not in your PATH,
 \code{JAnimateGIF} will fail with an exception such as:
@@ -85,6 +87,9 @@ or \url{https://r-graph-gallery.com/animation}.
 The png to gif conversion can be quite time consuming for a large number of
 frames, so start with a small number of frames to ensure everything works as
 expected.
+
+In theory, magick can create mpeg files, but I can't get it to work, so use
+\code{gifMethod="ffmpeg"} for file formats other than GIF.
 }
 \examples{
 \dontrun{
