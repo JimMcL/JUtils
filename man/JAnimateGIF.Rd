@@ -48,7 +48,7 @@ infinitely.}
   \item{\code{"magick"}}{ uses the \href{https://imagemagick.org/script/download.php}{ImageMagick command line
   application}.}
   \item{\code{"gifski"}}{ uses the \href{https://gif.ski/}{gifski R package}.}
-  \item{\code{"ffmpeg"}}{ uses the \href{https://ffmpeg.org/}{FFMpeg command line application}.}
+  \item{\code{"ffmpeg"}}{ uses the \href{https://ffmpeg.org/}{FFMpeg command line application}, which can output \code{mp4} files. The output format is suitable for use by Powerpoint (at least on my version).}
   \item{\code{"auto"}}{ uses \code{"gifski"} if it is installed, otherwise uses \code{"magick-r"} if it is installed, otherwise uses \code{"magick"}.}
 }}
 

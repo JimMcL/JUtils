@@ -71,11 +71,12 @@ pngToGIFFFMpeg <- function(pngs, videoFileName, loop, frameRate, ext, subDir, tm
   tmpGif <- paste0("3d.", ext)
   result <- tryCatch({
     setwd(file.path(tmpDir, subDir))
-    # Need to specify files with a wildcard rather than explicitly listing them
-    # all because with many frames, the command line becomes too long
-    cmd <- c(#"-stream_loop", loop - 1,
-             "-framerate", "1", "-i", sprintf("jp%%%dd.png", ndigits),
-             "-r", frameRate, "-y", tmpGif)
+    inp <- c("-framerate", frameRate, "-i", sprintf("jp%%%dd.png", ndigits))
+    # Conversion suitable for powerpoint based on https://stackoverflow.com/a/45465730
+    format <- c("-c:v", "libx264", "-preset", "slow", "-profile:v", "high", "-level:v", "4.0", "-pix_fmt", "yuv420p", "-crf", "22", "-codec:a", "aac")
+    out <- c("-r", frameRate, "-y", tmpGif)
+    cmd <- c(inp, format, out)
+    #cat(paste(c(cmd, "\n")))
     system2("ffmpeg", cmd, invisible = F, stderr = TRUE)
   },
   finally = setwd(oldDir)
@@ -141,7 +142,7 @@ pngToGIFFFMpeg <- function(pngs, videoFileName, loop, frameRate, ext, subDir, tm
 #'   \item{\code{"magick"}}{ uses the \href{https://imagemagick.org/script/download.php}{ImageMagick command line
 #'   application}.}
 #'   \item{\code{"gifski"}}{ uses the \href{https://gif.ski/}{gifski R package}.}
-#'   \item{\code{"ffmpeg"}}{ uses the \href{https://ffmpeg.org/}{FFMpeg command line application}.}
+#'   \item{\code{"ffmpeg"}}{ uses the \href{https://ffmpeg.org/}{FFMpeg command line application}, which can output \code{mp4} files. The output format is suitable for use by Powerpoint (at least on my version).}
 #'   \item{\code{"auto"}}{ uses \code{"gifski"} if it is installed, otherwise uses \code{"magick-r"} if it is installed, otherwise uses \code{"magick"}.}
 #' }
 #' @param optimize Only used if \code{gifMethod == "magick-r"}. Passed to \link[magick]{image_animate}.
