@@ -276,7 +276,7 @@ print(JCapWords("the quick brown fox"))
 
 ### Fill missing values
 
-Use `JFill` to replace missing values in a vector with the last non-missing value. By default, `NA` values are interpreted as missing.
+Use `JFill` to replace missing values in a vector with the most recent previous non-missing value. By default, `NA` values are interpreted as missing.
 
 ```R
 x <- c("", "Group 1", "", "", "", "Group 2", "", "")
