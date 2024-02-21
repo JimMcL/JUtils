@@ -18,7 +18,7 @@ test_that("JAnimateGIF works", {
 
   .testAnim <- function(gifMethod, ext = ".gif", loop = 0) {
     gif <- tf(paste0("test-", gifMethod, ext))
-    JAnimateGIF(gif, gifMethod = gifMethod, frameKeys = seq(0, pi * 2, .1),
+    JAnimateGIF(gif, method = gifMethod, frameKeys = seq(0, pi * 2, .1),
                 plotFn = function(frame) .plotFrame(frame, gifMethod), width = 900, height = 700, loop = loop)
     expect_true(file.exists(gif))
     info <- file.info(gif)
@@ -47,7 +47,7 @@ test_that("JAnimateGIF works", {
     error = function(cond) {
       # Dangerous, but silently ignore errors so that tests
       # run on systems without ImageMagick
-      cat("Ignoring JAnimateGIF error for gifMethod=auto:\n")
+      cat("Ignoring JAnimateGIF error for method=auto:\n")
       print(cond)
     }
   )
@@ -59,7 +59,7 @@ test_that("JAnimateGIF works", {
     error = function(cond) {
       # Dangerous, but silently ignore errors so that tests
       # run on systems without FFMpeg
-      cat("Ignoring JAnimateGIF error for gifMethod=ffmpeg:\n")
+      cat("Ignoring JAnimateGIF error for method=ffmpeg:\n")
       print(cond)
     }
   )

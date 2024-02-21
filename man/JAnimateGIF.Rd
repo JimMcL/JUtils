@@ -11,7 +11,7 @@ JAnimateGIF(
   plotFn,
   frameRate = 30,
   loop = 0,
-  gifMethod = c("auto", "magick-r", "gifski", "magick", "ffmpeg"),
+  method = c("auto", "magick-r", "gifski", "magick", "ffmpeg"),
   optimize = FALSE,
   progress = FALSE,
   tmpDir = tempdir(TRUE),
@@ -20,7 +20,7 @@ JAnimateGIF(
 }
 \arguments{
 \item{videoFileName}{Name of the video file to be created. The file type is
-inferred from the file extension, but must be GIF if \code{gifMethod == "gifski"}.}
+inferred from the file extension, but must be GIF if \code{method == "gifski"}.}
 
 \item{nFrames}{Number of frames to be generated. You must specify one of
 \code{nFrames} or \code{frameKeys}.}
@@ -41,20 +41,23 @@ file.}
 \item{loop}{Number of times animation should be played. 0 means loop
 infinitely.}
 
-\item{gifMethod}{Specify the library/tool used to convert from PNG to GIF:
+\item{method}{Specify the library/tool used to convert from PNG to GIF:
 \itemize{
   \item{\code{"magick-r"}}{ uses the \href{https://docs.ropensci.org/magick/articles/intro.html}{magick R
   package}.}
   \item{\code{"magick"}}{ uses the \href{https://imagemagick.org/script/download.php}{ImageMagick command line
   application}.}
   \item{\code{"gifski"}}{ uses the \href{https://gif.ski/}{gifski R package}.}
-  \item{\code{"ffmpeg"}}{ uses the \href{https://ffmpeg.org/}{FFMpeg command line application}, which can output \code{mp4} files. The output format is suitable for use by Powerpoint (at least on my version).}
-  \item{\code{"auto"}}{ uses \code{"gifski"} if it is installed, otherwise uses \code{"magick-r"} if it is installed, otherwise uses \code{"magick"}.}
+  \item{\code{"ffmpeg"}}{ uses the \href{https://ffmpeg.org/}{FFMpeg command line application},
+  which can output \code{mp4} files. The output format is suitable for use by Powerpoint (at least on my version).}
+  \item{\code{"auto"}}{ if \code{videoFileName} has an \code{.mp4} extension, uses \code{ffmpeg};
+  otherwise uses \code{"gifski"} if it is installed, then \code{"magick-r"} if it is installed; otherwise
+   \code{"magick"}.}
 }}
 
-\item{optimize}{Only used if \code{gifMethod == "magick-r"}. Passed to \link[magick]{image_animate}.}
+\item{optimize}{Only used if \code{method == "magick-r"}. Passed to \link[magick]{image_animate}.}
 
-\item{progress}{Only used if \code{gifMethod == "gifski"}. Passed to \link[gifski]{gifski}; if TRUE, prints some progress messages.}
+\item{progress}{Only used if \code{method == "gifski"}. Passed to \link[gifski]{gifski}; if TRUE, prints some progress messages.}
 
 \item{tmpDir}{Name of a directory to be used to create temporary files in.}
 
@@ -72,7 +75,7 @@ conversion is performed by a 3rd party R package or application.
 }
 \details{
 You must have a suitable image conversion tool installed - see the documentation
-of the argument \code{gifMethod} for details. \href{https://imagemagick.org/script/download.php}{ImageMagick}
+of the argument \code{method} for details. \href{https://imagemagick.org/script/download.php}{ImageMagick}
 installed, and the ImageMagick bin subdirectory must be in your PATH
 environment variable. If ImageMagick is not installed, or is not in your PATH,
 \code{JAnimateGIF} will fail with an exception such as:
@@ -89,7 +92,7 @@ frames, so start with a small number of frames to ensure everything works as
 expected.
 
 In theory, magick can create mpeg files, but I can't get it to work, so use
-\code{gifMethod="ffmpeg"} for file formats other than GIF.
+\code{method="ffmpeg"} for file formats other than GIF.
 }
 \examples{
 \dontrun{
