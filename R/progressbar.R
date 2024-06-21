@@ -111,7 +111,17 @@ ElapsedTimeProgressBarFn <- function(numItems, reportFn) {
   itemStartTime <- proc.time()
   closed <- FALSE
 
-  function(itemNumber, newNumItems, close) {
+  function(itemNumber, newNumItems, close, printElapsed) {
+    # Calculate elapsed time from last item to this
+    now <- proc.time()
+    duration <- (now - itemStartTime)[3]
+
+    # Report total time so far?
+    if (!missing(printElapsed) && printElapsed) {
+      cat(sprintf("Elapsed time: %s\n", durationToS(duration)))
+      return(invisible(NULL))
+    }
+
     # Already closed?
     if (closed)
       # Do nothing
@@ -132,9 +142,6 @@ ElapsedTimeProgressBarFn <- function(numItems, reportFn) {
       numItems <<- as.numeric(newNumItems)
     }
 
-    # Calculate elapsed time from last item to this
-    now <- proc.time()
-    duration <- (now - itemStartTime)[3]
     # Save this duration
     durations[index] <<- duration
     # Time remaining
@@ -189,7 +196,8 @@ ElapsedTimeProgressBarFn <- function(numItems, reportFn) {
 #'
 #' # Optionally force close in case there weren't as many items as we expected
 #' pb(close = TRUE)
-#'
+#' # Optionally report total elapsed time
+#' pb(printElapsed = TRUE)
 #' }
 #'
 #' @export

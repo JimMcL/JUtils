@@ -52,7 +52,8 @@ for (i in 1:n) {
 
 # Optionally force close in case there weren't as many items as we expected
 pb(close = TRUE)
-
+# Optionally report total elapsed time
+pb(printElapsed = TRUE)
 }
 
 }
