@@ -14,7 +14,9 @@ durationToS <- function(duration) {
   sprintf("%g %s", signif(duration, 2), units)
 }
 
-.formatProgressMsg <- function(n, total, secsElapsed, secsRemaining, sd, finished) {
+.formatProgressMsg <- function(n, total, secsElapsed, secsRemaining, sd, finished, showPC) {
+  suf <- if (showPC) { sprintf(", %0.1f%% complete", n * 100 / total) } else ""
+
   # If it's not going to finish for a long time...
   if (secsRemaining > 45 * 60) {
     # Report finish time
@@ -22,13 +24,13 @@ durationToS <- function(duration) {
       "%Y-%m-%d %H:%M:%S"
     else
       "%H:%M:%S"
-    sprintf("Est. finish at %s", format(Sys.time() + secsRemaining, fmt))
+    sprintf("Est. finish at %s%s", format(Sys.time() + secsRemaining, fmt), suf)
   } else {
-    sprintf("Est. time remaining %s", durationToS(secsRemaining))
+    sprintf("Est. time remaining %s%s", durationToS(secsRemaining), suf)
   }
 }
 
-buildTxtReportFn <- function(title, newline = "\r") {
+buildTxtReportFn <- function(title, newline = "\r", showPC) {
   if (!missing(title) && !is.null(title)) {
     cat(paste0(title, "\n"))
     utils::flush.console()
@@ -38,32 +40,32 @@ buildTxtReportFn <- function(title, newline = "\r") {
     if (finished)
       cat(sprintf("\nComplete\n"))
     else {
-      cat(paste0(.formatProgressMsg(n, total, secsElapsed, secsRemaining, sd, finished),
+      cat(paste0(.formatProgressMsg(n, total, secsElapsed, secsRemaining, sd, finished, showPC),
              "                                    ", newline))
       utils::flush.console()
     }
   }
 }
 
-buildWinReportFn <- function(title) {
+buildWinReportFn <- function(title, showPC) {
   pb <- utils::winProgressBar(title, "Estimated completion time", min = 0, max = 100)
   function(n, total, secsElapsed, secsRemaining, sd, finished) {
     if (!missing(finished) && finished)
       close(pb)
     else {
-      label <- .formatProgressMsg(n, total, secsElapsed, secsRemaining, sd, finished)
+      label <- .formatProgressMsg(n, total, secsElapsed, secsRemaining, sd, finished, showPC)
       utils::setWinProgressBar(pb, 100 * secsElapsed / (secsElapsed + secsRemaining), label = label)
     }
   }
 }
 
-buildTkReportFn <- function(title) {
+buildTkReportFn <- function(title, showPC) {
   pb <- tcltk::tkProgressBar(title, "Estimated completion time", min = 0, max = 100)
   function(n, total, secsElapsed, secsRemaining, sd, finished) {
     if (!missing(finished) && finished)
       close(pb)
     else {
-      label <- .formatProgressMsg(n, total, secsElapsed, secsRemaining, sd, finished)
+      label <- .formatProgressMsg(n, total, secsElapsed, secsRemaining, sd, finished, showPC)
       tcltk::setTkProgressBar(pb, 100 * secsElapsed / (secsElapsed + secsRemaining), label = label)
     }
   }
@@ -170,6 +172,7 @@ ElapsedTimeProgressBarFn <- function(numItems, reportFn) {
 #' @param progressBar Type of progress bar.
 #' @param numItems Number of items to be processed.
 #' @param title Optional message displayed on the progress bar.
+#' @param showPC If \code{TRUE}, include percent complete in progress message.
 #'
 #' @return A function which should be called for each item as it is processed.
 #'
@@ -190,13 +193,13 @@ ElapsedTimeProgressBarFn <- function(numItems, reportFn) {
 #' }
 #'
 #' @export
-JBuildProgressBar <- function(progressBar = c("text", "win", "tk", "none"), numItems, title = NULL) {
+JBuildProgressBar <- function(progressBar = c("text", "win", "tk", "none"), numItems, title = NULL, showPC = FALSE) {
   # Setup the progress bar
   progressBar <- match.arg(progressBar)
   switch(progressBar,
          none = function(close){},
-         text = ElapsedTimeProgressBarFn(numItems, buildTxtReportFn(title)),
-         win = ElapsedTimeProgressBarFn(numItems, buildWinReportFn(title)),
-         tk = ElapsedTimeProgressBarFn(numItems, buildTkReportFn(title))
+         text = ElapsedTimeProgressBarFn(numItems, buildTxtReportFn(title, showPC = showPC)),
+         win = ElapsedTimeProgressBarFn(numItems, buildWinReportFn(title, showPC)),
+         tk = ElapsedTimeProgressBarFn(numItems, buildTkReportFn(title, showPC))
   )
 }

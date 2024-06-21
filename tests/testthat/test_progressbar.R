@@ -14,4 +14,14 @@ test_that("progressbar", {
   })
   expect_length(out, 2) # Expect one line of constantly updated progress, one completion line
 
+  # Check showPC argument
+  out <- capture.output({
+    pb <- JBuildProgressBar("text", n, showPC = TRUE)
+    for (i in 1:n) {
+      pb()
+      Sys.sleep(rexp(1, 100))
+    }
+  })
+  expect_length(out, 2) # Expect one line of constantly updated progress, one completion line
+
 })
