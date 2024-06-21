@@ -114,10 +114,10 @@ ElapsedTimeProgressBarFn <- function(numItems, reportFn) {
   function(itemNumber, newNumItems, close, printElapsed) {
     # Calculate elapsed time from last item to this
     now <- proc.time()
-    duration <- (now - itemStartTime)[3]
 
     # Report total time so far?
     if (!missing(printElapsed) && printElapsed) {
+      duration <- (now - startTime)[3]
       cat(sprintf("Elapsed time: %s\n", durationToS(duration)))
       return(invisible(NULL))
     }
@@ -143,6 +143,7 @@ ElapsedTimeProgressBarFn <- function(numItems, reportFn) {
     }
 
     # Save this duration
+    duration <- (now - itemStartTime)[3]
     durations[index] <<- duration
     # Time remaining
     nRemaining <- numItems - index
