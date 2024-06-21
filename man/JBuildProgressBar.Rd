@@ -8,7 +8,8 @@ rather than number of items.}
 JBuildProgressBar(
   progressBar = c("text", "win", "tk", "none"),
   numItems,
-  title = NULL
+  title = NULL,
+  showPC = FALSE
 )
 }
 \arguments{
@@ -17,6 +18,8 @@ JBuildProgressBar(
 \item{numItems}{Number of items to be processed.}
 
 \item{title}{Optional message displayed on the progress bar.}
+
+\item{showPC}{If \code{TRUE}, include percent complete in progress message.}
 }
 \value{
 A function which should be called for each item as it is processed.

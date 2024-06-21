@@ -8,7 +8,7 @@ Description: Miscellaneous functions to simplifying plotting (using base graphic
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.1
 Imports: grDevices, httr, tools, bezier, methods, stats
 Suggests: testthat, 
   png, 
