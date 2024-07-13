@@ -207,12 +207,6 @@ ElapsedTimeProgressBarFn <- function(numItems, reportFn) {
 JBuildProgressBar <- function(progressBar = c("text", "win", "tk", "none"), numItems, title = NULL, showPC = FALSE) {
   # Setup the progress bar
   progressBar <- match.arg(progressBar)
-  # switch(progressBar,
-  #        none = function(close){},
-  #        text = ElapsedTimeProgressBarFn(numItems, buildTxtReportFn(title, showPC = showPC)),
-  #        win = ElapsedTimeProgressBarFn(numItems, buildWinReportFn(title, showPC)),
-  #        tk = ElapsedTimeProgressBarFn(numItems, buildTkReportFn(title, showPC))
-  # )
 
   rfn <- switch(progressBar,
          text = buildTxtReportFn(title, showPC = showPC),
