@@ -26,8 +26,7 @@ A function which should be called for each item as it is processed.
 }
 \description{
 This function attempts to guess the total elapsed time based on time so far
-and \code{numItems}. It makes a simplistic attempt to identify and allow for
-a linear increase or decrease in the time taken for each item.
+and \code{numItems}.
 }
 \details{
 The progress bar can be displayed as a Windows popup, a TCL popup, text

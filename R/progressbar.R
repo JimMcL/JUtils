@@ -77,17 +77,20 @@ forecastGuess <- function(timesSoFar, n) {
   trendWeight <- 0
   trending <- 0
 
-  if (length(timesSoFar > 1)) {
-    l <- stats::lm(time ~ x, data = data.frame(x = seq_along(timesSoFar), time = timesSoFar))
-    sl <- summary(l)
-    r2 <- abs(sl$r.squared)
-    c <- stats::coef(sl)
-    p <- if (nrow(c) < 2) { 1 } else { c[2,4] }
-    if (!is.na(p) && r2 > 0.5) {
-      trendWeight <- 1 - p
-      trending <- sum(stats::predict(l, newdata = data.frame(x = seq_len(n))))
-    }
-  }
+  # Practical experience suggests meaningful trends are unlikely and simple
+  # mean-based estimate is a more reliable guide to expected time
+
+  # if (length(timesSoFar > 1)) {
+  #   l <- stats::lm(time ~ x, data = data.frame(x = seq_along(timesSoFar), time = timesSoFar))
+  #   sl <- summary(l)
+  #   r2 <- abs(sl$r.squared)
+  #   c <- stats::coef(sl)
+  #   p <- if (nrow(c) < 2) { 1 } else { c[2,4] }
+  #   if (!is.na(p) && r2 > 0.5) {
+  #     trendWeight <- 1 - p
+  #     trending <- sum(stats::predict(l, newdata = data.frame(x = seq_len(n))))
+  #   }
+  # }
 
   # Estimate based on each task having independent times
   independent <- mean(timesSoFar) * n
@@ -165,8 +168,7 @@ ElapsedTimeProgressBarFn <- function(numItems, reportFn) {
 #' rather than number of items.
 #'
 #' This function attempts to guess the total elapsed time based on time so far
-#' and \code{numItems}. It makes a simplistic attempt to identify and allow for
-#' a linear increase or decrease in the time taken for each item.
+#' and \code{numItems}.
 #'
 #' The progress bar can be displayed as a Windows popup, a TCL popup, text
 #' printed to the console, or no progress bar depending on the value of
@@ -205,10 +207,21 @@ ElapsedTimeProgressBarFn <- function(numItems, reportFn) {
 JBuildProgressBar <- function(progressBar = c("text", "win", "tk", "none"), numItems, title = NULL, showPC = FALSE) {
   # Setup the progress bar
   progressBar <- match.arg(progressBar)
-  switch(progressBar,
-         none = function(close){},
-         text = ElapsedTimeProgressBarFn(numItems, buildTxtReportFn(title, showPC = showPC)),
-         win = ElapsedTimeProgressBarFn(numItems, buildWinReportFn(title, showPC)),
-         tk = ElapsedTimeProgressBarFn(numItems, buildTkReportFn(title, showPC))
+  # switch(progressBar,
+  #        none = function(close){},
+  #        text = ElapsedTimeProgressBarFn(numItems, buildTxtReportFn(title, showPC = showPC)),
+  #        win = ElapsedTimeProgressBarFn(numItems, buildWinReportFn(title, showPC)),
+  #        tk = ElapsedTimeProgressBarFn(numItems, buildTkReportFn(title, showPC))
+  # )
+
+  rfn <- switch(progressBar,
+         text = buildTxtReportFn(title, showPC = showPC),
+         win = buildWinReportFn(title, showPC),
+         tk = buildTkReportFn(title, showPC)
   )
+  if (is.null(rfn)) {
+    function(close){}
+  } else {
+    ElapsedTimeProgressBarFn(numItems, rfn)
+  }
 }
