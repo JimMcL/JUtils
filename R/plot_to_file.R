@@ -511,17 +511,19 @@ JPlotToSVG <- function(filename, plotExpr,
 #' graphics, try either using \code{JPlotToFile(filename, print(<plotting
 #' code>))} or \code{ggsave()}.
 #'
-#' @param filenames The names of one or more files to create or overwrite. If NULL, plot output goes to the current device.
+#' @param filenames The names of one or more files to create or overwrite. If
+#'   NULL, plot output goes to the current device.
 #' @param plotExpr A function or expression which will produce the plot to be
 #'   written to the file.
 #' @param ... Any additional arguments are passed to the appropriate function.
 #'
 #' @return The result of evaluating \code{plotExpr} when plotting to the last
-#'   file in the \code{filenames} vector is returned invisibly (which means it
-#'   is not automatically printed).
+#'   file in the \code{filenames}. The Vector is returned invisibly (which means
+#'   it is not automatically printed).
 #'
 #' @seealso \code{\link{JPlotToPNG}}, \code{\link{JPlotToTIFF}},
-#'   \code{\link{JPlotToPDF}}, \code{\link{JPlotToEPS}}, \code{\link{JPlotToSVG}}
+#'   \code{\link{JPlotToPDF}}, \code{\link{JPlotToEPS}},
+#'   \code{\link{JPlotToSVG}}
 #'
 #' @export
 JPlotToFile <- function(filenames, plotExpr, ...) {
@@ -558,7 +560,7 @@ JPlotToFile <- function(filenames, plotExpr, ...) {
   for (filename in filenames) {
     result <- .plotToFile(filename, plotFn, ...)
   }
-  result
+  invisible(result)
 }
 
 #' Send console (i.e. text) output to a file

@@ -34,6 +34,8 @@
 #' @param legendPos Position of optional legend.
 #' @param ... Additional parameters are passed to \code{\link[graphics]{plot}}.
 #'
+#' @returns \code{NULL} or, if means are displayed, vector of mean values (returned invisibly).
+#'
 #' @seealso \code{\link[stats]{density}}, \code{\link[grDevices]{rainbow}},
 #'   \code{RColorBrewer::brewer.pal}, \code{\link[graphics]{polygon}}
 #'
@@ -74,6 +76,9 @@ JPlotDensities <- function(densities, lineColours = NULL, lty = 1, lwd = 2,
   fillDensities <- rep(fillDensities, length.out = length(densities))
   fillAngles <- rep(fillAngles, length.out = length(densities))
 
+  # Return value
+  r <- NULL
+
   # Create empty plot
   if (!add) {
     if (is.null(xlim))
@@ -105,12 +110,11 @@ JPlotDensities <- function(densities, lineColours = NULL, lty = 1, lwd = 2,
 
   # Optional mean lines
   if (!all(is.na(meanLty))) {
-    i <- 1
-    for (d in densities) {
-      # Derive mean from density
-      graphics::abline(v = weighted.mean(d$x, d$y), col = lineColours[i], lty = meanLty[i])
-      i <- i + 1
-    }
+    # Derive mean from density
+    m <- sapply(densities, function(d) weighted.mean(d$x, d$y))
+    graphics::abline(v = m, col = lineColours, lty = meanLty)
+    # Rreturn means
+    r <- m
   }
 
   # Optional legend
@@ -118,4 +122,5 @@ JPlotDensities <- function(densities, lineColours = NULL, lty = 1, lwd = 2,
     graphics::legend(legendPos, legendLabels, col = lineColours, lty = lty, lwd = lwd)
   }
 
+  invisible(r)
 }

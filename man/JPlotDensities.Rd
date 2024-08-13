@@ -66,6 +66,9 @@ new plot is created.}
 
 \item{...}{Additional parameters are passed to \code{\link[graphics]{plot}}.}
 }
+\value{
+\code{NULL} or, if means are displayed, vector of mean values (returned invisibly).
+}
 \description{
 Plots a list of densities (as created by \code{\link[stats]{density}}).
 Plotting is performed using base graphics. Each density is drawn as a line,

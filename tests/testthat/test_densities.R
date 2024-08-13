@@ -34,5 +34,12 @@ test_that("plotting densities", {
                                   fillDensities = 20, fillAngles = c(-45, 0, 45),
                                   legendLabels = c("Normal", "Uniform", "Exponential")))
   expect_true(file.exists(img))
+
+  # Add mean lines
+  JPlotToFile(img, JPlotDensities(densities, fillColours = grDevices::rainbow(3), fillAlpha = .3,
+                                  fillDensities = 20, fillAngles = c(-45, 0, 45),
+                                  meanLty = 3,
+                                  legendLabels = c("Normal", "Uniform", "Exponential")))
+  expect_true(file.exists(img))
 })
 

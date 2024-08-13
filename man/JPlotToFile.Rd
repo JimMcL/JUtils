@@ -7,7 +7,8 @@
 JPlotToFile(filenames, plotExpr, ...)
 }
 \arguments{
-\item{filenames}{The names of one or more files to create or overwrite. If NULL, plot output goes to the current device.}
+\item{filenames}{The names of one or more files to create or overwrite. If
+NULL, plot output goes to the current device.}
 
 \item{plotExpr}{A function or expression which will produce the plot to be
 written to the file.}
@@ -16,8 +17,8 @@ written to the file.}
 }
 \value{
 The result of evaluating \code{plotExpr} when plotting to the last
-  file in the \code{filenames} vector is returned invisibly (which means it
-  is not automatically printed).
+  file in the \code{filenames}. The Vector is returned invisibly (which means
+  it is not automatically printed).
 }
 \description{
 Writes the output of a plot to a file. The type of file is deduced from the
@@ -27,5 +28,6 @@ code>))} or \code{ggsave()}.
 }
 \seealso{
 \code{\link{JPlotToPNG}}, \code{\link{JPlotToTIFF}},
-  \code{\link{JPlotToPDF}}, \code{\link{JPlotToEPS}}, \code{\link{JPlotToSVG}}
+  \code{\link{JPlotToPDF}}, \code{\link{JPlotToEPS}},
+  \code{\link{JPlotToSVG}}
 }
