@@ -10,6 +10,8 @@
 #' @param densities List of densities to be plotted
 #' @param lineColours Vector of colours used to draw the lines. Defaults to the
 #'   rainbow palette (\code{\link[grDevices]{rainbow}}).
+#' @param lty Line style used to draw the lines.
+#' @param lwd Line width used to draw the lines.
 #' @param fillColours Vector of colours to fill the density polygons. If not
 #'   specified or NULL, the polygons are not filled.
 #' @param fillAlpha If not NA (the default), should be an alpha value between 0
@@ -20,8 +22,7 @@
 #' @param fillAngles If not NA (the default), slope of shading lines used to
 #'   fill polygons (passed as argument \code{angle} to
 #'   \code{\link[graphics]{polygon}}).
-#' @param lty Line style used to draw the lines.
-#' @param lwd Line width used to draw the lines.
+#' @param meanLty Line style used to draw vertical mean. NA (the default) means don't draw mean lines.
 #' @param xlim Defines the graphical extents of the x-axis. Defaults to include
 #'   all the density lines.
 #' @param ylim Defines the graphical extents of the y-axis. Defaults to include
@@ -47,7 +48,10 @@
 #' legend("topleft", c("Normal", "Uniform", "Exponential"), col = rainbow(3), lwd = 2)
 #'
 #' @export
-JPlotDensities <- function(densities, lineColours = NULL, fillColours = NULL, fillAlpha = NA, fillDensities = NA, fillAngles = NA, lty = 1, lwd = 2, xlim = NULL, ylim = NULL, ylab = "Density", add = FALSE,
+JPlotDensities <- function(densities, lineColours = NULL, lty = 1, lwd = 2,
+                           fillColours = NULL, fillAlpha = NA, fillDensities = NA, fillAngles = NA,
+                           meanLty = NA,
+                           xlim = NULL, ylim = NULL, ylab = "Density", add = FALSE,
                            legendLabels, legendPos = "topleft", ...) {
 
   .applyAlpha <- function(colour, alpha) {
@@ -58,6 +62,8 @@ JPlotDensities <- function(densities, lineColours = NULL, fillColours = NULL, fi
   # Recycle parameters if they're not long enough
   lty <- rep(lty, length.out = length(densities))
   lwd <- rep(lwd, length.out = length(densities))
+  meanLty <- rep(meanLty, length.out = length(densities))
+
   # Provide reasonable default line colours
   if (is.null(lineColours)) {
     lineColours <- grDevices::rainbow(length(densities))
@@ -95,6 +101,16 @@ JPlotDensities <- function(densities, lineColours = NULL, fillColours = NULL, fi
   for (d in densities) {
     graphics::lines(d, col = lineColours[i], lty = lty[i], lwd = lwd[i])
     i <- i + 1
+  }
+
+  # Optional mean lines
+  if (!all(is.na(meanLty))) {
+    i <- 1
+    for (d in densities) {
+      # Derive mean from density
+      graphics::abline(v = weighted.mean(d$x, d$y), col = lineColours[i], lty = meanLty[i])
+      i <- i + 1
+    }
   }
 
   # Optional legend

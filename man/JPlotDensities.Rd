@@ -7,12 +7,13 @@
 JPlotDensities(
   densities,
   lineColours = NULL,
+  lty = 1,
+  lwd = 2,
   fillColours = NULL,
   fillAlpha = NA,
   fillDensities = NA,
   fillAngles = NA,
-  lty = 1,
-  lwd = 2,
+  meanLty = NA,
   xlim = NULL,
   ylim = NULL,
   ylab = "Density",
@@ -28,6 +29,10 @@ JPlotDensities(
 \item{lineColours}{Vector of colours used to draw the lines. Defaults to the
 rainbow palette (\code{\link[grDevices]{rainbow}}).}
 
+\item{lty}{Line style used to draw the lines.}
+
+\item{lwd}{Line width used to draw the lines.}
+
 \item{fillColours}{Vector of colours to fill the density polygons. If not
 specified or NULL, the polygons are not filled.}
 
@@ -42,9 +47,7 @@ to fill polygons (passed as argument \code{density} to
 fill polygons (passed as argument \code{angle} to
 \code{\link[graphics]{polygon}}).}
 
-\item{lty}{Line style used to draw the lines.}
-
-\item{lwd}{Line width used to draw the lines.}
+\item{meanLty}{Line style used to draw vertical mean. NA (the default) means don't draw mean lines.}
 
 \item{xlim}{Defines the graphical extents of the x-axis. Defaults to include
 all the density lines.}
