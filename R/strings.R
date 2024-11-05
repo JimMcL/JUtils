@@ -18,8 +18,8 @@ JToSentence <- function(v, sep = ", ", conjunction = " and ") {
     v
   } else {
     paste(
-      c(paste(v[1:(length(v)-1)], collapse = sep),
-        v[length(v)]),
+      c(paste(v[1:(length(v) - 1)], collapse = sep),
+        as.character(v[length(v)])),
       collapse = conjunction)
   }
 }
