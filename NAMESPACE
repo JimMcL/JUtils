@@ -2,6 +2,7 @@
 
 export(JAnimateGIF)
 export(JAnimateScenes)
+export(JAnimateUnwrapped)
 export(JBezier)
 export(JBounce)
 export(JBuildProgressBar)

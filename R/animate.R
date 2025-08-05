@@ -95,11 +95,62 @@ pngToMPeg <- function(pngs, videoFileName, loop, frameRate, ext, subDir, tmpDir,
   invisible(result)
 }
 
-#' Combine multiple plots into an animated GIF file.
+# Create a new temporary directory to store all the frames.
+# This way, if an animation is interrupted (leaving behind frame files),
+# then another is run, the old frames won't get used in the new animation
+createSubDir <- function(tmpDir) {
+  for (i in 1:100) {
+    td <- sprintf("jt%d", i)
+    ftd <- file.path(tmpDir, td)
+    if (!dir.exists(ftd)) {
+      dir.create(ftd)
+      return(td)
+    }
+  }
+  stop(sprintf("Unable to create a new temporary directory under %s", tmpDir))
+}
+
+# Convert a set of image files into a video
+buildVideo <- function(videoFileName, method, pngs, loop, frameRate, optimize, subDir, tmpDir, progress, ndigits) {
+  # Default to GIF output
+  ext <- tools::file_ext(videoFileName)
+  if (nchar(ext) == 0)
+    ext <- "gif"
+  # Ensure output directory exists
+  if (!dir.exists(dirname(videoFileName))) {
+    dir.create(dirname(videoFileName), recursive = TRUE)
+  }
+
+  if (method == "auto")
+    method <- pickMethod(ext)
+
+  if (method == "magick-r") {
+    result <- pngToGIFMagickR(pngs, videoFileName, loop, frameRate, optimize)
+  } else if (method == "magick") {
+    result <- pngToGIFMagick(pngs, videoFileName, loop, frameRate, ext, subDir, tmpDir)
+  } else if (method == "gifski") {
+    result <- pngToGIFGifskiR(pngs, videoFileName, loop, frameRate, progress)
+  } else if (method == "ffmpeg") {
+    result <- pngToMPeg(pngs, videoFileName, loop, frameRate, ext, subDir, tmpDir, ndigits)
+  }
+
+  # Delete temporary pngs
+  file.remove(pngs)
+  unlink(subDir, recursive = TRUE)
+
+  # ffmpeg prints a lot of junk on success, so make it invisible
+  if (identical(result, character(0)) || method == "ffmpeg")
+    invisible(result)
+  else
+    result
+}
+
+#' Combine multiple plots into an animated GIF or similar file.
 #'
-#' Writes each frame to a PNG file, then combines them into a GIF
-#' file. Frames are created by calling a custom plot function. The PNG to GIF
-#' conversion is performed by a 3rd party R package or application.
+#' Writes each frame to a PNG file, then combines them into a GIF or
+#' video file. Frames are created by calling a custom plot function
+#' supplied by the caller. The PNG to GIF/video conversion is performed by a
+#' 3rd party R package or application.
 #'
 #' You must have a suitable image conversion tool installed - see the documentation
 #' of the argument \code{method} for details. \href{https://imagemagick.org/script/download.php}{ImageMagick}
@@ -134,7 +185,7 @@ pngToMPeg <- function(pngs, videoFileName, loop, frameRate, ext, subDir, tmpDir,
 #'   be silently skipped. If no frames are created for the entire animation, an
 #'   error is generated.
 #' @param frameRate Play back frame rate - used to set the frame delay in the GIF
-#'   file.
+#'   file.  NOte that there seems to be an error in interpreting `frameRate` when method is `"magick"`.
 #' @param loop Number of times animation should be played. 0 means loop
 #'   infinitely.
 #' @param method Specify the library/tool used to convert from PNG to GIF:
@@ -193,21 +244,8 @@ JAnimateGIF <- function(videoFileName, nFrames = NULL, frameKeys = 1:nFrames,
 
   method <- match.arg(method)
 
-  # Create a new temporary directory to store all the frames.
-  # This way, if an animation is interrupted (leaving behind frame files),
-  # then another is run, the old frames won't get used in the new animation
-  .createSubDir <- function() {
-    for (i in 1:100) {
-      td <- sprintf("jt%d", i)
-      ftd <- file.path(tmpDir, td)
-      if (!dir.exists(ftd)) {
-        dir.create(ftd)
-        return(td)
-      }
-    }
-    stop(sprintf("Unable to create a new temporary directory under %s", tmpDir))
-  }
-  subDir <- .createSubDir()
+  # Create a subdirectory underneath tmpDir
+  subDir <- createSubDir(tmpDir)
 
   ndigits <- ceiling(log10(length(frameKeys) + 1))
   .tmpFileName <- function(i) sprintf("%s/jp%0*d.png", subDir, ndigits, i)
@@ -229,37 +267,67 @@ JAnimateGIF <- function(videoFileName, nFrames = NULL, frameKeys = 1:nFrames,
     stop("No frames were plotted")
   }
 
-  # Default to GIF output
-  ext <- tools::file_ext(videoFileName)
-  if (nchar(ext) == 0)
-    ext <- "gif"
-  # Ensure output directory exists
-  if (!dir.exists(dirname(videoFileName))) {
-    dir.create(dirname(videoFileName), recursive = TRUE)
-  }
 
-  if (method == "auto")
-    method <- pickMethod(ext)
-
-  if (method == "magick-r") {
-    result <- pngToGIFMagickR(pngs, videoFileName, loop, frameRate, optimize)
-  } else if (method == "magick") {
-    result <- pngToGIFMagick(pngs, videoFileName, loop, frameRate, ext, subDir, tmpDir)
-  } else if (method == "gifski") {
-    result <- pngToGIFGifskiR(pngs, videoFileName, loop, frameRate, progress)
-  } else if (method == "ffmpeg") {
-    result <- pngToMPeg(pngs, videoFileName, loop, frameRate, ext, subDir, tmpDir, ndigits)
-  }
-
-  # Delete temporary pngs
-  file.remove(pngs)
-  unlink(subDir, recursive = TRUE)
-
-  # ffmpeg prints a lot of junk on success, so make it invisible
-  if (identical(result, character(0)) || method == "ffmpeg")
-    invisible(result)
-  else
-    result
+  buildVideo(videoFileName, method, pngs, loop, frameRate, optimize,
+             subDir, tmpDir, progress, ndigits)
 }
 
+#' Prepare to create frames for an animation
+#'
+#' Similar to JAnimateGIF except when you want to create frames within your own loop.
+#'
+#' @returns A function that should be used to plot each frame. See examples
+#'
+#' @examples
+#' frameFn <- JAnimateUnwrapped("anim.gif")
+#' nFrames <- 50
+#' for (frame in 1:nFrames) {
+#'   frameFn(plotExpr = {
+#'     plot(NULL, xlim = c(-1, 1), ylim = c(-1, 1), asp = 1, xlab = "", ylab = "", axes = FALSE)
+#'     # Frame starts from 1, but a 1 cornered polygon is not very visually interesting
+#'     nCorners <- frame + 1
+#'     angles <- 2 * pi * (1:nCorners) / nCorners
+#'     f <- frame / nFrames
+#'     # Pick a colour based on the frame number
+#'     col <- rgb(sin(pi / 2 * f), cos(pi / 2 * f), sin(pi / 2 * (f + .5)))
+#'     # Draw a polygon
+#'     polygon(cos(angles), sin(angles), col = col, border = "black", lwd = 4)})
+#' }
+#'
+#' frameFn(complete = TRUE)
+#'
+#' @export
+JAnimateUnwrapped <- function(videoFileName, frameRate = 30, loop = 0,
+                              method = c("auto", "magick-r", "gifski", "magick", "ffmpeg"),
+                              optimize = FALSE, progress = FALSE, tmpDir = tempdir(TRUE)) {
+  method <- match.arg(method)
+
+  # Create a subdirectory underneath tmpDir
+  subDir <- createSubDir(tmpDir)
+
+  # List of frame files. Allow for plot commands which don't actually produce a file
+  pngs <- character()
+
+  ndigits <- 10
+  .tmpFileName <- function(i) sprintf("%s/jp%0*d.png", subDir, ndigits, i)
+
+  frameIdx <- 1
+
+  function(complete = FALSE,  ...) {
+    if (isTRUE(complete)) {
+      buildVideo(videoFileName, method, pngs, loop, frameRate, optimize,
+                 subDir, tmpDir, progress, ndigits)
+    } else {
+      # Build a single frame
+      fname <- .tmpFileName(frameIdx)
+      fname <- file.path(tmpDir, fname)
+      JPlotToPNG(fname, ...)
+      # Check if the file was created
+      if (file.exists(fname))
+        pngs <<- c(pngs, fname)
+
+      frameIdx <<- frameIdx + 1
+    }
+  }
+}
 

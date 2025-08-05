@@ -2,7 +2,7 @@
 % Please edit documentation in R/animate.R
 \name{JAnimateGIF}
 \alias{JAnimateGIF}
-\title{Combine multiple plots into an animated GIF file.}
+\title{Combine multiple plots into an animated GIF or similar file.}
 \usage{
 JAnimateGIF(
   videoFileName,
@@ -36,7 +36,7 @@ be silently skipped. If no frames are created for the entire animation, an
 error is generated.}
 
 \item{frameRate}{Play back frame rate - used to set the frame delay in the GIF
-file.}
+file.  NOte that there seems to be an error in interpreting `frameRate` when method is `"magick"`.}
 
 \item{loop}{Number of times animation should be played. 0 means loop
 infinitely.}
@@ -69,9 +69,10 @@ The error message (as a character vector) from the ImageMack convert
   command, or \code{character(0)} (returned invisibly) on success.
 }
 \description{
-Writes each frame to a PNG file, then combines them into a GIF
-file. Frames are created by calling a custom plot function. The PNG to GIF
-conversion is performed by a 3rd party R package or application.
+Writes each frame to a PNG file, then combines them into a GIF or
+video file. Frames are created by calling a custom plot function
+supplied by the caller. The PNG to GIF/video conversion is performed by a
+3rd party R package or application.
 }
 \details{
 You must have a suitable image conversion tool installed - see the documentation
