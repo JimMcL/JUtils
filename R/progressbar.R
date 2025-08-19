@@ -214,7 +214,7 @@ JBuildProgressBar <- function(progressBar = c("text", "win", "tk", "none"), numI
          tk = buildTkReportFn(title, showPC)
   )
   if (is.null(rfn)) {
-    function(close){}
+    function(...){}
   } else {
     ElapsedTimeProgressBarFn(numItems, rfn)
   }
