@@ -3,15 +3,19 @@ durationToS <- function(duration) {
     return(NA)
   if (duration >= 3600) {
     duration <- duration / 3600
-    units <- "hours"
+    unitP <- "hours"
+    unitS <- "hour"
   } else if (duration >= 60) {
     duration <- duration / 60
-    units <- "mins"
+    unitP <- "mins"
+    unitS <- "min"
   } else {
     duration <- ceiling(duration)
-    units <- "secs"
+    unitP <- "secs"
+    unitS <- "sec"
   }
-  sprintf("%g %s", signif(duration, 2), units)
+  ds <- signif(duration, 2)
+  sprintf("%g %s", ds, if (ds == 1) unitS else unitP)
 }
 
 .formatProgressMsg <- function(n, total, secsElapsed, secsRemaining, sd, finished, showPC) {
